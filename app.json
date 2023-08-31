@@ -1,30 +1,41 @@
 {
   "expo": {
     "name": "I_Love_You_Alina",
-    "slug": "I_Love_You_Alina",
+    "slug": "i-love-you-alina",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#380c6b"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iamwintrow.I_Love_You_Alina"
     },
     "android": {
+      "package": "com.iamwintrow.I_Love_You_Alina",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#380C6B"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/I_Love_You_Alina_icon.png"
+    },
+    "plugins": [
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b112edad-4b6b-4d9c-895a-f2b804c7980c"
+      }
+    },
+    "owner": "mwintrow"
   }
 }
