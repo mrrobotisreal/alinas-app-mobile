@@ -397,7 +397,7 @@ export default function Listen() {
       );
     }
   };
-  const handlePlayPausePressIn = () => setPlayPauseIconColor("#CDB7F6");
+  const handlePlayPausePressIn = () => setPlayPauseIconColor(color300);
   const handlePlayPausePressOut = () => setPlayPauseIconColor("#FFFFFF");
   const handlePlayPausePress = async () => {
     if (!isPlaying) {
@@ -432,7 +432,7 @@ export default function Listen() {
     }
   };
 
-  const handleNextPressIn = () => setNextIconColor("#CDB7F6");
+  const handleNextPressIn = () => setNextIconColor(color300);
   const handleNextPressOut = () => setNextIconColor("#FFFFFF");
   const handleNextPress = async () => {
     const status = await sound?.getStatusAsync();
@@ -445,7 +445,7 @@ export default function Listen() {
     setCurrentPosition(0);
   };
 
-  const handleInfoBookmarkPressIn = () => setInfoBookmarkIconColor("#CDB7F6");
+  const handleInfoBookmarkPressIn = () => setInfoBookmarkIconColor(color300);
   const handleInfoBookmarkPressOut = () => setInfoBookmarkIconColor("#FFFFFF");
   const handleInfoBookmarkPress = () => {
     setInfoBookmarkIsOpen(!infoBookmarkIsOpen);
