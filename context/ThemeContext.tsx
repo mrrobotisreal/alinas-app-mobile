@@ -6,6 +6,14 @@ import HOME_ROSE from "../assets/images/my_external_cause_front_cover_rose.png";
 import HOME_SUN from "../assets/images/my_external_cause_front_cover_sun.png";
 import HOME_OCEAN from "../assets/images/my_external_cause_front_cover_ocean.png";
 import HOME_BEACH from "../assets/images/my_external_cause_front_cover_beach.png";
+import HOME_PASSPORTAL from "../assets/images/Passportal_front_cover.png";
+import PHOTOS from "../assets/images/photos_viewer_purple.png";
+import PHOTOS_CORAL from "../assets/images/photos_viewer_coral.png";
+import PHOTOS_MINT from "../assets/images/photos_viewer_mint.png";
+import PHOTOS_ROSE from "../assets/images/photos_viewer_rose.png";
+import PHOTOS_SUN from "../assets/images/photos_viewer_sun.png";
+import PHOTOS_OCEAN from "../assets/images/photos_viewer_ocean.png";
+import PHOTOS_BEACH from "../assets/images/photos_viewer_beach.png";
 import READ from "../assets/images/hummingbird_reader.png";
 import READ_CORAL from "../assets/images/hummingbird_reader_coral.png";
 import READ_MINT from "../assets/images/hummingbird_reader_mint.png";
@@ -46,6 +54,7 @@ export type ThemeState = {
   lightText: string;
   darkText: string;
   homeBG: ImageSourcePropType;
+  photosBG: ImageSourcePropType;
   readBG: ImageSourcePropType;
   listenBG: ImageSourcePropType;
   notesBG: ImageSourcePropType;
@@ -61,6 +70,7 @@ const initialState: ThemeState = {
   lightText: "#FFFFFF",
   darkText: "#380C6B",
   homeBG: HOME,
+  photosBG: PHOTOS,
   readBG: READ,
   listenBG: LISTEN,
   notesBG: NOTES,
@@ -78,6 +88,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   const [lightText, setLightText] = useState<string>("#FFFFFF");
   const [darkText, setDarkText] = useState<string>("#380C6B");
   const [homeBG, setHomeBG] = useState<ImageSourcePropType>(HOME);
+  const [photosBG, setPhotosBG] = useState<ImageSourcePropType>(PHOTOS);
   const [readBG, setReadBG] = useState<ImageSourcePropType>(READ);
   const [listenBG, setListenBG] = useState<ImageSourcePropType>(LISTEN);
   const [notesBG, setNotesBG] = useState<ImageSourcePropType>(NOTES);
@@ -85,6 +96,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
 
   const changeTheme = (id: string) => {
     saveThemeSelection(id);
+    // setHomeBG(HOME_PASSPORTAL);
     switch (id) {
       case "purple":
         setCurrentTheme("purple");
@@ -94,6 +106,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
         setHomeBG(HOME);
+        setPhotosBG(PHOTOS);
         setReadBG(READ);
         setListenBG(LISTEN);
         setNotesBG(NOTES);
@@ -107,6 +120,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#7B3729");
         setHomeBG(HOME_CORAL);
+        setPhotosBG(PHOTOS_CORAL);
         setReadBG(READ_CORAL);
         setListenBG(LISTEN_CORAL);
         setNotesBG(NOTES_CORAL);
@@ -120,6 +134,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#0A3A2A");
         setHomeBG(HOME_MINT);
+        setPhotosBG(PHOTOS_MINT);
         setReadBG(READ_MINT);
         setListenBG(LISTEN_MINT);
         setNotesBG(NOTES_MINT);
@@ -133,6 +148,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#7E0315");
         setHomeBG(HOME_ROSE);
+        setPhotosBG(PHOTOS_ROSE);
         setReadBG(READ_ROSE);
         setListenBG(LISTEN_ROSE);
         setNotesBG(NOTES_ROSE);
@@ -146,6 +162,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#BB6700");
         setHomeBG(HOME_SUN);
+        setPhotosBG(PHOTOS_SUN);
         setReadBG(READ_SUN);
         setListenBG(LISTEN_SUN);
         setNotesBG(NOTES_SUN);
@@ -159,6 +176,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#00457A");
         setHomeBG(HOME_OCEAN);
+        setPhotosBG(PHOTOS_OCEAN);
         setReadBG(READ_OCEAN);
         setListenBG(LISTEN_OCEAN);
         setNotesBG(NOTES_OCEAN);
@@ -172,6 +190,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#006F8A");
         setHomeBG(HOME_BEACH);
+        setPhotosBG(PHOTOS_BEACH);
         setReadBG(READ_BEACH);
         setListenBG(LISTEN_BEACH);
         setNotesBG(NOTES_BEACH);
@@ -185,6 +204,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
         setHomeBG(HOME);
+        setPhotosBG(PHOTOS);
         setReadBG(READ);
         setListenBG(LISTEN);
         setNotesBG(NOTES);
@@ -230,6 +250,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     lightText,
     darkText,
     homeBG,
+    photosBG,
     readBG,
     listenBG,
     notesBG,

@@ -77,7 +77,6 @@ export function NotesContextProvider({ children }: { children: ReactNode }) {
     axios
       .get(`${serverURL}/getAllNotes`)
       .then(({ data }) => {
-        console.log("Notes data:", data);
         setNotes(data);
         const keys = Object.keys(data);
         const allNotes: NotesSection[] = [];
@@ -96,7 +95,6 @@ export function NotesContextProvider({ children }: { children: ReactNode }) {
     axios
       .post(`${serverURL}/saveNote`, note)
       .then(({ data }) => {
-        console.log("saveNote data:", data);
         if (data) {
           ToastAndroid.show(toastSaveNoteSuccess, ToastAndroid.SHORT);
           getNotes();

@@ -19,6 +19,7 @@ import {
   FontAwesome5,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { useGetTexts } from "../hooks/useGetTexts";
 import { useGetAudioList } from "../hooks/useGetAudioList";
@@ -43,6 +44,7 @@ import RIVER from "../assets/images/my_home/river.png";
 import WHERE_ARE_THEY_GOING from "../assets/images/where_are_they_going/where_are_they_going.png";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
+import { PlatformContext } from "../context/PlatformContext";
 
 const sectionItems = [
   {
@@ -105,6 +107,7 @@ export default function Read() {
   const { color300, color500, color700, lightText, darkText, readBG } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { OS } = useContext(PlatformContext);
   const { audioList } = useGetAudioList();
   const { textsList } = useGetTexts();
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
@@ -147,6 +150,7 @@ export default function Read() {
   const handlePressInMenu = () => setMenuIconColor(color300);
   const handlePressOutMenu = () => setMenuIconColor("#FFFFFF");
   const handlePressMenu = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setTableOfContentsIsOpen(!tableOfContentsIsOpen);
     setBookIsOpen(false);
     setNotepadIsOpen(false);
@@ -160,6 +164,7 @@ export default function Read() {
   const handlePressInPreviousPage = () => setPreviousPageIconColor(color300);
   const handlePressOutPreviousPage = () => setPreviousPageIconColor("#FFFFFF");
   const handlePressPreviousPage = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(
         currentPageIndex === 0 ? audioList.length - 1 : currentPageIndex - 1
@@ -182,7 +187,6 @@ export default function Read() {
       setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
       setTimeout(() => animatePageFromLeft(), 250);
     }, 300);
-    // setTimeout(() => animatePageFromLeft(), 350);
   };
   const animatePageFromLeft = () => {
     Animated.timing(pagePosition, {
@@ -196,6 +200,7 @@ export default function Read() {
   const handlePressInOpenCloseBook = () => setBookIsOpenColor(color300);
   const handlePressOutOpenCloseBook = () => setBookIsOpenColor("#FFFFFF");
   const handlePressOpenCloseBook = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setBookIsOpen(!bookIsOpen);
     setTableOfContentsIsOpen(false);
     setNotepadIsOpen(false);
@@ -208,6 +213,7 @@ export default function Read() {
   const handlePressInNextPage = () => setNextPageIconColor(color300);
   const handlePressOutNextPage = () => setNextPageIconColor("#FFFFFF");
   const handlePressNextPage = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(
         currentPageIndex === audioList.length - 1 ? 0 : currentPageIndex + 1
@@ -244,6 +250,7 @@ export default function Read() {
   const handlePressInNotepad = () => setNotepadIconColor(color300);
   const handlePressOutNotepad = () => setNotepadIconColor("#FFFFFF");
   const handlePressNotepad = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setNotepadIsOpen(!notepadIsOpen);
     setTableOfContentsIsOpen(false);
     setBookIsOpen(false);
@@ -261,6 +268,7 @@ export default function Read() {
   const handlePressInSaveNote = () => setSaveNoteColor(color500);
   const handlePressOutSaveNote = () => setSaveNoteColor(color700);
   const handlePressSaveNote = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     // create hook to call server with axios
     // on success or failure, show toast
     if (!selectedSection || selectedSection === "") {
@@ -472,7 +480,6 @@ export default function Read() {
                                   {comp.imageUri?.map((src) => {
                                     switch (src) {
                                       case "../assets/images/my_love/ruby.png":
-                                        console.log("ruby");
                                         return (
                                           <View
                                             key={src}
@@ -490,7 +497,6 @@ export default function Read() {
                                           </View>
                                         );
                                       case "../assets/images/my_love/rose.png":
-                                        console.log("rose");
                                         return (
                                           <View
                                             key={src}
@@ -1108,6 +1114,8 @@ export default function Read() {
             style={{
               ...styles.bookControlsView,
               backgroundColor: color700,
+              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+              borderBottomRightRadius: OS === "ios" ? 50 : 12,
             }}
           >
             <View style={styles.bookControls}>

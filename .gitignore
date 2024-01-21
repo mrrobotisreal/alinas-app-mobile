@@ -8,6 +8,12 @@ node_modules/
 dist/
 web-build/
 
+# VS Code
+.vscode/
+
+# Android Studio
+.idea/
+
 # Native
 *.orig.*
 *.jks

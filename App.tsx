@@ -33,8 +33,10 @@ export default function App() {
    * Functions
    */
   const loadHomeScreen = async () => {
+    console.log("appIsReady:", appIsReady);
     if (appIsReady) {
       await SplashScreen.hideAsync();
+      console.log("finished awaiting SplashScreen.hideAsync()");
     }
   };
 
@@ -42,6 +44,7 @@ export default function App() {
    * Effects
    */
   useEffect(() => {
+    console.log("fontsLoaded:", fontsLoaded);
     if (fontsLoaded) {
       setAppIsReady(true);
     }
@@ -49,6 +52,7 @@ export default function App() {
 
   useEffect(() => {
     if (appIsReady) {
+      console.log("loading home screen...");
       loadHomeScreen();
     }
   }, [appIsReady]);

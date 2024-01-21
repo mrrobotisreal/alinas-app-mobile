@@ -14,6 +14,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { LocalContext } from "../context/LocalContext";
 import { StatusBar } from "expo-status-bar";
+import * as Haptics from "expo-haptics";
+import { PlatformContext } from "../context/PlatformContext";
 
 export default function Settings() {
   const intl = useIntl();
@@ -29,6 +31,7 @@ export default function Settings() {
   const { selectedFont, selectedHeavyFont, changeFont } =
     useContext(FontContext);
   const { currentLang, changeLanguage } = useContext(LocalContext);
+  const { OS } = useContext(PlatformContext);
 
   const fontRobotoText = intl.formatMessage({ id: "settings.font.roboto" });
   const fontSerifText = intl.formatMessage({ id: "settings.font.serif" });
@@ -212,6 +215,7 @@ export default function Settings() {
   const handlePressInFont = () => setFontIconColor(color300);
   const handlePressOutFont = () => setFontIconColor("#FFFFFF");
   const handlePressFont = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setFontIsOpen(!fontIsOpen);
     setTranslateIsOpen(false);
     setThemeIsOpen(false);
@@ -231,6 +235,7 @@ export default function Settings() {
   const handlePressInTranslate = () => setTranslateIconColor(color300);
   const handlePressOutTranslate = () => setTranslateIconColor("#FFFFFF");
   const handlePressTranslate = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setTranslateIsOpen(!translateIsOpen);
     setFontIsOpen(false);
     setThemeIsOpen(false);
@@ -239,6 +244,7 @@ export default function Settings() {
   const handlePressInTheme = () => setThemeIconColor(color300);
   const handlePressOutTheme = () => setThemeIconColor("#FFFFFF");
   const handlePressTheme = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setThemeIsOpen(!themeIsOpen);
     setFontIsOpen(false);
     setTranslateIsOpen(false);
@@ -512,6 +518,8 @@ export default function Settings() {
               ...styles.settingsControlsView,
               backgroundColor: color700,
               borderColor: lightText,
+              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+              borderBottomRightRadius: OS === "ios" ? 50 : 12,
             }}
           >
             <View style={styles.settingsControls}>

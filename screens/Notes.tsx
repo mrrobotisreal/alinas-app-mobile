@@ -23,6 +23,7 @@ import { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { NotesContext } from "../context/NotesContext";
+import { PlatformContext } from "../context/PlatformContext";
 import { wordCountRegex } from "../constants/regex";
 import moment from "moment";
 import { LocalContext } from "../context/LocalContext";
@@ -139,6 +140,7 @@ export default function Notes({ navigation }: any) {
   const { color300, color500, color700, lightText, darkText, notesBG } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { OS } = useContext(PlatformContext);
   const { currentLang } = useContext(LocalContext);
   const { notes, allNotesList, getNotes, saveNote } = useContext(NotesContext);
   const [generalNotesIsOpen, setGeneralNotesIsOpen] = useState<boolean>(false);
@@ -3242,6 +3244,8 @@ export default function Notes({ navigation }: any) {
             style={{
               ...styles.notesControlsView,
               backgroundColor: color700,
+              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+              borderBottomRightRadius: OS === "ios" ? 50 : 12,
             }}
           >
             <View style={styles.notesControls}>

@@ -12,6 +12,7 @@ import { ThemeContext } from "./context/ThemeContext";
  * Screens
  */
 import Home from "./screens/Home";
+import Photos from "./screens/Photos";
 import Read from "./screens/Read";
 import Listen from "./screens/Listen";
 import Notes from "./screens/Notes";
@@ -24,6 +25,7 @@ export default function Screens() {
   const intl = useIntl();
   const { color500, color700, lightText } = useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const PhotosTitle = intl.formatMessage({ id: "photos.header.title" });
   const ReadTitle = intl.formatMessage({ id: "read.header.title" });
   const ListenTitle = intl.formatMessage({ id: "listen.header.title" });
   const NotesTitle = intl.formatMessage({ id: "notes.header.title" });
@@ -32,6 +34,47 @@ export default function Screens() {
   /**
    * Screen options
    */
+  const PhotosOptions = useMemo(
+    () => ({
+      headerShown: true,
+      title: PhotosTitle,
+      headerStyle: {
+        backgroundColor: color700,
+      },
+      headerTintColor: lightText,
+      headerTitleStyle:
+        selectedFont === "NSL"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "BHL" || selectedFont === "BHM"
+          ? {
+              fontFamily: "BHH",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "ANAREG"
+          ? {
+              fontFamily: "ANABOLD",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "HMGBRD"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 38,
+            }
+          : {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            },
+    }),
+    [PhotosTitle, color700, lightText, selectedFont, selectedHeavyFont]
+  );
   const ReadOptions = useMemo(
     () => ({
       headerShown: true,
@@ -204,6 +247,11 @@ export default function Screens() {
           name="Home"
           component={Home}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Photos"
+          component={Photos}
+          options={PhotosOptions}
         />
         <Stack.Screen name="Read" component={Read} options={ReadOptions} />
         <Stack.Screen

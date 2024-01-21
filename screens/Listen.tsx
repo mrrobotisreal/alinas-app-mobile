@@ -45,6 +45,7 @@ import { useGetTexts } from "../hooks/useGetTexts";
 // import { Image } from "expo-image";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
+import { PlatformContext } from "../context/PlatformContext";
 
 export default function Listen() {
   /**
@@ -55,6 +56,7 @@ export default function Listen() {
   const { color300, color500, color700, lightText, darkText, listenBG } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { OS } = useContext(PlatformContext);
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [sound, setSound] = useState<Audio.Sound>();
   const [currentAudioIndex, setCurrentAudioIndex] = useState<number>(0);
@@ -390,11 +392,17 @@ export default function Listen() {
       }
     } else {
       setSoundIsLoading(false);
-      // handle errors
-      console.log(
-        "An error has occurred during playback in handleOnPlaybackStatusUpdate:\n",
-        status.error
-      );
+
+      if (status.error) {
+        console.log(
+          "An error has occurred during playback in handleOnPlaybackStatusUpdate:\n",
+          status.error
+        );
+      } else if (OS === "ios") {
+        console.log(
+          "Sorry! Check if your phone is on silent mode. If so, this can prevent sound playback. Switching silent mode off should allow the sound to play."
+        );
+      }
     }
   };
   const handlePlayPausePressIn = () => setPlayPauseIconColor(color300);
@@ -546,6 +554,8 @@ export default function Listen() {
             style={{
               ...styles.audioView,
               backgroundColor: color500,
+              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+              borderBottomRightRadius: OS === "ios" ? 50 : 12,
             }}
           >
             <Text

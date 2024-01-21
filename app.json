@@ -11,15 +11,28 @@
       "resizeMode": "contain",
       "backgroundColor": "#380c6b"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.iamwintrow.I_Love_You_Alina"
+      "bundleIdentifier": "com.iamwintrow.i-love-you-alina",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Allow \"I love you Alina\" to access your camera?",
+        "NSMicrophoneUsageDescription": "Allow \"I love you Alina\" to access your microphone?",
+        "NSPhotoLibraryUsageDescription": "Allow \"I love you Alina\" to access your photo library?",
+        "UIBackgroundModes": ["audio"],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.595018983301-90nj93k69he9ihpb3u1fgdnp7me27uk2"
+            ]
+          }
+        ]
+      }
     },
     "android": {
-      "package": "com.iamwintrow.I_Love_You_Alina",
+      "googleServicesFile": "./google-services.json",
+      "package": "com.iamwintrow.i_love_you_alina",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#380C6B"
@@ -29,7 +42,32 @@
       "favicon": "./assets/I_Love_You_Alina_icon.png"
     },
     "plugins": [
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow \"I love you Alina\" to access your microphone?"
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.595018983301-90nj93k69he9ihpb3u1fgdnp7me27uk2"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 31,
+            "targetSdkVersion": 31,
+            "buildToolsVersion": "31.0.0"
+          },
+          "ios": {
+            "deploymentTarget": "15.0"
+          }
+        }
+      ]
     ],
     "extra": {
       "eas": {
