@@ -23,28 +23,10 @@ import * as Haptics from "expo-haptics";
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { useGetTexts } from "../hooks/useGetTexts";
 import { useGetAudioList } from "../hooks/useGetAudioList";
-import RUBY from "../assets/images/my_love/ruby.png";
-import ROSE from "../assets/images/my_love/rose.png";
-import ALINA_AND_I_PRAGUE from "../assets/images/my_happiness/alina_and_i_prague.png";
-import STEEL_WIRE from "../assets/images/my_strength/steel_wire.png";
-import COMPASS from "../assets/images/my_strength/compass.png";
-import LIGHTBULB from "../assets/images/my_inspiration_and_my_motivation/lightbulb.png";
-import SUN from "../assets/images/my_inspiration_and_my_motivation/sun.png";
-import SUN_LIGHTBULB from "../assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png";
-import RIPPLE from "../assets/images/my_peace/ripple.png";
-import WAVE from "../assets/images/my_peace/wave.png";
-import SUNSET from "../assets/images/my_peace/sunset.png";
-import STORM from "../assets/images/my_peace/storm.png";
-import GALAXY from "../assets/images/my_peace/galaxy.png";
-import ALINA from "../assets/images/my_home/alina.png";
-import PAJAMAS from "../assets/images/my_home/pajamas.png";
-import PICTURES from "../assets/images/my_home/pictures.png";
-import PORTAL from "../assets/images/my_home/portal.png";
-import RIVER from "../assets/images/my_home/river.png";
-import WHERE_ARE_THEY_GOING from "../assets/images/where_are_they_going/where_are_they_going.png";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
+import { Image } from "expo-image";
 
 const sectionItems = [
   {
@@ -104,7 +86,7 @@ const sectionItems = [
 export default function Read() {
   const intl = useIntl();
   const pageSVRef = useRef<ScrollView>();
-  const { color300, color500, color700, lightText, darkText, readBG } =
+  const { color300, color500, color700, lightText, darkText, readBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
@@ -334,7 +316,12 @@ export default function Read() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={readBG} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: readBgUri,
+        }}
+        style={styles.imageBackground}
+      >
         <View style={styles.mainContainer}>
           <View style={styles.topView}></View>
           {!bookIsOpen ? null : (
@@ -490,10 +477,16 @@ export default function Read() {
                                               marginBottom: 40,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={RUBY}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/ruby.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "../assets/images/my_love/rose.png":
@@ -507,10 +500,16 @@ export default function Read() {
                                               marginBottom: 60,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={ROSE}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/rose.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "../assets/images/my_happiness/alina_and_i_prague.png":
@@ -524,10 +523,16 @@ export default function Read() {
                                               marginBottom: 60,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={ALINA_AND_I_PRAGUE}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "../assets/images/my_strength/steel_wire.png":
@@ -541,10 +546,16 @@ export default function Read() {
                                               marginBottom: 70,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={STEEL_WIRE}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/steel_wire.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "../assets/images/my_strength/compass.png":
@@ -558,10 +569,16 @@ export default function Read() {
                                               marginBottom: 110,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={COMPASS}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/compass.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_inspiration_and_my_motivation/lightbulb.png":
@@ -575,10 +592,16 @@ export default function Read() {
                                               marginBottom: 90,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={LIGHTBULB}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_inspiration_and_my_motivation/sun.png":
@@ -592,10 +615,16 @@ export default function Read() {
                                               marginBottom: 90,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={SUN}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png":
@@ -610,10 +639,16 @@ export default function Read() {
                                               paddingBottom: 20,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={SUN_LIGHTBULB}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_peace/ripple.png":
@@ -629,10 +664,16 @@ export default function Read() {
                                               paddingBottom: 30,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={RIPPLE}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/ripple.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_peace/wave.png":
@@ -647,10 +688,16 @@ export default function Read() {
                                               paddingBottom: 20,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={WAVE}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/wave.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_peace/sunset.png":
@@ -665,10 +712,16 @@ export default function Read() {
                                               paddingBottom: 20,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={SUNSET}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/sunset.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_peace/storm.png":
@@ -682,10 +735,16 @@ export default function Read() {
                                               marginBottom: 100,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={STORM}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/storm.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_peace/galaxy.png":
@@ -699,10 +758,16 @@ export default function Read() {
                                               marginBottom: 140,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={GALAXY}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/galaxy.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_home/alina.png":
@@ -718,10 +783,16 @@ export default function Read() {
                                               paddingBottom: 40,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={ALINA}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/alina.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_home/pajamas.png":
@@ -736,10 +807,16 @@ export default function Read() {
                                               paddingBottom: 40,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={PAJAMAS}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pajamas.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_home/pictures.png":
@@ -754,10 +831,16 @@ export default function Read() {
                                               paddingBottom: 40,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={PICTURES}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pictures.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_home/portal.png":
@@ -771,10 +854,16 @@ export default function Read() {
                                               marginBottom: 70,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={PORTAL}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/portal.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/my_home/river.png":
@@ -789,10 +878,16 @@ export default function Read() {
                                               paddingBottom: 20,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={RIVER}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/river.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       case "..assets/images/where_are_they_going/where_are_they_going.png":
@@ -806,10 +901,16 @@ export default function Read() {
                                               marginBottom: 40,
                                             }}
                                           >
-                                            <ImageBackground
-                                              source={WHERE_ARE_THEY_GOING}
-                                              style={styles.imageBackground}
-                                            ></ImageBackground>
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
                                           </View>
                                         );
                                       default:

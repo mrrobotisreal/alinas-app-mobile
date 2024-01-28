@@ -137,7 +137,7 @@ export default function Notes({ navigation }: any) {
   const outro2Label = intl.formatMessage({
     id: "listen.infoBookmarkMenu.outro_part_2",
   });
-  const { color300, color500, color700, lightText, darkText, notesBG } =
+  const { color300, color500, color700, lightText, darkText, notesBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
@@ -1090,7 +1090,12 @@ export default function Notes({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={notesBG} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: notesBgUri,
+        }}
+        style={styles.imageBackground}
+      >
         <View style={styles.mainContainer}>
           <View style={styles.topView}></View>
           {statsIsOpen && (

@@ -4,20 +4,20 @@ import { LocalContextProvider } from "./context/LocalContext";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { NotesContextProvider } from "./context/NotesContext";
 import { PlatformContextProvider } from "./context/PlatformContext";
-import { GoogleContextProvider } from "./context/GoogleContext";
+import { BookContextProvider } from "./context/BookContext";
 
 export default function WrapperContext({ children }: { children: ReactNode }) {
   return (
     <PlatformContextProvider>
-      <GoogleContextProvider>
-        <LocalContextProvider>
+      <LocalContextProvider>
+        <BookContextProvider>
           <ThemeContextProvider>
             <FontContextProvider>
               <NotesContextProvider>{children}</NotesContextProvider>
             </FontContextProvider>
           </ThemeContextProvider>
-        </LocalContextProvider>
-      </GoogleContextProvider>
+        </BookContextProvider>
+      </LocalContextProvider>
     </PlatformContextProvider>
   );
 }

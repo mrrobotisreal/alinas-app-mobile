@@ -8,7 +8,7 @@ import * as Font from "expo-font";
 import Screens from "./Screens";
 import WrapperContext from "./WrapperContext";
 
-SplashScreen.preventAutoHideAsync();
+// SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   /**

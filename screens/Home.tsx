@@ -29,6 +29,7 @@ const DEVICE_WIDTH = Dimensions.get("window").width;
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
+import { BookContext } from "../context/BookContext";
 
 const bookList: string[] = ["My External Cause", "Passportal", "Love Drunk"];
 
@@ -44,10 +45,11 @@ type MenuItemNodeProps = {
 
 export default function Home({ navigation }: any) {
   const intl = useIntl();
-  const { color300, color500, color700, lightText, homeBG } =
+  const { color300, color500, color700, lightText, homeBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
+  const { currentBook, changeBook } = useContext(BookContext);
   const [pagePosition, setPagePosition] = useState<Animated.ValueXY>(
     new Animated.ValueXY({ x: 0, y: 0 })
   );
@@ -96,33 +98,46 @@ export default function Home({ navigation }: any) {
   ];
 
   useEffect(() => {
+    console.log("homeBgUri:", homeBgUri);
     switch (selectedBook) {
       case "My External Cause":
-        setSelectedBookCover(homeBG);
+        changeBook("My External Cause");
+        // setSelectedBookCover(homeBG);
         setMyExternalCauseIsSelected(true);
         setPassportalIsSelected(false);
         setLoveDrunkIsSelected(false);
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
         break;
       case "Passportal":
+        changeBook("Passportal");
         setSelectedBookCover(PASSPORTAL_COVER);
         setMyExternalCauseIsSelected(false);
         setPassportalIsSelected(true);
         setLoveDrunkIsSelected(false);
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
         break;
       case "Love Drunk":
+        changeBook("Love Drunk");
         setSelectedBookCover(LOVE_DRUNK_COVER);
         setMyExternalCauseIsSelected(false);
         setPassportalIsSelected(false);
         setLoveDrunkIsSelected(true);
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
         break;
       default:
-        setSelectedBookCover(homeBG);
+        changeBook("My External Cause");
+        // setSelectedBookCover(homeBG);
         setMyExternalCauseIsSelected(true);
         setPassportalIsSelected(false);
         setLoveDrunkIsSelected(false);
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
         break;
     }
-  }, [selectedBook, homeBG]);
+  }, [selectedBook, homeBgUri, color300, color500, color700]);
 
   /**
    * Functions
@@ -314,7 +329,7 @@ export default function Home({ navigation }: any) {
               borderRadius: 12,
               borderColor: smallBookCoverColor,
             }}
-            source={selectedBookCover}
+            source={{ uri: homeBgUri }}
             contentFit="cover"
             transition={300}
           />

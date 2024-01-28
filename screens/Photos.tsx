@@ -25,58 +25,47 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { Album, PhotosContext } from "../context/PhotosContext";
 import { Image } from "expo-image";
+import { emulatorURL, serverURL } from "../constants/urls";
+import * as Sharing from "expo-sharing";
+import * as FileSystem from "expo-file-system";
 
-// interface AlbumButtonItem {
-//   id: string;
-//   title: string;
-//   url: string;
-// }
+function getUri(albumId: string, photoIndex: number) {
+  const index = photoIndex + 1;
 
-// const albumsList: AlbumButtonItem[] = [
-//   {
-//     id: 0,
-//     title: "Portugal\n(with my love ❤️)",
-//     url: "https://jsonplaceholder.typicode.com/photos/1",
-//   },
-//   {
-//     id: 1,
-//     title: "Austria\n(with my love ❤️)",
-//     url: "https://jsonplaceholder.typicode.com/photos/2",
-//   },
-//   {
-//     id: 2,
-//     title: "Paris\n(❤️🗽 with my love 🗼🎄)",
-//     url: "https://jsonplaceholder.typicode.com/photos/3",
-//   },
-// ];
+  // http://192.168.4.22:9090
+  const uri = `${serverURL}/assets/photosAlbums/${albumId}/${albumId}${
+    index >= 10 ? "0" + index : "00" + index
+  }.jpg`;
+
+  return uri;
+}
 
 export default function Photos() {
   const intl = useIntl();
   const albumsSVRef = useRef<ScrollView>();
-  const { color300, color500, color700, lightText, darkText, photosBG } =
+  const { color300, color500, color700, lightText, darkText, photosBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
-  const { albums } = useContext(PhotosContext);
+  const { albums, fetchAlbumLength } = useContext(PhotosContext);
   const [menuIconColor, setMenuIconColor] = useState<string>("#FFFFFF");
   const [listOfAlbumsIsOpen, setListOfAlbumsIsOpen] = useState<boolean>(false);
   const [albumsIconColor, setAlbumsIconColor] = useState<string>("#FFFFFF");
   const [currentAlbumIndex, setCurrentAlbumIndex] = useState<number>(0);
+  const [currentAlbumId, setCurrentAlbumId] = useState<string>(
+    albums[0].id || "paris"
+  );
   const [albumIsLoading, setAlbumIsLoading] = useState<boolean>(false);
   const [viewAlbumIsOpen, setViewAlbumIsOpen] = useState<boolean>(false);
-  const [photoPosition, setPhotoPosition] = useState<Animated.ValueXY>(
-    new Animated.ValueXY({ x: 0, y: 0 })
-  );
-  const [currentAlbumPhotos, setCurrentAlbumPhotos] = useState<
-    ImageSourcePropType[]
-  >(albums[0].photos);
+  const [currentAlbumLength, setCurrentAlbumLength] = useState<number>(0);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState<number>(0);
+  const [uri, setUri] = useState<string>();
   const [previousPhotoIconColor, setPreviousPhotoIconColor] =
     useState<string>("#FFFFFF");
   const [nextPhotoIconColor, setNextPhotoIconColor] =
@@ -111,96 +100,57 @@ export default function Photos() {
     setPreviousPhotoIconColor("#FFFFFF");
   const handlePressPreviousPhoto = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // setTimeout(() => {
-    //   setCurrentPhotoIndex(
-    //     currentPhotoIndex === 0
-    //       ? currentAlbumPhotos.length - 1
-    //       : currentPhotoIndex - 1
-    //   );
-    // }, 5);
     setCurrentPhotoIndex(
-      currentPhotoIndex === 0
-        ? currentAlbumPhotos.length - 1
-        : currentPhotoIndex - 1
+      currentPhotoIndex === 0 ? currentAlbumLength - 1 : currentPhotoIndex - 1
     );
-    animatePageRight();
-    // albumsSVRef.current?.scrollTo({
-    //   y: 0,
-    //   animated: true,
-    // });
-  };
-  const animatePageRight = () => {
-    Animated.timing(photoPosition, {
-      toValue: { x: 400, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-    setTimeout(() => {
-      setPhotoPosition(new Animated.ValueXY({ x: 0, y: 0 }));
-      setTimeout(() => animatePageFromLeft(), 250);
-    }, 200);
-  };
-  const animatePageFromLeft = () => {
-    Animated.timing(photoPosition, {
-      toValue: { x: 0, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
   };
 
   const handlePressInNextPhoto = () => setNextPhotoIconColor(color300);
   const handlePressOutNextPhoto = () => setNextPhotoIconColor("#FFFFFF");
   const handlePressNextPhoto = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // setTimeout(() => {
-    //   setCurrentPhotoIndex(
-    //     currentPhotoIndex === currentAlbumPhotos.length - 1
-    //       ? 0
-    //       : currentPhotoIndex + 1
-    //   );
-    // }, 5);
     setCurrentPhotoIndex(
-      currentPhotoIndex === currentAlbumPhotos.length - 1
-        ? 0
-        : currentPhotoIndex + 1
+      currentPhotoIndex === currentAlbumLength - 1 ? 0 : currentPhotoIndex + 1
     );
-    animatePageLeft();
-    // pageSVRef.current?.scrollTo({
-    //   y: 0,
-    //   animated: true,
-    // });
-  };
-  const animatePageLeft = () => {
-    Animated.timing(photoPosition, {
-      toValue: { x: -400, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-    setTimeout(() => {
-      setPhotoPosition(new Animated.ValueXY({ x: 0, y: 0 }));
-      setTimeout(() => animatePageFromRight(), 250);
-    }, 200);
-  };
-  const animatePageFromRight = () => {
-    Animated.timing(photoPosition, {
-      toValue: { x: 0, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
   };
 
   const handlePressInShare = () => setShareIconColor(color300);
   const handlePressOutShare = () => setShareIconColor("#FFFFFF");
   const handlePressShare = () => {
+    if (!viewAlbumIsOpen) return;
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setListOfAlbumsIsOpen(false);
-    setViewAlbumIsOpen(false);
+    // setViewAlbumIsOpen(false);
     setShareIsOpen(!shareIsOpen);
+    Sharing.isAvailableAsync()
+      .then((res) => {
+        console.log("Sharing.isAvailableAsync:", res);
+        if (res) {
+          Sharing.shareAsync(FileSystem.documentDirectory + "assets/splash.png")
+            .then((res) => console.log("Sharing.shareAsync:", res))
+            .catch((err) => console.error(err));
+        }
+      })
+      .catch((err) => console.error(err));
   };
+
+  const updateUri = () => {
+    setUri(getUri(currentAlbumId, currentPhotoIndex));
+  };
+
+  const updateAlbumLength = (length: number) => {
+    setCurrentAlbumLength(length);
+  };
+
+  useEffect(() => {
+    updateUri();
+  }, [currentAlbumId, currentPhotoIndex]);
+
+  useEffect(() => {
+    setCurrentPhotoIndex(0);
+    fetchAlbumLength(currentAlbumId, updateAlbumLength);
+  }, [currentAlbumId]);
 
   /**
    * Components
@@ -209,9 +159,9 @@ export default function Photos() {
     <Pressable
       onPress={() => {
         setCurrentAlbumIndex(index);
+        setCurrentAlbumId(id);
         setListOfAlbumsIsOpen(false);
         // setAlbumIsLoading(true);
-        setCurrentAlbumPhotos(photos);
 
         if (OS === "android") {
           ToastAndroid.showWithGravity(
@@ -249,7 +199,12 @@ export default function Photos() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={photosBG} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: photosBgUri,
+        }}
+        style={styles.imageBackground}
+      >
         <View style={styles.mainContainer}>
           <View style={styles.topView}></View>
           {listOfAlbumsIsOpen && (
@@ -311,27 +266,27 @@ export default function Photos() {
               >
                 {albums[currentAlbumIndex].title}
               </Text>
-              <Animated.View
-                style={[
-                  {
-                    ...styles.albumsContainer,
-                    width: "90%",
-                    height: "70%",
-                    borderWidth: 0,
-                  },
-                  photoPosition.getLayout(),
-                ]}
+              <View
+                style={{
+                  ...styles.albumsContainer,
+                  width: "90%",
+                  height: "70%",
+                  borderWidth: 0,
+                }}
               >
                 <Image
-                  source={currentAlbumPhotos[currentPhotoIndex]}
+                  // source={currentAlbumPhotos[currentPhotoIndex]}
+                  source={{
+                    uri: uri,
+                  }}
                   style={{
                     width: "100%",
                     height: "100%",
-                    resizeMode: "contain",
                   }}
+                  contentFit="contain"
                   transition={300}
                 />
-              </Animated.View>
+              </View>
               <Text
                 style={{
                   fontFamily: selectedHeavyFont,
@@ -341,7 +296,7 @@ export default function Photos() {
                   textAlign: "center",
                 }}
               >
-                {`(${currentPhotoIndex + 1} / ${currentAlbumPhotos.length})`}
+                {`(${currentPhotoIndex + 1} / ${currentAlbumLength})`}
               </Text>
             </View>
           )}
@@ -434,13 +389,13 @@ export default function Photos() {
                   <FontAwesome
                     name="share-alt"
                     size={48}
-                    color={shareIconColor}
+                    color={viewAlbumIsOpen ? shareIconColor : "#808080"}
                   />
                 ) : (
                   <MaterialIcons
                     name="ios-share"
                     size={48}
-                    color={shareIconColor}
+                    color={viewAlbumIsOpen ? shareIconColor : "#808080"}
                   />
                 )}
               </Pressable>
@@ -502,7 +457,6 @@ const styles = StyleSheet.create({
   albumsContainer: {
     width: "90%",
     height: "88%",
-    // backgroundColor: "#FFFFFF",
     borderColor: "#FFFFFF",
     borderWidth: 6,
     padding: 6,

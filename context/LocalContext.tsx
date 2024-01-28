@@ -13,6 +13,8 @@ import he from "../messages/he.json";
 import ru from "../messages/ru.json";
 import uk from "../messages/uk.json";
 import vi from "../messages/vi.json";
+import zh_CN from "../messages/zh_CN.json";
+import zh_TW from "../messages/zh_TW.json";
 import { serverURL } from "../constants/urls";
 const messages: any = {
   de: de,
@@ -42,6 +44,10 @@ const messages: any = {
   vi: vi,
   "vi-VN": vi,
   vi_VN: vi,
+  "zh-CN": zh_CN,
+  zh_CN: zh_CN,
+  "zh-TW": zh_TW,
+  zh_TW: zh_TW,
 };
 
 const devicePlatform = Platform.OS;

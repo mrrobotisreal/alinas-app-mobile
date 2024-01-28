@@ -50,12 +50,6 @@
         }
       ],
       [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.595018983301-90nj93k69he9ihpb3u1fgdnp7me27uk2"
-        }
-      ],
-      [
         "expo-build-properties",
         {
           "android": {

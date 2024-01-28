@@ -25,7 +25,7 @@ export default function Settings() {
     color500,
     color700,
     lightText,
-    settingsBG,
+    settingsBgUri,
     changeTheme,
   } = useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont, changeFont } =
@@ -386,7 +386,12 @@ export default function Settings() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={settingsBG} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: settingsBgUri,
+        }}
+        style={styles.imageBackground}
+      >
         <View style={styles.mainContainer}>
           <View
             style={{

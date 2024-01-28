@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   ImageBackground,
   Modal,
   Pressable,
@@ -22,27 +21,8 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import { FormattedMessage } from "react-intl";
 import Slider from "@react-native-community/slider";
 import { useGetAudioList } from "../hooks/useGetAudioList";
-import RUBY from "../assets/images/my_love/ruby.png";
-import ROSE from "../assets/images/my_love/rose.png";
-import ALINA_AND_I_PRAGUE from "../assets/images/my_happiness/alina_and_i_prague.png";
-import STEEL_WIRE from "../assets/images/my_strength/steel_wire.png";
-import COMPASS from "../assets/images/my_strength/compass.png";
-import LIGHTBULB from "../assets/images/my_inspiration_and_my_motivation/lightbulb.png";
-import SUN from "../assets/images/my_inspiration_and_my_motivation/sun.png";
-import SUN_LIGHTBULB from "../assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png";
-import RIPPLE from "../assets/images/my_peace/ripple.png";
-import WAVE from "../assets/images/my_peace/wave.png";
-import SUNSET from "../assets/images/my_peace/sunset.png";
-import STORM from "../assets/images/my_peace/storm.png";
-import GALAXY from "../assets/images/my_peace/galaxy.png";
-import ALINA from "../assets/images/my_home/alina.png";
-import PAJAMAS from "../assets/images/my_home/pajamas.png";
-import PICTURES from "../assets/images/my_home/pictures.png";
-import PORTAL from "../assets/images/my_home/portal.png";
-import RIVER from "../assets/images/my_home/river.png";
-import WHERE_ARE_THEY_GOING from "../assets/images/where_are_they_going/where_are_they_going.png";
 import { useGetTexts } from "../hooks/useGetTexts";
-// import { Image } from "expo-image";
+import { Image } from "expo-image";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
@@ -53,7 +33,7 @@ export default function Listen() {
    */
   const { audioList } = useGetAudioList();
   const { textsList } = useGetTexts();
-  const { color300, color500, color700, lightText, darkText, listenBG } =
+  const { color300, color500, color700, lightText, darkText, listenBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
@@ -534,7 +514,12 @@ export default function Listen() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ImageBackground source={listenBG} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: listenBgUri,
+        }}
+        style={styles.imageBackground}
+      >
         <View style={styles.mainContainer}>
           <View style={styles.titleContainer}>
             <Text
@@ -905,7 +890,6 @@ export default function Listen() {
                                 {comp.imageUri?.map((src) => {
                                   switch (src) {
                                     case "../assets/images/my_love/ruby.png":
-                                      console.log("ruby");
                                       return (
                                         <View
                                           key={src}
@@ -916,26 +900,19 @@ export default function Listen() {
                                             marginBottom: 40,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={RUBY}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/ruby.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //     zIndex: 1000,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_love/ruby.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "../assets/images/my_love/rose.png":
-                                      console.log("rose");
                                       return (
                                         <View
                                           key={src}
@@ -946,22 +923,17 @@ export default function Listen() {
                                             marginBottom: 60,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={ROSE}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/rose.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_love/rose.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "../assets/images/my_happiness/alina_and_i_prague.png":
                                       return (
@@ -974,22 +946,17 @@ export default function Listen() {
                                             marginBottom: 60,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={ALINA_AND_I_PRAGUE}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_happiness/alina_and_i_prague.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "../assets/images/my_strength/steel_wire.png":
                                       return (
@@ -1002,22 +969,17 @@ export default function Listen() {
                                             marginBottom: 70,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={STEEL_WIRE}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/steel_wire.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_strength/steel_wire.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "../assets/images/my_strength/compass.png":
                                       return (
@@ -1030,22 +992,17 @@ export default function Listen() {
                                             marginBottom: 110,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={COMPASS}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/compass.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_strength/compass.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_inspiration_and_my_motivation/lightbulb.png":
                                       return (
@@ -1058,22 +1015,17 @@ export default function Listen() {
                                             marginBottom: 90,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={LIGHTBULB}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_inspiration_and_my_motivation/lightbulb.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_inspiration_and_my_motivation/sun.png":
                                       return (
@@ -1086,22 +1038,17 @@ export default function Listen() {
                                             marginBottom: 90,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={SUN}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_inspiration_and_my_motivation/sun.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png":
                                       return (
@@ -1115,22 +1062,17 @@ export default function Listen() {
                                             paddingBottom: 20,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={SUN_LIGHTBULB}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_peace/ripple.png":
                                       return (
@@ -1145,22 +1087,17 @@ export default function Listen() {
                                             paddingBottom: 30,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={RIPPLE}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/ripple.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_peace/ripple.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_peace/wave.png":
                                       return (
@@ -1174,22 +1111,17 @@ export default function Listen() {
                                             paddingBottom: 20,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={WAVE}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/wave.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_peace/wave.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_peace/sunset.png":
                                       return (
@@ -1203,22 +1135,17 @@ export default function Listen() {
                                             paddingBottom: 20,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={SUNSET}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/sunset.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_peace/sunset.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_peace/storm.png":
                                       return (
@@ -1231,22 +1158,17 @@ export default function Listen() {
                                             marginBottom: 100,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={STORM}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/storm.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_peace/storm.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_peace/galaxy.png":
                                       return (
@@ -1259,22 +1181,17 @@ export default function Listen() {
                                             marginBottom: 140,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={GALAXY}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/galaxy.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_peace/galaxy.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_home/alina.png":
                                       return (
@@ -1289,22 +1206,17 @@ export default function Listen() {
                                             paddingBottom: 40,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={ALINA}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/alina.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_home/alina.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_home/pajamas.png":
                                       return (
@@ -1318,22 +1230,17 @@ export default function Listen() {
                                             paddingBottom: 40,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={PAJAMAS}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pajamas.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_home/pajamas.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_home/pictures.png":
                                       return (
@@ -1347,22 +1254,17 @@ export default function Listen() {
                                             paddingBottom: 40,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={PICTURES}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pictures.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_home/pictures.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_home/portal.png":
                                       return (
@@ -1375,22 +1277,17 @@ export default function Listen() {
                                             marginBottom: 70,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={PORTAL}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/portal.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_home/portal.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/my_home/river.png":
                                       return (
@@ -1404,22 +1301,17 @@ export default function Listen() {
                                             paddingBottom: 20,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={RIVER}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/river.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/my_home/river.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     case "..assets/images/where_are_they_going/where_are_they_going.png":
                                       return (
@@ -1432,22 +1324,17 @@ export default function Listen() {
                                             marginBottom: 40,
                                           }}
                                         >
-                                          <ImageBackground
-                                            source={WHERE_ARE_THEY_GOING}
-                                            style={styles.imageBackground}
-                                          ></ImageBackground>
+                                          <Image
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                            }}
+                                            style={{
+                                              width: "100%",
+                                              height: "100%",
+                                              borderRadius: 12,
+                                            }}
+                                          />
                                         </View>
-                                        // <Image
-                                        //   style={{
-                                        //     width: "100%",
-                                        //     height: "75%",
-                                        //     flex: 1,
-                                        //   }}
-                                        //   contentFit="cover"
-                                        //   key={src}
-                                        //   source={require("../assets/images/where_are_they_going/where_are_they_going.png")}
-                                        //   alt={src}
-                                        // />
                                       );
                                     default:
                                       return (
@@ -1459,7 +1346,9 @@ export default function Listen() {
                                           }}
                                           // contentFit="cover"
                                           key={src}
-                                          source={require("../assets/images/where_are_they_going/where_are_they_going.png")}
+                                          source={{
+                                            uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                          }}
                                           alt={src}
                                         />
                                       );

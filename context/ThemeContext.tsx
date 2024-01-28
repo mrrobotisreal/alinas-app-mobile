@@ -1,48 +1,11 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-import HOME from "../assets/splash.png";
-import HOME_CORAL from "../assets/images/my_external_cause_front_cover_coral.png";
-import HOME_MINT from "../assets/images/my_external_cause_front_cover_mint.png";
-import HOME_ROSE from "../assets/images/my_external_cause_front_cover_rose.png";
-import HOME_SUN from "../assets/images/my_external_cause_front_cover_sun.png";
-import HOME_OCEAN from "../assets/images/my_external_cause_front_cover_ocean.png";
-import HOME_BEACH from "../assets/images/my_external_cause_front_cover_beach.png";
-import HOME_PASSPORTAL from "../assets/images/Passportal_front_cover.png";
-import PHOTOS from "../assets/images/photos_viewer_purple.png";
-import PHOTOS_CORAL from "../assets/images/photos_viewer_coral.png";
-import PHOTOS_MINT from "../assets/images/photos_viewer_mint.png";
-import PHOTOS_ROSE from "../assets/images/photos_viewer_rose.png";
-import PHOTOS_SUN from "../assets/images/photos_viewer_sun.png";
-import PHOTOS_OCEAN from "../assets/images/photos_viewer_ocean.png";
-import PHOTOS_BEACH from "../assets/images/photos_viewer_beach.png";
-import READ from "../assets/images/hummingbird_reader.png";
-import READ_CORAL from "../assets/images/hummingbird_reader_coral.png";
-import READ_MINT from "../assets/images/hummingbird_reader_mint.png";
-import READ_ROSE from "../assets/images/hummingbird_reader_rose.png";
-import READ_SUN from "../assets/images/hummingbird_reader_sun.png";
-import READ_OCEAN from "../assets/images/hummingbird_reader_ocean.png";
-import READ_BEACH from "../assets/images/hummingbird_reader_beach.png";
-import LISTEN from "../assets/images/I_Love_You_Alina_listen_background.png";
-import LISTEN_CORAL from "../assets/images/I_Love_You_Alina_listen_background_coral.png";
-import LISTEN_MINT from "../assets/images/I_Love_You_Alina_listen_background_mint.png";
-import LISTEN_ROSE from "../assets/images/I_Love_You_Alina_listen_background_rose.png";
-import LISTEN_SUN from "../assets/images/I_Love_You_Alina_listen_background_sun.png";
-import LISTEN_OCEAN from "../assets/images/I_Love_You_Alina_listen_background_ocean.png";
-import LISTEN_BEACH from "../assets/images/I_Love_You_Alina_listen_background_beach.png";
-import NOTES from "../assets/images/alina_app_notes_wallpaper.png";
-import NOTES_CORAL from "../assets/images/alina_app_notes_wallpaper_coral.png";
-import NOTES_MINT from "../assets/images/alina_app_notes_wallpaper_mint.png";
-import NOTES_ROSE from "../assets/images/alina_app_notes_wallpaper_rose.png";
-import NOTES_SUN from "../assets/images/alina_app_notes_wallpaper_sun.png";
-import NOTES_OCEAN from "../assets/images/alina_app_notes_wallpaper_ocean.png";
-import NOTES_BEACH from "../assets/images/alina_app_notes_wallpaper_beach.png";
-import SETTINGS from "../assets/images/alina_app_settings_wallpaper.png";
-import SETTINGS_CORAL from "../assets/images/alina_app_settings_wallpaper_coral.png";
-import SETTINGS_MINT from "../assets/images/alina_app_settings_wallpaper_mint.png";
-import SETTINGS_ROSE from "../assets/images/alina_app_settings_wallpaper_rose.png";
-import SETTINGS_SUN from "../assets/images/alina_app_settings_wallpaper_sun.png";
-import SETTINGS_OCEAN from "../assets/images/alina_app_settings_wallpaper_ocean.png";
-import SETTINGS_BEACH from "../assets/images/alina_app_settings_wallpaper_beach.png";
-import { ImageSourcePropType } from "react-native";
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useState,
+  useContext,
+} from "react";
+import { BookContext } from "./BookContext";
 import axios from "axios";
 import { serverURL } from "../constants/urls";
 
@@ -53,12 +16,12 @@ export type ThemeState = {
   color700: string;
   lightText: string;
   darkText: string;
-  homeBG: ImageSourcePropType;
-  photosBG: ImageSourcePropType;
-  readBG: ImageSourcePropType;
-  listenBG: ImageSourcePropType;
-  notesBG: ImageSourcePropType;
-  settingsBG: ImageSourcePropType;
+  homeBgUri: string;
+  photosBgUri: string;
+  readBgUri: string;
+  listenBgUri: string;
+  notesBgUri: string;
+  settingsBgUri: string;
   changeTheme: (id: string) => void;
 };
 
@@ -69,34 +32,58 @@ const initialState: ThemeState = {
   color700: "#380C6B",
   lightText: "#FFFFFF",
   darkText: "#380C6B",
-  homeBG: HOME,
-  photosBG: PHOTOS,
-  readBG: READ,
-  listenBG: LISTEN,
-  notesBG: NOTES,
-  settingsBG: SETTINGS,
+  homeBgUri: `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`,
+  photosBgUri: `${serverURL}/assets/backgrounds/photos_viewer_purple.png`,
+  readBgUri: `${serverURL}/assets/backgrounds/hummingbird_reader_purple.png`,
+  listenBgUri: `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`,
+  notesBgUri: `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`,
+  settingsBgUri: `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`,
+  // homeBgUri:
+  //   "${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png",
+  // photosBgUri:
+  //   "${serverURL}/assets/backgrounds/photos_viewer_purple.png",
+  // readBgUri:
+  //   "${serverURL}/assets/backgrounds/hummingbird_reader_purple.png",
+  // listenBgUri:
+  //   "${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png",
+  // notesBgUri:
+  //   "${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png",
+  // settingsBgUri:
+  //   "${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png",
   changeTheme: (id: string) => {},
 };
 
 export const ThemeContext = createContext<ThemeState>(initialState);
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
+  const { currentBook } = useContext(BookContext);
   const [currentTheme, setCurrentTheme] = useState<string>("purple");
   const [color300, setColor300] = useState<string>("#CDB7F6");
   const [color500, setColor500] = useState<string>("#6B3BCB");
   const [color700, setColor700] = useState<string>("#380C6B");
   const [lightText, setLightText] = useState<string>("#FFFFFF");
   const [darkText, setDarkText] = useState<string>("#380C6B");
-  const [homeBG, setHomeBG] = useState<ImageSourcePropType>(HOME);
-  const [photosBG, setPhotosBG] = useState<ImageSourcePropType>(PHOTOS);
-  const [readBG, setReadBG] = useState<ImageSourcePropType>(READ);
-  const [listenBG, setListenBG] = useState<ImageSourcePropType>(LISTEN);
-  const [notesBG, setNotesBG] = useState<ImageSourcePropType>(NOTES);
-  const [settingsBG, setSettingsBG] = useState<ImageSourcePropType>(SETTINGS);
+  const [homeBgUri, setHomeBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`
+  );
+  const [photosBgUri, setPhotosBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
+  );
+  const [readBgUri, setReadBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/hummingbird_reader_purple.png`
+  );
+  const [listenBgUri, setListenBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
+  );
+  const [notesBgUri, setNotesBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
+  );
+  const [settingsBgUri, setSettingsBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`
+  );
 
   const changeTheme = (id: string) => {
     saveThemeSelection(id);
-    // setHomeBG(HOME_PASSPORTAL);
     switch (id) {
       case "purple":
         setCurrentTheme("purple");
@@ -105,12 +92,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBG(HOME);
-        setPhotosBG(PHOTOS);
-        setReadBG(READ);
-        setListenBG(LISTEN);
-        setNotesBG(NOTES);
-        setSettingsBG(SETTINGS);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_purple.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`
+        );
         break;
       case "coral":
         setCurrentTheme("coral");
@@ -119,12 +118,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7B3729");
         setLightText("#FFFFFF");
         setDarkText("#7B3729");
-        setHomeBG(HOME_CORAL);
-        setPhotosBG(PHOTOS_CORAL);
-        setReadBG(READ_CORAL);
-        setListenBG(LISTEN_CORAL);
-        setNotesBG(NOTES_CORAL);
-        setSettingsBG(SETTINGS_CORAL);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_coral.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_coral.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_coral.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_coral.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_coral.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_coral.png`
+        );
         break;
       case "mint":
         setCurrentTheme("mint");
@@ -133,12 +144,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#0A3A2A");
         setLightText("#FFFFFF");
         setDarkText("#0A3A2A");
-        setHomeBG(HOME_MINT);
-        setPhotosBG(PHOTOS_MINT);
-        setReadBG(READ_MINT);
-        setListenBG(LISTEN_MINT);
-        setNotesBG(NOTES_MINT);
-        setSettingsBG(SETTINGS_MINT);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_mint.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_mint.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_mint.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_mint.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_mint.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_mint.png`
+        );
         break;
       case "rose":
         setCurrentTheme("rose");
@@ -147,12 +170,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7E0315");
         setLightText("#FFFFFF");
         setDarkText("#7E0315");
-        setHomeBG(HOME_ROSE);
-        setPhotosBG(PHOTOS_ROSE);
-        setReadBG(READ_ROSE);
-        setListenBG(LISTEN_ROSE);
-        setNotesBG(NOTES_ROSE);
-        setSettingsBG(SETTINGS_ROSE);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_rose.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_rose.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_rose.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_rose.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_rose.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_rose.png`
+        );
         break;
       case "sun":
         setCurrentTheme("sun");
@@ -161,12 +196,22 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#BB6700");
         setLightText("#FFFFFF");
         setDarkText("#BB6700");
-        setHomeBG(HOME_SUN);
-        setPhotosBG(PHOTOS_SUN);
-        setReadBG(READ_SUN);
-        setListenBG(LISTEN_SUN);
-        setNotesBG(NOTES_SUN);
-        setSettingsBG(SETTINGS_SUN);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_sun.png`
+        );
+        setPhotosBgUri(`${serverURL}/assets/backgrounds/photos_viewer_sun.png`);
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_sun.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_sun.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_sun.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_sun.png`
+        );
         break;
       case "ocean":
         setCurrentTheme("ocean");
@@ -175,12 +220,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#00457A");
         setLightText("#FFFFFF");
         setDarkText("#00457A");
-        setHomeBG(HOME_OCEAN);
-        setPhotosBG(PHOTOS_OCEAN);
-        setReadBG(READ_OCEAN);
-        setListenBG(LISTEN_OCEAN);
-        setNotesBG(NOTES_OCEAN);
-        setSettingsBG(SETTINGS_OCEAN);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_ocean.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_ocean.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_ocean.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_ocean.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_ocean.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_ocean.png`
+        );
         break;
       case "beach":
         setCurrentTheme("beach");
@@ -189,12 +246,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#006F8A");
         setLightText("#FFFFFF");
         setDarkText("#006F8A");
-        setHomeBG(HOME_BEACH);
-        setPhotosBG(PHOTOS_BEACH);
-        setReadBG(READ_BEACH);
-        setListenBG(LISTEN_BEACH);
-        setNotesBG(NOTES_BEACH);
-        setSettingsBG(SETTINGS_BEACH);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_beach.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_beach.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_beach.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_beach.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_beach.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_beach.png`
+        );
         break;
       default:
         setCurrentTheme("purple");
@@ -203,12 +272,24 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBG(HOME);
-        setPhotosBG(PHOTOS);
-        setReadBG(READ);
-        setListenBG(LISTEN);
-        setNotesBG(NOTES);
-        setSettingsBG(SETTINGS);
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`
+        );
+        setPhotosBgUri(
+          `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
+        );
+        setReadBgUri(
+          `${serverURL}/assets/backgrounds/hummingbird_reader_purple.png`
+        );
+        setListenBgUri(
+          `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
+        );
+        setNotesBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
+        );
+        setSettingsBgUri(
+          `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`
+        );
     }
   };
 
@@ -238,9 +319,25 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     getSavedTheme();
   }, []);
 
-  // useEffect(() => {
-  //   saveThemeSelection(currentTheme);
-  // }, [currentTheme]);
+  useEffect(() => {
+    switch (currentBook) {
+      case "My External Cause":
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+        );
+        break;
+      case "Passportal":
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/passportal_front_cover_${currentTheme}.png`
+        );
+        break;
+      case "Love Drunk":
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/love_drunk_front_cover_${currentTheme}.png`
+        );
+        break;
+    }
+  }, [currentBook]);
 
   const values = {
     currentTheme,
@@ -249,12 +346,12 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     color700,
     lightText,
     darkText,
-    homeBG,
-    photosBG,
-    readBG,
-    listenBG,
-    notesBG,
-    settingsBG,
+    homeBgUri,
+    photosBgUri,
+    readBgUri,
+    listenBgUri,
+    notesBgUri,
+    settingsBgUri,
     changeTheme,
   };
 
