@@ -30,7 +30,6 @@
       }
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "package": "com.iamwintrow.i_love_you_alina",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
