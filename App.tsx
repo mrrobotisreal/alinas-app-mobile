@@ -1,6 +1,29 @@
 import { useState, useEffect } from "react";
+import { AppState, Platform } from "react-native";
+import type { AppStateStatus } from "react-native";
+import {
+  QueryClient,
+  QueryClientConfig,
+  QueryClientProvider,
+  focusManager,
+} from "@tanstack/react-query";
+// import { enableScreens } from "react-native-screens";
+import BookImagesCacheProvider from "./cache/BookImages";
+import BackgroundImagesCacheProvider from "./cache/BackgroundImages";
+import PhotoAlbumsImagesCacheProvider from "./cache/PhotoAlbumsImages";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
+
+/**
+ * Query Client
+ */
+const queryClientConfig: QueryClientConfig = {}; // will work on defaultOptions later
+export const queryClient = new QueryClient(queryClientConfig);
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+}
 
 /**
  * Screens
@@ -57,13 +80,27 @@ export default function App() {
     }
   }, [appIsReady]);
 
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", onAppStateChange);
+
+    return () => subscription.remove();
+  }, []);
+
   if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <WrapperContext>
-      <Screens />
-    </WrapperContext>
+    <QueryClientProvider client={queryClient}>
+      <WrapperContext>
+        <BookImagesCacheProvider>
+          <BackgroundImagesCacheProvider>
+            <PhotoAlbumsImagesCacheProvider>
+              <Screens />
+            </PhotoAlbumsImagesCacheProvider>
+          </BackgroundImagesCacheProvider>
+        </BookImagesCacheProvider>
+      </WrapperContext>
+    </QueryClientProvider>
   );
 }

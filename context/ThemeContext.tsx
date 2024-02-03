@@ -9,8 +9,17 @@ import { BookContext } from "./BookContext";
 import axios from "axios";
 import { serverURL } from "../constants/urls";
 
+export type ThemeType =
+  | "purple"
+  | "coral"
+  | "mint"
+  | "rose"
+  | "sun"
+  | "ocean"
+  | "beach";
+
 export type ThemeState = {
-  currentTheme: string;
+  currentTheme: ThemeType;
   color300: string;
   color500: string;
   color700: string;
@@ -38,18 +47,6 @@ const initialState: ThemeState = {
   listenBgUri: `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`,
   notesBgUri: `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`,
   settingsBgUri: `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`,
-  // homeBgUri:
-  //   "${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png",
-  // photosBgUri:
-  //   "${serverURL}/assets/backgrounds/photos_viewer_purple.png",
-  // readBgUri:
-  //   "${serverURL}/assets/backgrounds/hummingbird_reader_purple.png",
-  // listenBgUri:
-  //   "${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png",
-  // notesBgUri:
-  //   "${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png",
-  // settingsBgUri:
-  //   "${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png",
   changeTheme: (id: string) => {},
 };
 
@@ -57,7 +54,7 @@ export const ThemeContext = createContext<ThemeState>(initialState);
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
   const { currentBook } = useContext(BookContext);
-  const [currentTheme, setCurrentTheme] = useState<string>("purple");
+  const [currentTheme, setCurrentTheme] = useState<ThemeType>("purple");
   const [color300, setColor300] = useState<string>("#CDB7F6");
   const [color500, setColor500] = useState<string>("#6B3BCB");
   const [color700, setColor700] = useState<string>("#380C6B");

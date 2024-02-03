@@ -44,13 +44,18 @@ const initialState: PhotosStateContext = {
       title: "Portugal\n(with my love ❤️)",
     },
     {
-      id: "austria",
+      id: "portugalPhotoshoot",
       index: 1,
+      title: "📸 Portugal Photoshoot with My Love ❤️",
+    },
+    {
+      id: "austria",
+      index: 2,
       title: "Austria\n(with my love ❤️)",
     },
     {
       id: "paris",
-      index: 2,
+      index: 3,
       title: "Paris\n(❤️🗽 with my love 🗼🎄)",
     },
   ],

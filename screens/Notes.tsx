@@ -1,7 +1,6 @@
 import {
   View,
   StyleSheet,
-  ImageBackground,
   Keyboard,
   Pressable,
   Text,
@@ -27,6 +26,7 @@ import { PlatformContext } from "../context/PlatformContext";
 import { wordCountRegex } from "../constants/regex";
 import moment from "moment";
 import { LocalContext } from "../context/LocalContext";
+import { Image } from "expo-image";
 
 const sectionItems = [
   {
@@ -1090,10 +1090,12 @@ export default function Notes({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <Image
         source={{
           uri: notesBgUri,
         }}
+        contentFit="cover"
+        transition={100}
         style={styles.imageBackground}
       >
         <View style={styles.mainContainer}>
@@ -3447,7 +3449,7 @@ export default function Notes({ navigation }: any) {
             </View>
           </View>
         </Modal>
-      </ImageBackground>
+      </Image>
     </View>
   );
 }

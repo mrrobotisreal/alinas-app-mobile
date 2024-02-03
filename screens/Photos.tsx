@@ -1,19 +1,11 @@
 import {
   ActivityIndicator,
-  Animated,
-  Easing,
-  GestureResponderEvent,
-  ImageBackground,
-  ImageSourcePropType,
-  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   ToastAndroid,
   View,
-  ViewStyle,
 } from "react-native";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
@@ -29,6 +21,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
+import { PhotoAlbumsImagesCache } from "../cache/PhotoAlbumsImages";
 import { Album, PhotosContext } from "../context/PhotosContext";
 import { Image } from "expo-image";
 import { emulatorURL, serverURL } from "../constants/urls";
@@ -54,6 +47,7 @@ export default function Photos() {
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { albums, fetchAlbumLength } = useContext(PhotosContext);
+  const { loadAlbumImages } = useContext(PhotoAlbumsImagesCache);
   const [menuIconColor, setMenuIconColor] = useState<string>("#FFFFFF");
   const [listOfAlbumsIsOpen, setListOfAlbumsIsOpen] = useState<boolean>(false);
   const [albumsIconColor, setAlbumsIconColor] = useState<string>("#FFFFFF");
@@ -143,6 +137,10 @@ export default function Photos() {
     setCurrentAlbumLength(length);
   };
 
+  const updateAlbumIsLoading = (isLoading: boolean) => {
+    setAlbumIsLoading(isLoading);
+  };
+
   useEffect(() => {
     updateUri();
   }, [currentAlbumId, currentPhotoIndex]);
@@ -152,10 +150,17 @@ export default function Photos() {
     fetchAlbumLength(currentAlbumId, updateAlbumLength);
   }, [currentAlbumId]);
 
+  useEffect(() => {
+    if (viewAlbumIsOpen) {
+      updateAlbumIsLoading(true);
+      loadAlbumImages(currentAlbumId, setAlbumIsLoading, updateAlbumIsLoading);
+    }
+  }, [viewAlbumIsOpen]);
+
   /**
    * Components
    */
-  const AlbumButton = ({ id, index, title, photos }: Album) => (
+  const AlbumButton = ({ id, index, title }: Album) => (
     <Pressable
       onPress={() => {
         setCurrentAlbumIndex(index);
@@ -170,7 +175,7 @@ export default function Photos() {
             ToastAndroid.CENTER
           );
         }
-        setTimeout(() => setViewAlbumIsOpen(true), 200);
+        setViewAlbumIsOpen(true);
       }}
       style={{
         ...styles.albumItem,
@@ -199,10 +204,12 @@ export default function Photos() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <Image
         source={{
           uri: photosBgUri,
         }}
+        contentFit="cover"
+        transition={100}
         style={styles.imageBackground}
       >
         <View style={styles.mainContainer}>
@@ -274,18 +281,29 @@ export default function Photos() {
                   borderWidth: 0,
                 }}
               >
-                <Image
-                  // source={currentAlbumPhotos[currentPhotoIndex]}
-                  source={{
-                    uri: uri,
-                  }}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  contentFit="contain"
-                  transition={300}
-                />
+                {albumIsLoading ? (
+                  <ActivityIndicator
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    size="large"
+                    color={color500}
+                  />
+                ) : (
+                  <Image
+                    // source={currentAlbumPhotos[currentPhotoIndex]}
+                    source={{
+                      uri: uri,
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    contentFit="contain"
+                    transition={300}
+                  />
+                )}
               </View>
               <Text
                 style={{
@@ -402,7 +420,7 @@ export default function Photos() {
             </View>
           </View>
         </View>
-      </ImageBackground>
+      </Image>
     </View>
   );
 }

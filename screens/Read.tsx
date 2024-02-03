@@ -2,7 +2,6 @@ import {
   Animated,
   Easing,
   GestureResponderEvent,
-  ImageBackground,
   Modal,
   Pressable,
   ScrollView,
@@ -316,10 +315,12 @@ export default function Read() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <Image
         source={{
           uri: readBgUri,
         }}
+        contentFit="cover"
+        transition={100}
         style={styles.imageBackground}
       >
         <View style={styles.mainContainer}>
@@ -1350,7 +1351,7 @@ export default function Read() {
             </View>
           </View>
         </Modal>
-      </ImageBackground>
+      </Image>
     </View>
   );
 }

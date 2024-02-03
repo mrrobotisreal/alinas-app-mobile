@@ -1,27 +1,19 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, ReactNode } from "react";
 import {
-  Animated,
-  Easing,
   StyleSheet,
   Text,
   View,
   FlatList,
-  Dimensions,
-  Modal,
   Pressable,
   GestureResponderEvent,
-  ImageSourcePropType,
 } from "react-native";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { FormattedMessage, useIntl } from "react-intl";
-import MY_EXTERNAL_CAUSE_COVER from "../assets/images/splash.png";
-import PASSPORTAL_COVER from "../assets/images/Passportal_front_cover.png";
-import LOVE_DRUNK_COVER from "../assets/images/Love_Drunk_Front_Cover.png";
+import { serverURL } from "../constants/urls";
 import { Image } from "expo-image";
-
-const DEVICE_WIDTH = Dimensions.get("window").width;
+import { BookImagesCache } from "../cache/BookImages";
 
 /**
  * Context
@@ -45,30 +37,21 @@ type MenuItemNodeProps = {
 
 export default function Home({ navigation }: any) {
   const intl = useIntl();
-  const { color300, color500, color700, lightText, homeBgUri } =
+  const { color300, color500, color700, lightText, homeBgUri, currentTheme } =
     useContext(ThemeContext);
+  const { bookImagesList, MyExternalCause, LoveDrunk, Passportal, imagesObj } =
+    useContext(BookImagesCache);
+  const [bookImage, setBookImage] = useState<ReactNode>(MyExternalCause);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { currentBook, changeBook } = useContext(BookContext);
-  const [pagePosition, setPagePosition] = useState<Animated.ValueXY>(
-    new Animated.ValueXY({ x: 0, y: 0 })
-  );
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
   const [menuIconColor, setMenuIconColor] = useState<string>(color500);
   const [selectedBook, setSelectedBook] = useState<string>("My External Cause");
   const [selectedBookIndex, setSelectedBookIndex] = useState<number>(0);
-  const [selectedBookCover, setSelectedBookCover] =
-    useState<ImageSourcePropType>(MY_EXTERNAL_CAUSE_COVER);
   const [smallBookCoverColor, setSmallBookCoverColor] =
     useState<string>(color300);
-  const [myExternalCauseIsSelected, setMyExternalCauseIsSelected] =
-    useState<boolean>(true);
-  const [passportalIsSelected, setPassportalIsSelected] =
-    useState<boolean>(false);
-  const [loveDrunkIsSelected, setLoveDrunkIsSelected] =
-    useState<boolean>(false);
-  const [selectBookIsVisible, setSelectBookIsVisible] =
-    useState<boolean>(false);
+  const [bookUri, setBookUri] = useState<string>(homeBgUri);
   const photosText = intl.formatMessage({ id: "home.photosButton" });
   const readText = intl.formatMessage({ id: "home.readButton" });
   const listenText = intl.formatMessage({ id: "home.listenButton" });
@@ -98,46 +81,45 @@ export default function Home({ navigation }: any) {
   ];
 
   useEffect(() => {
-    console.log("homeBgUri:", homeBgUri);
+    setBookUri(homeBgUri);
     switch (selectedBook) {
       case "My External Cause":
+        setBookUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+        );
         changeBook("My External Cause");
-        // setSelectedBookCover(homeBG);
-        setMyExternalCauseIsSelected(true);
-        setPassportalIsSelected(false);
-        setLoveDrunkIsSelected(false);
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
       case "Passportal":
+        setBookUri(
+          `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
+        );
+        setBookImage(Passportal);
         changeBook("Passportal");
-        setSelectedBookCover(PASSPORTAL_COVER);
-        setMyExternalCauseIsSelected(false);
-        setPassportalIsSelected(true);
-        setLoveDrunkIsSelected(false);
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
       case "Love Drunk":
+        setBookUri(
+          `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${currentTheme}.png`
+        );
+        setBookImage(LoveDrunk);
         changeBook("Love Drunk");
-        setSelectedBookCover(LOVE_DRUNK_COVER);
-        setMyExternalCauseIsSelected(false);
-        setPassportalIsSelected(false);
-        setLoveDrunkIsSelected(true);
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
       default:
+        setBookUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+        );
+        setBookImage(MyExternalCause);
         changeBook("My External Cause");
-        // setSelectedBookCover(homeBG);
-        setMyExternalCauseIsSelected(true);
-        setPassportalIsSelected(false);
-        setLoveDrunkIsSelected(false);
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
     }
-  }, [selectedBook, homeBgUri, color300, color500, color700]);
+  }, [selectedBook, homeBgUri, color300, color500, color700, imagesObj]);
 
   /**
    * Functions
@@ -160,46 +142,6 @@ export default function Home({ navigation }: any) {
       case "settings":
         navigation.navigate("Settings");
     }
-  };
-  const animatePageRight = () => {
-    Animated.timing(pagePosition, {
-      toValue: { x: 400, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-    setTimeout(() => {
-      setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
-      setTimeout(() => animatePageFromLeft(), 250);
-    }, 300);
-  };
-  const animatePageFromLeft = () => {
-    Animated.timing(pagePosition, {
-      toValue: { x: 0, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-  };
-  const animatePageLeft = () => {
-    Animated.timing(pagePosition, {
-      toValue: { x: -400, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-    setTimeout(() => {
-      setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
-      setTimeout(() => animatePageFromRight(), 250);
-    }, 300);
-  };
-  const animatePageFromRight = () => {
-    Animated.timing(pagePosition, {
-      toValue: { x: 0, y: 0 },
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
   };
   const handleClickPreviousBook = () => {
     if (selectedBookIndex === 0) {
@@ -294,16 +236,6 @@ export default function Home({ navigation }: any) {
             </Text>
           </View>
         </View>
-        {/* <View>
-          <Animated.View
-            style={[
-              {
-                width: "90%",
-                height: "90%",
-              },
-              pagePosition.getLayout(),
-            ]}
-          > */}
         <Pressable
           onPress={() => {
             setMenuIsVisible(false);
@@ -329,13 +261,11 @@ export default function Home({ navigation }: any) {
               borderRadius: 12,
               borderColor: smallBookCoverColor,
             }}
-            source={{ uri: homeBgUri }}
+            source={{ uri: bookUri }}
             contentFit="cover"
             transition={300}
           />
         </Pressable>
-        {/* </Animated.View>
-        </View> */}
         <View
           style={{
             ...styles.flatlistView,
@@ -373,7 +303,6 @@ export default function Home({ navigation }: any) {
                 onPressIn={() => setMenuIconColor(color700)}
                 onPressOut={() => setMenuIconColor(color500)}
                 onPress={() => {
-                  // animatePageRight();
                   handleClickPreviousBook();
                 }}
                 style={{
@@ -408,7 +337,6 @@ export default function Home({ navigation }: any) {
                 onPressIn={() => setMenuIconColor(color700)}
                 onPressOut={() => setMenuIconColor(color500)}
                 onPress={() => {
-                  // animatePageLeft();
                   handleClickNextBook();
                 }}
                 style={{
@@ -428,149 +356,6 @@ export default function Home({ navigation }: any) {
           )}
         </View>
       </View>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={selectBookIsVisible}
-      >
-        <View
-          style={{
-            borderColor: lightText,
-            backgroundColor: color700,
-            borderRadius: 50,
-            padding: 10,
-            height: "100%",
-            width: "100%",
-            borderWidth: 6,
-            paddingTop: 40,
-          }}
-        >
-          {selectBookIsVisible && (
-            <View
-              style={{
-                height: "100%",
-                width: "100%",
-                borderRadius: 12,
-              }}
-            >
-              <Image
-                style={{
-                  flex: 1,
-                  width: "100%",
-                  marginTop: 6,
-                  marginBottom: 10,
-                  borderWidth: 6,
-                  borderRadius: 12,
-                  borderColor: lightText,
-                }}
-                source={selectedBookCover}
-                contentFit="cover"
-                transition={300}
-              />
-              <View
-                style={{
-                  borderWidth: 6,
-                  borderColor: lightText,
-                  borderRadius: 12,
-                  padding: 10,
-                  backgroundColor: color300,
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignSelf: "center",
-                    alignItems: "center",
-                    alignContent: "center",
-                    width: "100%",
-                    paddingHorizontal: 10,
-                  }}
-                >
-                  <Pressable
-                    onPressIn={() => setMenuIconColor(color700)}
-                    onPressOut={() => setMenuIconColor(color500)}
-                    onPress={() => {
-                      // animatePageRight();
-                      handleClickPreviousBook();
-                    }}
-                    style={{
-                      alignContent: "center",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      alignSelf: "center",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name="page-previous"
-                      size={38}
-                      color={color500}
-                    />
-                  </Pressable>
-                  <Text
-                    style={{
-                      fontFamily: selectedFont,
-                      fontSize: 24,
-                      color: color700,
-                      padding: 4,
-                      textAlign: "center",
-                    }}
-                  >
-                    {selectedBook}
-                  </Text>
-                  <Pressable
-                    onPressIn={() => setMenuIconColor(color700)}
-                    onPressOut={() => setMenuIconColor(color500)}
-                    onPress={() => {
-                      // animatePageLeft();
-                      handleClickNextBook();
-                    }}
-                    style={{
-                      alignContent: "center",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      alignSelf: "center",
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name="page-next"
-                      size={38}
-                      color={color500}
-                    />
-                  </Pressable>
-                </View>
-              </View>
-              <Pressable
-                style={{
-                  borderRadius: 12,
-                  borderWidth: 6,
-                  borderColor: lightText,
-                  padding: 10,
-                  marginTop: 10,
-                  backgroundColor: color700,
-                  width: "60%",
-                  alignSelf: "center",
-                }}
-                onPress={() => {
-                  setSelectBookIsVisible(false);
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: selectedFont,
-                    fontSize: 28,
-                    color: lightText,
-                    padding: 4,
-                    textAlign: "center",
-                  }}
-                >
-                  Main Menu
-                </Text>
-              </Pressable>
-            </View>
-          )}
-        </View>
-      </Modal>
     </View>
   );
 }

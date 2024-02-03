@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import {
   ActivityIndicator,
   FlatList,
-  ImageBackground,
   Modal,
   Pressable,
   ScrollView,
@@ -26,6 +25,10 @@ import { Image } from "expo-image";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
+import {
+  audioMyExternalCause,
+  audioObjMyExternalCause,
+} from "../constants/assetPaths";
 
 export default function Listen() {
   /**
@@ -39,6 +42,7 @@ export default function Listen() {
   const { OS } = useContext(PlatformContext);
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [sound, setSound] = useState<Audio.Sound>();
+  const [allSounds, setAllSounds] = useState<Audio.Sound[]>([]);
   const [currentAudioIndex, setCurrentAudioIndex] = useState<number>(0);
   const [soundIsLoading, setSoundIsLoading] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -281,52 +285,77 @@ export default function Listen() {
   };
 
   const handleLoading = async (sound: Audio.Sound) => {
-    switch (audioList[currentAudioIndex].uri) {
-      case "../assets/audio/000_introduction.m4a":
-        await sound.loadAsync(require("../assets/audio/000_introduction.m4a"));
-        break;
-      case "../assets/audio/001_anatomy_of_everything.m4a":
-        await sound.loadAsync(
-          require("../assets/audio/001_anatomy_of_everything.m4a")
-        );
-        break;
-      case "../assets/audio/002_my_love.m4a":
-        await sound.loadAsync(require("../assets/audio/002_my_love.m4a"));
-        break;
-      case "../assets/audio/003_my_happiness.m4a":
-        await sound.loadAsync(require("../assets/audio/003_my_happiness.m4a"));
-        break;
-      case "../assets/audio/004_my_strength.m4a":
-        await sound.loadAsync(require("../assets/audio/004_my_strength.m4a"));
-        break;
-      case "../assets/audio/005_my_inspiration_and_my_motivation.m4a":
-        await sound.loadAsync(
-          require("../assets/audio/005_my_inspiration_and_my_motivation.m4a")
-        );
-        break;
-      case "../assets/audio/006_my_peace.m4a":
-        await sound.loadAsync(require("../assets/audio/006_my_peace.m4a"));
-        break;
-      case "../assets/audio/007_my_home.m4a":
-        await sound.loadAsync(require("../assets/audio/007_my_home.m4a"));
-        break;
-      case "../assets/audio/008_where_are_they_going_where_are_we_going.m4a":
-        await sound.loadAsync(
-          require("../assets/audio/008_where_are_they_going_where_are_we_going.m4a")
-        );
-        break;
-      case "../assets/audio/009_I_want_everything_with_you.m4a":
-        await sound.loadAsync(
-          require("../assets/audio/009_I_want_everything_with_you.m4a")
-        );
-        break;
-      case "../assets/audio/outro_part_1.m4a":
-        await sound.loadAsync(require("../assets/audio/outro_part_1.m4a"));
-        break;
-      case "../assets/audio/outro_part_2.m4a":
-        await sound.loadAsync(require("../assets/audio/outro_part_2.m4a"));
-        break;
+    // switch (audioList[currentAudioIndex].uri) {
+    //   case "../assets/audio/000_introduction.m4a":
+    //     await sound.loadAsync(require("../assets/audio/000_introduction.m4a"));
+    //     break;
+    //   case "../assets/audio/001_anatomy_of_everything.m4a":
+    //     await sound.loadAsync(
+    //       require("../assets/audio/001_anatomy_of_everything.m4a")
+    //     );
+    //     break;
+    //   case "../assets/audio/002_my_love.m4a":
+    //     await sound.loadAsync(require("../assets/audio/002_my_love.m4a"));
+    //     break;
+    //   case "../assets/audio/003_my_happiness.m4a":
+    //     await sound.loadAsync(require("../assets/audio/003_my_happiness.m4a"));
+    //     break;
+    //   case "../assets/audio/004_my_strength.m4a":
+    //     await sound.loadAsync(require("../assets/audio/004_my_strength.m4a"));
+    //     break;
+    //   case "../assets/audio/005_my_inspiration_and_my_motivation.m4a":
+    //     await sound.loadAsync(
+    //       require("../assets/audio/005_my_inspiration_and_my_motivation.m4a")
+    //     );
+    //     break;
+    //   case "../assets/audio/006_my_peace.m4a":
+    //     await sound.loadAsync(require("../assets/audio/006_my_peace.m4a"));
+    //     break;
+    //   case "../assets/audio/007_my_home.m4a":
+    //     await sound.loadAsync(require("../assets/audio/007_my_home.m4a"));
+    //     break;
+    //   case "../assets/audio/008_where_are_they_going_where_are_we_going.m4a":
+    //     await sound.loadAsync(
+    //       require("../assets/audio/008_where_are_they_going_where_are_we_going.m4a")
+    //     );
+    //     break;
+    //   case "../assets/audio/009_I_want_everything_with_you.m4a":
+    //     await sound.loadAsync(
+    //       require("../assets/audio/009_I_want_everything_with_you.m4a")
+    //     );
+    //     break;
+    //   case "../assets/audio/outro_part_1.m4a":
+    //     await sound.loadAsync(require("../assets/audio/outro_part_1.m4a"));
+    //     break;
+    //   case "../assets/audio/outro_part_2.m4a":
+    //     await sound.loadAsync(require("../assets/audio/outro_part_2.m4a"));
+    //     break;
+    // }
+
+    // below works, but need to rework whole implementation
+    // const allLoadedSounds: Audio.Sound[] = [];
+    // const audioKeys = Object.keys(audioObjMyExternalCause);
+
+    // audioKeys.forEach(async (key) => {
+    //   const newSound = new Audio.Sound();
+    //   newSound.setOnPlaybackStatusUpdate(handleOnPlaybackStatusUpdate);
+    //   await newSound.loadAsync({ uri: audioObjMyExternalCause[key] });
+    //   allLoadedSounds.push(newSound);
+    // });
+
+    // setAllSounds(allLoadedSounds);
+
+    const id = audioList[currentAudioIndex].id;
+    console.log("audio uri:", audioObjMyExternalCause[id]);
+
+    try {
+      await sound.loadAsync({ uri: audioObjMyExternalCause[id] });
+      console.log("sound loaded successfully");
+    } catch (err) {
+      console.log("HANDLING LOAD ERROR");
+      console.error(err);
     }
+
     return sound;
   };
   const handleOnPlaybackStatusUpdate = async (status: AVPlaybackStatus) => {
@@ -379,9 +408,9 @@ export default function Listen() {
           status.error
         );
       } else if (OS === "ios") {
-        console.log(
-          "Sorry! Check if your phone is on silent mode. If so, this can prevent sound playback. Switching silent mode off should allow the sound to play."
-        );
+        // console.log(
+        //   "Sorry! Check if your phone is on silent mode. If so, this can prevent sound playback. Switching silent mode off should allow the sound to play."
+        // );
       }
     }
   };
@@ -410,6 +439,29 @@ export default function Listen() {
       setIsPlaying(false);
       await sound?.pauseAsync();
     }
+
+    // if (!isPlaying) {
+    //   const status = await allSounds[currentAudioIndex]?.getStatusAsync();
+    //   if (status?.isLoaded) {
+    //     setIsPlaying(true);
+    //     allSounds[currentAudioIndex]?.playAsync();
+    //   } else {
+    //     try {
+    //       setSoundIsLoading(true);
+    //       setIsPlaying(true);
+    //       const sound = new Audio.Sound();
+    //       sound.setOnPlaybackStatusUpdate(handleOnPlaybackStatusUpdate);
+    //       const loadedSound = await handleLoading(sound);
+    //       setSound(loadedSound);
+    //       await loadedSound.playAsync();
+    //     } catch (e) {
+    //       console.error(e);
+    //     }
+    //   }
+    // } else {
+    //   setIsPlaying(false);
+    //   await allSounds[currentAudioIndex]?.pauseAsync();
+    // }
   };
   const handleSeek = async (position: number) => {
     const status = await sound?.getStatusAsync();
@@ -461,6 +513,9 @@ export default function Listen() {
   }, [currentAudioIndex]);
 
   useEffect(() => {
+    if (sound) {
+    }
+
     return sound
       ? () => {
           sound?.unloadAsync();
@@ -514,10 +569,12 @@ export default function Listen() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <ImageBackground
+      <Image
         source={{
           uri: listenBgUri,
         }}
+        contentFit="cover"
+        transition={100}
         style={styles.imageBackground}
       >
         <View style={styles.mainContainer}>
@@ -1465,7 +1522,7 @@ export default function Listen() {
             </View>
           </View>
         </Modal>
-      </ImageBackground>
+      </Image>
     </View>
   );
 }

@@ -1,5 +1,4 @@
 import {
-  ImageBackground,
   Pressable,
   StyleSheet,
   View,
@@ -16,6 +15,7 @@ import { LocalContext } from "../context/LocalContext";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { PlatformContext } from "../context/PlatformContext";
+import { Image } from "expo-image";
 
 export default function Settings() {
   const intl = useIntl();
@@ -386,10 +386,12 @@ export default function Settings() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
+      <Image
         source={{
           uri: settingsBgUri,
         }}
+        contentFit="cover"
+        transition={100}
         style={styles.imageBackground}
       >
         <View style={styles.mainContainer}>
@@ -667,7 +669,7 @@ export default function Settings() {
             </View>
           </View>
         </Modal>
-      </ImageBackground>
+      </Image>
     </View>
   );
 }
