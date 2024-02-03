@@ -9,6 +9,7 @@ import {
   ScrollView,
   Modal,
   GestureResponderEvent,
+  ImageBackground,
 } from "react-native";
 import { FormattedMessage, useIntl } from "react-intl";
 import { BarChart } from "react-native-gifted-charts";
@@ -1090,2045 +1091,2149 @@ export default function Notes({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: notesBgUri,
-        }}
-        contentFit="cover"
-        transition={100}
-        style={styles.imageBackground}
-      >
-        <View style={styles.mainContainer}>
-          <View style={styles.topView}></View>
-          {statsIsOpen && (
-            <View
-              style={{
-                ...styles.notebookView,
-                backgroundColor: color700,
-              }}
-            >
-              <Text
-                style={{
-                  ...styles.notesTitle,
-                  color: lightText,
-                  fontFamily: selectedHeavyFont,
-                }}
-              >
-                <FormattedMessage
-                  id="notes.title.stats"
-                  defaultMessage="Stats"
-                />
-              </Text>
+      {OS === "ios" ? (
+        <Image
+          source={{
+            uri: notesBgUri,
+          }}
+          contentFit="cover"
+          transition={100}
+          style={styles.imageBackground}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.topView}></View>
+            {statsIsOpen && (
               <View
                 style={{
-                  ...styles.notesContainer,
-                  backgroundColor: color300,
+                  ...styles.notebookView,
+                  backgroundColor: color700,
                 }}
               >
-                <ScrollView nestedScrollEnabled={true}>
-                  <View
+                <Text
+                  style={{
+                    ...styles.notesTitle,
+                    color: lightText,
+                    fontFamily: selectedHeavyFont,
+                  }}
+                >
+                  <FormattedMessage
+                    id="notes.title.stats"
+                    defaultMessage="Stats"
+                  />
+                </Text>
+                <View
+                  style={{
+                    ...styles.notesContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  <ScrollView nestedScrollEnabled={true}>
+                    <View
+                      style={{
+                        ...styles.chartTitleContainer,
+                        backgroundColor: color700,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...styles.chartTitle,
+                          color: lightText,
+                          fontFamily: selectedHeavyFont,
+                        }}
+                      >
+                        <FormattedMessage
+                          id="notes.stats.dailyNotesCountOfTheWeek"
+                          defaultMessage="Notes written this week"
+                        />
+                      </Text>
+                    </View>
+                    <View style={styles.barChartContainer}>
+                      <ScrollView horizontal={true}>
+                        <BarChart
+                          isAnimated={true}
+                          data={totalNotesChartItems}
+                          hideRules={true}
+                          frontColor={color500}
+                          sideColor={color700}
+                          topColor={color300}
+                          isThreeD={true}
+                          barWidth={40}
+                          sideWidth={15}
+                          side={"right"}
+                          spacing={60}
+                        />
+                      </ScrollView>
+                    </View>
+                    {generalNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.general"
+                              defaultMessage="General notes"
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={generalChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.general.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {introductionNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.introduction"
+                              defaultMessage={"Introduction notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={introChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.introduction.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {anatomyNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.anatomy"
+                              defaultMessage={"Anatomy of Everything notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={anatomyChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.anatomy.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {loveNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.love"
+                              defaultMessage={"My Love notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={loveChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.love.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {happinessNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.happiness"
+                              defaultMessage={"My Happiness notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={peaceChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.happiness.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {strengthNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.strength"
+                              defaultMessage={"My Strength notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={strengthChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.strength.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {inspirationNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.inspiration"
+                              defaultMessage={
+                                "My Inspiration\nand\nMy Motivation\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={inspirationChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.inspiration.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {peaceNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.peace"
+                              defaultMessage={"My Peace notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={peaceChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.peace.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {homeNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.home"
+                              defaultMessage={"My Home notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={homeChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.home.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {whereNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.where"
+                              defaultMessage={
+                                "Where are they going?\nWhere are WE going?\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={whereChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.where.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {everythingNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.everything"
+                              defaultMessage={
+                                "I want EVERYTHING with you\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={everythingChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.everything.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {outro1NotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.outro1"
+                              defaultMessage={
+                                "Особлива кінцівка, частина 1 notes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={outro1ChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.outro1.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {outro2NotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.outro2"
+                              defaultMessage={
+                                "Особлива кінцівка, частина 2 notes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={outro2ChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.outro2.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
+            {notebookIsOpen && (
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                }}
+              >
+                <Text
+                  style={{
+                    ...styles.notesTitle,
+                    color: lightText,
+                    fontFamily: selectedHeavyFont,
+                  }}
+                >
+                  <FormattedMessage
+                    id="notes.title.notebook"
+                    defaultMessage="Notebook"
+                  />
+                </Text>
+                <View
+                  style={{
+                    ...styles.notesContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  {!generalIsOpen &&
+                    !introIsOpen &&
+                    !anatomyIsOpen &&
+                    !loveIsOpen &&
+                    !happyIsOpen &&
+                    !strengthIsOpen &&
+                    !inspireIsOpen &&
+                    !peaceIsOpen &&
+                    !homeIsOpen &&
+                    !whereIsOpen &&
+                    !everythingIsOpen &&
+                    !outro1IsOpen &&
+                    !outro2IsOpen && (
+                      <ScrollView>
+                        {sectionItems.map((item) => {
+                          return (
+                            <SectionItem
+                              key={item.id}
+                              title={item.title}
+                              id={item.id}
+                              onPress={() => handleViewSectionNotes(item.title)}
+                            />
+                          );
+                        })}
+                      </ScrollView>
+                    )}
+                  {generalIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.general"
+                            defaultMessage={"General"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.general.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {introIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.introduction"
+                            defaultMessage={"Introduction"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.introduction.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {anatomyIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.anatomy_of_everything"
+                            defaultMessage={"The Anatomy of Everything"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.anatomy.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {loveIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_love"
+                            defaultMessage={"My Love"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.love.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {happyIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_happiness"
+                            defaultMessage={"My Happiness"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.happiness.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {strengthIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_strength"
+                            defaultMessage={"My Strength"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.strength.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {inspireIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_inspiration_and_my_motivation"
+                            defaultMessage={"My Inspiration and My Motivation"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.inspiration.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {peaceIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_peace"
+                            defaultMessage={"My Peace"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.peace.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {homeIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_home"
+                            defaultMessage={"My Home"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.home.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {whereIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.where_are_they_going"
+                            defaultMessage={
+                              "Where are they going?\nWhere are WE going?"
+                            }
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.where.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {everythingIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.i_want_everything_with_you"
+                            defaultMessage={"I want EVERYTHING with you"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.everything.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {outro1IsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.outro_part_1"
+                            defaultMessage={"Особлива кінцівка, частина 1"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.outro1.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {outro2IsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.outro_part_2"
+                            defaultMessage={"Особлива кінцівка, частина 2"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.outro2.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+            {addNoteIsOpen && (
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                }}
+              >
+                <View
+                  style={{
+                    ...styles.page,
+                    backgroundColor: color300,
+                    height: "80%",
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text
                     style={{
-                      ...styles.chartTitleContainer,
-                      backgroundColor: color700,
+                      ...styles.menuItemText,
+                      fontFamily: selectedHeavyFont,
+                      textDecorationLine: "underline",
+                      textAlign: "left",
+                      fontSize: 22,
+                      color: darkText,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="read.selectSection"
+                      defaultMessage="Select a section"
+                    />
+                  </Text>
+                  <Pressable
+                    onPressIn={handlePressInSelectSection}
+                    onPressOut={handlePressOutSelectSection}
+                    onPress={handlePressSelectSection}
+                    style={{
+                      ...styles.menuItem,
+                      backgroundColor: selectSectionColor,
+                      width: "100%",
+                      alignItems: "center",
+                      alignSelf: "center",
                     }}
                   >
                     <Text
                       style={{
-                        ...styles.chartTitle,
+                        ...styles.menuItemText,
                         color: lightText,
                         fontFamily: selectedHeavyFont,
                       }}
                     >
                       <FormattedMessage
-                        id="notes.stats.dailyNotesCountOfTheWeek"
-                        defaultMessage="Notes written this week"
+                        id={selectedSectionId}
+                        defaultMessage={selectedSection}
                       />
                     </Text>
-                  </View>
-                  <View style={styles.barChartContainer}>
-                    <ScrollView horizontal={true}>
-                      <BarChart
-                        isAnimated={true}
-                        data={totalNotesChartItems}
-                        hideRules={true}
-                        frontColor={color500}
-                        sideColor={color700}
-                        topColor={color300}
-                        isThreeD={true}
-                        barWidth={40}
-                        sideWidth={15}
-                        side={"right"}
-                        spacing={60}
+                  </Pressable>
+                  <ScrollView>
+                    <View>
+                      <Text
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          fontFamily: selectedHeavyFont,
+                          textAlign: "left",
+                          textDecorationLine: "underline",
+                          paddingTop: 5,
+                          fontSize: 22,
+                        }}
+                      >
+                        <FormattedMessage
+                          id="notes.write.subject.title"
+                          defaultMessage="Subject"
+                        />
+                      </Text>
+                      <TextInput
+                        spellCheck={currentLang === "en" ? true : false}
+                        placeholder={subjectPlaceholder}
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          backgroundColor: "#FFFFFF",
+                          fontFamily: selectedFont,
+                          padding: 6,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: color700,
+                          fontSize: 18,
+                        }}
+                        onChangeText={setSubjectText}
+                        value={subjectText}
+                        multiline={false}
                       />
-                    </ScrollView>
-                  </View>
-                  {generalNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.general"
-                            defaultMessage="General notes"
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={generalChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.general.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {introductionNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.introduction"
-                            defaultMessage={"Introduction notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={introChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.introduction.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {anatomyNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.anatomy"
-                            defaultMessage={"Anatomy of Everything notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={anatomyChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.anatomy.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {loveNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.love"
-                            defaultMessage={"My Love notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={loveChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.love.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {happinessNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.happiness"
-                            defaultMessage={"My Happiness notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={peaceChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.happiness.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {strengthNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.strength"
-                            defaultMessage={"My Strength notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={strengthChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.strength.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {inspirationNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.inspiration"
-                            defaultMessage={
-                              "My Inspiration\nand\nMy Motivation\nnotes"
-                            }
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={inspirationChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.inspiration.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {peaceNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.peace"
-                            defaultMessage={"My Peace notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={peaceChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.peace.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {homeNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.home"
-                            defaultMessage={"My Home notes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={homeChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.home.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {whereNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.where"
-                            defaultMessage={
-                              "Where are they going?\nWhere are WE going?\nnotes"
-                            }
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={whereChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.where.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {everythingNotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.everything"
-                            defaultMessage={"I want EVERYTHING with you\nnotes"}
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={everythingChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.everything.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {outro1NotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.outro1"
-                            defaultMessage={
-                              "Особлива кінцівка, частина 1 notes"
-                            }
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={outro1ChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.outro1.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                  {outro2NotesIsOpen && (
-                    <>
-                      <View
-                        style={{
-                          ...styles.chartTitleContainer,
-                          backgroundColor: color700,
-                        }}
-                      >
-                        <Text
-                          style={{
-                            ...styles.chartTitle,
-                            color: lightText,
-                            backgroundColor: color700,
-                            fontFamily: selectedHeavyFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.outro2"
-                            defaultMessage={
-                              "Особлива кінцівка, частина 2 notes"
-                            }
-                          />
-                        </Text>
-                        <Text
-                          style={{
-                            ...styles.wordCount,
-                            fontFamily: selectedFont,
-                          }}
-                        >
-                          <FormattedMessage
-                            id="notes.stats.wordCount"
-                            defaultMessage={"Word count"}
-                          />
-                        </Text>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView horizontal={true}>
-                          <BarChart
-                            isAnimated={true}
-                            hideRules={true}
-                            frontColor={color500}
-                            sideColor={color700}
-                            topColor={color300}
-                            isThreeD={true}
-                            barWidth={40}
-                            sideWidth={15}
-                            side={"right"}
-                            data={outro2ChartItems}
-                            spacing={70}
-                          />
-                        </ScrollView>
-                      </View>
-                      <View style={styles.barChartContainer}>
-                        <ScrollView>
-                          {notes.outro2.map((note, i) => {
-                            return (
-                              <NoteItem
-                                key={note.creationDate + `_${i}`}
-                                subject={note.subject}
-                                onPress={() =>
-                                  handleReadNote(
-                                    note.subject,
-                                    note.note,
-                                    note.creationDate
-                                  )
-                                }
-                              />
-                            );
-                          })}
-                        </ScrollView>
-                      </View>
-                    </>
-                  )}
-                </ScrollView>
-              </View>
-            </View>
-          )}
-          {notebookIsOpen && (
-            <View
-              style={{
-                ...styles.notebookView,
-                backgroundColor: color700,
-              }}
-            >
-              <Text
-                style={{
-                  ...styles.notesTitle,
-                  color: lightText,
-                  fontFamily: selectedHeavyFont,
-                }}
-              >
-                <FormattedMessage
-                  id="notes.title.notebook"
-                  defaultMessage="Notebook"
-                />
-              </Text>
-              <View
-                style={{
-                  ...styles.notesContainer,
-                  backgroundColor: color300,
-                }}
-              >
-                {!generalIsOpen &&
-                  !introIsOpen &&
-                  !anatomyIsOpen &&
-                  !loveIsOpen &&
-                  !happyIsOpen &&
-                  !strengthIsOpen &&
-                  !inspireIsOpen &&
-                  !peaceIsOpen &&
-                  !homeIsOpen &&
-                  !whereIsOpen &&
-                  !everythingIsOpen &&
-                  !outro1IsOpen &&
-                  !outro2IsOpen && (
-                    <ScrollView>
-                      {sectionItems.map((item) => {
-                        return (
-                          <SectionItem
-                            key={item.id}
-                            title={item.title}
-                            id={item.id}
-                            onPress={() => handleViewSectionNotes(item.title)}
-                          />
-                        );
-                      })}
-                    </ScrollView>
-                  )}
-                {generalIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
                       <Text
                         style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
+                          ...styles.menuItemText,
+                          color: darkText,
                           fontFamily: selectedHeavyFont,
+                          textAlign: "left",
+                          textDecorationLine: "underline",
+                          paddingTop: 5,
+                          fontSize: 22,
                         }}
                       >
                         <FormattedMessage
-                          id="listen.inforBookmarkMenu.general"
-                          defaultMessage={"General"}
+                          id="notes.write.content.title"
+                          defaultMessage="Content"
                         />
                       </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.general.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
+                      <TextInput
+                        spellCheck={currentLang === "en" ? true : false}
+                        placeholder={noteTextPlaceholder}
                         style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
+                          ...styles.menuItemText,
+                          color: darkText,
+                          backgroundColor: "#FFFFFF",
+                          fontFamily: selectedFont,
+                          padding: 6,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: color700,
+                          fontSize: 18,
                         }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {introIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.introduction"
-                          defaultMessage={"Introduction"}
-                        />
-                      </Text>
+                        onChangeText={setNoteText}
+                        value={noteText}
+                        multiline={true}
+                        numberOfLines={6}
+                      />
                     </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.introduction.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {anatomyIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.anatomy_of_everything"
-                          defaultMessage={"The Anatomy of Everything"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.anatomy.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {loveIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_love"
-                          defaultMessage={"My Love"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.love.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {happyIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_happiness"
-                          defaultMessage={"My Happiness"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.happiness.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {strengthIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_strength"
-                          defaultMessage={"My Strength"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.strength.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {inspireIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_inspiration_and_my_motivation"
-                          defaultMessage={"My Inspiration and My Motivation"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.inspiration.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {peaceIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_peace"
-                          defaultMessage={"My Peace"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.peace.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {homeIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.my_home"
-                          defaultMessage={"My Home"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.home.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {whereIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.where_are_they_going"
-                          defaultMessage={
-                            "Where are they going?\nWhere are WE going?"
-                          }
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.where.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {everythingIsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.i_want_everything_with_you"
-                          defaultMessage={"I want EVERYTHING with you"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.everything.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {outro1IsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.outro_part_1"
-                          defaultMessage={"Особлива кінцівка, частина 1"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.outro1.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-                {outro2IsOpen && (
-                  <View
-                    style={{
-                      alignItems: "center",
-                      justifyContent: "space-evenly",
-                    }}
-                  >
-                    <View
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="listen.inforBookmarkMenu.outro_part_2"
-                          defaultMessage={"Особлива кінцівка, частина 2"}
-                        />
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        ...styles.notesSectionContainer,
-                        backgroundColor: color500,
-                      }}
-                    >
-                      <ScrollView>
-                        {notes.outro2.map((note, i) => {
-                          return (
-                            <NoteItem
-                              key={note.creationDate + `${i}`}
-                              subject={note.subject}
-                              onPress={() =>
-                                handleReadNote(
-                                  note.subject,
-                                  note.note,
-                                  note.creationDate
-                                )
-                              }
-                            />
-                          );
-                        })}
-                      </ScrollView>
-                    </View>
-                    <Pressable
-                      onPress={closeSectionNotes}
-                      style={{
-                        ...styles.notesSectionButton,
-                        backgroundColor: color700,
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.notesSectionText,
-                          color: lightText,
-                          fontFamily: selectedHeavyFont,
-                        }}
-                      >
-                        <FormattedMessage
-                          id="notes.close"
-                          defaultMessage={"Close"}
-                        />
-                      </Text>
-                    </Pressable>
-                  </View>
-                )}
-              </View>
-            </View>
-          )}
-          {addNoteIsOpen && (
-            <View
-              style={{
-                ...styles.notebookView,
-                backgroundColor: color700,
-              }}
-            >
-              <View
-                style={{
-                  ...styles.page,
-                  backgroundColor: color300,
-                  height: "80%",
-                  paddingTop: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.menuItemText,
-                    fontFamily: selectedHeavyFont,
-                    textDecorationLine: "underline",
-                    textAlign: "left",
-                    fontSize: 22,
-                    color: darkText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="read.selectSection"
-                    defaultMessage="Select a section"
-                  />
-                </Text>
+                  </ScrollView>
+                </View>
                 <Pressable
-                  onPressIn={handlePressInSelectSection}
-                  onPressOut={handlePressOutSelectSection}
-                  onPress={handlePressSelectSection}
+                  onPressIn={handlePressInSaveNote}
+                  onPressOut={handlePressOutSaveNote}
+                  onPress={handlePressSaveNote}
                   style={{
                     ...styles.menuItem,
-                    backgroundColor: selectSectionColor,
-                    width: "100%",
+                    backgroundColor: saveNoteColor,
                     alignItems: "center",
                     alignSelf: "center",
+                    width: "50%",
+                    marginBottom: 2,
+                    marginTop: 6,
                   }}
                 >
                   <Text
@@ -3139,317 +3244,2585 @@ export default function Notes({ navigation }: any) {
                     }}
                   >
                     <FormattedMessage
-                      id={selectedSectionId}
-                      defaultMessage={selectedSection}
+                      id="read.saveNote"
+                      defaultMessage="Save note"
                     />
                   </Text>
                 </Pressable>
+              </View>
+            )}
+            <View
+              style={{
+                ...styles.notesControlsView,
+                backgroundColor: color700,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+                borderBottomRightRadius: OS === "ios" ? 50 : 12,
+              }}
+            >
+              <View style={styles.notesControls}>
+                <Pressable
+                  onPressIn={handlePressInStats}
+                  onPressOut={handlePressOutStats}
+                  onPress={handlePressStats}
+                >
+                  {!statsIsOpen ? (
+                    <AntDesign
+                      name="linechart"
+                      size={48}
+                      color={statsIconColor}
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="line-chart"
+                      size={48}
+                      color={statsIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInOpenCloseNotebook}
+                  onPressOut={handlePressOutOpenCloseNotebook}
+                  onPress={handlePressOpenCloseNotebook}
+                >
+                  {!notebookIsOpen ? (
+                    <MaterialCommunityIcons
+                      name="notebook-multiple"
+                      size={64}
+                      color={openCloseNotebokIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="book-open-variant"
+                      size={64}
+                      color={openCloseNotebokIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInAddNote}
+                  onPressOut={handlePressOutAddNote}
+                  onPress={handlePressAddNote}
+                >
+                  {!addNoteIsOpen ? (
+                    <MaterialCommunityIcons
+                      name="notebook-plus"
+                      size={48}
+                      color={addNoteIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="pencil-box-multiple"
+                      size={48}
+                      color={addNoteIconColor}
+                    />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={readNoteIsOpen}
+          >
+            <View style={styles.modal}>
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                  height: "90%",
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      fontFamily: selectedHeavyFont,
+                      textDecorationLine: "underline",
+                      textAlign: "center",
+                      fontSize: 28,
+                      color: lightText,
+                    }}
+                  >
+                    {readNoteSubject}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      fontFamily: selectedFont,
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: lightText,
+                    }}
+                  >
+                    {moment(readNoteCreationDate).format("YYYY-MM-DD")}
+                    {"\n"}
+                    {moment(readNoteCreationDate).fromNow()}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.page,
+                    backgroundColor: color300,
+                    height: "70%",
+                    paddingTop: 10,
+                  }}
+                >
+                  <ScrollView>
+                    <Text
+                      style={{
+                        fontFamily: selectedFont,
+                        color: darkText,
+                        fontSize: 18,
+                      }}
+                    >
+                      {readNoteText}
+                    </Text>
+                  </ScrollView>
+                </View>
+                <Pressable
+                  onPress={handleCloseReadNote}
+                  style={{
+                    ...styles.notesSectionButton,
+                    width: "50%",
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.notesSectionText,
+                      fontFamily: selectedHeavyFont,
+                      color: lightText,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="notes.close"
+                      defaultMessage={"Close"}
+                    />
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={selectSectionIsVisible}
+          >
+            <View
+              style={{
+                ...styles.notebookView,
+                backgroundColor: color700,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.menuItemText,
+                  fontFamily: selectedHeavyFont,
+                  textDecorationLine: "underline",
+                  textAlign: "center",
+                  fontSize: 22,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="read.selectSection"
+                  defaultMessage="Select a section"
+                />
+              </Text>
+              <View
+                style={{
+                  ...styles.page,
+                  backgroundColor: color300,
+                  height: "80%",
+                  paddingTop: 10,
+                }}
+              >
                 <ScrollView>
-                  <View>
-                    <Text
-                      style={{
-                        ...styles.menuItemText,
-                        color: darkText,
-                        fontFamily: selectedHeavyFont,
-                        textAlign: "left",
-                        textDecorationLine: "underline",
-                        paddingTop: 5,
-                        fontSize: 22,
-                      }}
-                    >
-                      <FormattedMessage
-                        id="notes.write.subject.title"
-                        defaultMessage="Subject"
+                  {sectionItems.map((item) => {
+                    return (
+                      <SectionItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        onPress={() =>
+                          handleSelectSection(item.title, item.id, item.param)
+                        }
                       />
-                    </Text>
-                    <TextInput
-                      spellCheck={currentLang === "en" ? true : false}
-                      placeholder={subjectPlaceholder}
-                      style={{
-                        ...styles.menuItemText,
-                        color: darkText,
-                        backgroundColor: "#FFFFFF",
-                        fontFamily: selectedFont,
-                        padding: 6,
-                        borderRadius: 12,
-                        borderWidth: 2,
-                        borderColor: color700,
-                        fontSize: 18,
-                      }}
-                      onChangeText={setSubjectText}
-                      value={subjectText}
-                      multiline={false}
-                    />
-                    <Text
-                      style={{
-                        ...styles.menuItemText,
-                        color: darkText,
-                        fontFamily: selectedHeavyFont,
-                        textAlign: "left",
-                        textDecorationLine: "underline",
-                        paddingTop: 5,
-                        fontSize: 22,
-                      }}
-                    >
-                      <FormattedMessage
-                        id="notes.write.content.title"
-                        defaultMessage="Content"
-                      />
-                    </Text>
-                    <TextInput
-                      spellCheck={currentLang === "en" ? true : false}
-                      placeholder={noteTextPlaceholder}
-                      style={{
-                        ...styles.menuItemText,
-                        color: darkText,
-                        backgroundColor: "#FFFFFF",
-                        fontFamily: selectedFont,
-                        padding: 6,
-                        borderRadius: 12,
-                        borderWidth: 2,
-                        borderColor: color700,
-                        fontSize: 18,
-                      }}
-                      onChangeText={setNoteText}
-                      value={noteText}
-                      multiline={true}
-                      numberOfLines={6}
-                    />
-                  </View>
+                    );
+                  })}
                 </ScrollView>
               </View>
-              <Pressable
-                onPressIn={handlePressInSaveNote}
-                onPressOut={handlePressOutSaveNote}
-                onPress={handlePressSaveNote}
+            </View>
+          </Modal>
+        </Image>
+      ) : (
+        <ImageBackground
+          source={{
+            uri: notesBgUri,
+          }}
+          resizeMode="cover"
+          style={styles.imageBackground}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.topView}></View>
+            {statsIsOpen && (
+              <View
                 style={{
-                  ...styles.menuItem,
-                  backgroundColor: saveNoteColor,
-                  alignItems: "center",
-                  alignSelf: "center",
-                  width: "50%",
-                  marginBottom: 2,
-                  marginTop: 6,
+                  ...styles.notebookView,
+                  backgroundColor: color700,
                 }}
               >
                 <Text
                   style={{
-                    ...styles.menuItemText,
+                    ...styles.notesTitle,
                     color: lightText,
                     fontFamily: selectedHeavyFont,
                   }}
                 >
                   <FormattedMessage
-                    id="read.saveNote"
-                    defaultMessage="Save note"
+                    id="notes.title.stats"
+                    defaultMessage="Stats"
                   />
                 </Text>
-              </Pressable>
-            </View>
-          )}
-          <View
-            style={{
-              ...styles.notesControlsView,
-              backgroundColor: color700,
-              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
-              borderBottomRightRadius: OS === "ios" ? 50 : 12,
-            }}
-          >
-            <View style={styles.notesControls}>
-              <Pressable
-                onPressIn={handlePressInStats}
-                onPressOut={handlePressOutStats}
-                onPress={handlePressStats}
+                <View
+                  style={{
+                    ...styles.notesContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  <ScrollView nestedScrollEnabled={true}>
+                    <View
+                      style={{
+                        ...styles.chartTitleContainer,
+                        backgroundColor: color700,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          ...styles.chartTitle,
+                          color: lightText,
+                          fontFamily: selectedHeavyFont,
+                        }}
+                      >
+                        <FormattedMessage
+                          id="notes.stats.dailyNotesCountOfTheWeek"
+                          defaultMessage="Notes written this week"
+                        />
+                      </Text>
+                    </View>
+                    <View style={styles.barChartContainer}>
+                      <ScrollView horizontal={true}>
+                        <BarChart
+                          isAnimated={true}
+                          data={totalNotesChartItems}
+                          hideRules={true}
+                          frontColor={color500}
+                          sideColor={color700}
+                          topColor={color300}
+                          isThreeD={true}
+                          barWidth={40}
+                          sideWidth={15}
+                          side={"right"}
+                          spacing={60}
+                        />
+                      </ScrollView>
+                    </View>
+                    {generalNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.general"
+                              defaultMessage="General notes"
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={generalChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.general.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {introductionNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.introduction"
+                              defaultMessage={"Introduction notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={introChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.introduction.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {anatomyNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.anatomy"
+                              defaultMessage={"Anatomy of Everything notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={anatomyChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.anatomy.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {loveNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.love"
+                              defaultMessage={"My Love notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={loveChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.love.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {happinessNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.happiness"
+                              defaultMessage={"My Happiness notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={peaceChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.happiness.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {strengthNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.strength"
+                              defaultMessage={"My Strength notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={strengthChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.strength.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {inspirationNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.inspiration"
+                              defaultMessage={
+                                "My Inspiration\nand\nMy Motivation\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={inspirationChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.inspiration.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {peaceNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.peace"
+                              defaultMessage={"My Peace notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={peaceChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.peace.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {homeNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.home"
+                              defaultMessage={"My Home notes"}
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={homeChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.home.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {whereNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.where"
+                              defaultMessage={
+                                "Where are they going?\nWhere are WE going?\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={whereChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.where.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {everythingNotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.everything"
+                              defaultMessage={
+                                "I want EVERYTHING with you\nnotes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={everythingChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.everything.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {outro1NotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.outro1"
+                              defaultMessage={
+                                "Особлива кінцівка, частина 1 notes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={outro1ChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.outro1.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                    {outro2NotesIsOpen && (
+                      <>
+                        <View
+                          style={{
+                            ...styles.chartTitleContainer,
+                            backgroundColor: color700,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              ...styles.chartTitle,
+                              color: lightText,
+                              backgroundColor: color700,
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.outro2"
+                              defaultMessage={
+                                "Особлива кінцівка, частина 2 notes"
+                              }
+                            />
+                          </Text>
+                          <Text
+                            style={{
+                              ...styles.wordCount,
+                              fontFamily: selectedFont,
+                            }}
+                          >
+                            <FormattedMessage
+                              id="notes.stats.wordCount"
+                              defaultMessage={"Word count"}
+                            />
+                          </Text>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView horizontal={true}>
+                            <BarChart
+                              isAnimated={true}
+                              hideRules={true}
+                              frontColor={color500}
+                              sideColor={color700}
+                              topColor={color300}
+                              isThreeD={true}
+                              barWidth={40}
+                              sideWidth={15}
+                              side={"right"}
+                              data={outro2ChartItems}
+                              spacing={70}
+                            />
+                          </ScrollView>
+                        </View>
+                        <View style={styles.barChartContainer}>
+                          <ScrollView>
+                            {notes.outro2.map((note, i) => {
+                              return (
+                                <NoteItem
+                                  key={note.creationDate + `_${i}`}
+                                  subject={note.subject}
+                                  onPress={() =>
+                                    handleReadNote(
+                                      note.subject,
+                                      note.note,
+                                      note.creationDate
+                                    )
+                                  }
+                                />
+                              );
+                            })}
+                          </ScrollView>
+                        </View>
+                      </>
+                    )}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
+            {notebookIsOpen && (
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                }}
               >
-                {!statsIsOpen ? (
-                  <AntDesign
-                    name="linechart"
-                    size={48}
-                    color={statsIconColor}
+                <Text
+                  style={{
+                    ...styles.notesTitle,
+                    color: lightText,
+                    fontFamily: selectedHeavyFont,
+                  }}
+                >
+                  <FormattedMessage
+                    id="notes.title.notebook"
+                    defaultMessage="Notebook"
                   />
-                ) : (
-                  <FontAwesome
-                    name="line-chart"
-                    size={48}
-                    color={statsIconColor}
-                  />
-                )}
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInOpenCloseNotebook}
-                onPressOut={handlePressOutOpenCloseNotebook}
-                onPress={handlePressOpenCloseNotebook}
+                </Text>
+                <View
+                  style={{
+                    ...styles.notesContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  {!generalIsOpen &&
+                    !introIsOpen &&
+                    !anatomyIsOpen &&
+                    !loveIsOpen &&
+                    !happyIsOpen &&
+                    !strengthIsOpen &&
+                    !inspireIsOpen &&
+                    !peaceIsOpen &&
+                    !homeIsOpen &&
+                    !whereIsOpen &&
+                    !everythingIsOpen &&
+                    !outro1IsOpen &&
+                    !outro2IsOpen && (
+                      <ScrollView>
+                        {sectionItems.map((item) => {
+                          return (
+                            <SectionItem
+                              key={item.id}
+                              title={item.title}
+                              id={item.id}
+                              onPress={() => handleViewSectionNotes(item.title)}
+                            />
+                          );
+                        })}
+                      </ScrollView>
+                    )}
+                  {generalIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.general"
+                            defaultMessage={"General"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.general.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {introIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.introduction"
+                            defaultMessage={"Introduction"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.introduction.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {anatomyIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.anatomy_of_everything"
+                            defaultMessage={"The Anatomy of Everything"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.anatomy.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {loveIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_love"
+                            defaultMessage={"My Love"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.love.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {happyIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_happiness"
+                            defaultMessage={"My Happiness"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.happiness.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {strengthIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_strength"
+                            defaultMessage={"My Strength"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.strength.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {inspireIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_inspiration_and_my_motivation"
+                            defaultMessage={"My Inspiration and My Motivation"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.inspiration.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {peaceIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_peace"
+                            defaultMessage={"My Peace"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.peace.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {homeIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.my_home"
+                            defaultMessage={"My Home"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.home.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {whereIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.where_are_they_going"
+                            defaultMessage={
+                              "Where are they going?\nWhere are WE going?"
+                            }
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.where.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {everythingIsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.i_want_everything_with_you"
+                            defaultMessage={"I want EVERYTHING with you"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.everything.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {outro1IsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.outro_part_1"
+                            defaultMessage={"Особлива кінцівка, частина 1"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.outro1.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                  {outro2IsOpen && (
+                    <View
+                      style={{
+                        alignItems: "center",
+                        justifyContent: "space-evenly",
+                      }}
+                    >
+                      <View
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="listen.inforBookmarkMenu.outro_part_2"
+                            defaultMessage={"Особлива кінцівка, частина 2"}
+                          />
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          ...styles.notesSectionContainer,
+                          backgroundColor: color500,
+                        }}
+                      >
+                        <ScrollView>
+                          {notes.outro2.map((note, i) => {
+                            return (
+                              <NoteItem
+                                key={note.creationDate + `${i}`}
+                                subject={note.subject}
+                                onPress={() =>
+                                  handleReadNote(
+                                    note.subject,
+                                    note.note,
+                                    note.creationDate
+                                  )
+                                }
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      </View>
+                      <Pressable
+                        onPress={closeSectionNotes}
+                        style={{
+                          ...styles.notesSectionButton,
+                          backgroundColor: color700,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            ...styles.notesSectionText,
+                            color: lightText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id="notes.close"
+                            defaultMessage={"Close"}
+                          />
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
+              </View>
+            )}
+            {addNoteIsOpen && (
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                }}
               >
-                {!notebookIsOpen ? (
-                  <MaterialCommunityIcons
-                    name="notebook-multiple"
-                    size={64}
-                    color={openCloseNotebokIconColor}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="book-open-variant"
-                    size={64}
-                    color={openCloseNotebokIconColor}
-                  />
-                )}
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInAddNote}
-                onPressOut={handlePressOutAddNote}
-                onPress={handlePressAddNote}
-              >
-                {!addNoteIsOpen ? (
-                  <MaterialCommunityIcons
-                    name="notebook-plus"
-                    size={48}
-                    color={addNoteIconColor}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="pencil-box-multiple"
-                    size={48}
-                    color={addNoteIconColor}
-                  />
-                )}
-              </Pressable>
+                <View
+                  style={{
+                    ...styles.page,
+                    backgroundColor: color300,
+                    height: "80%",
+                    paddingTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      fontFamily: selectedHeavyFont,
+                      textDecorationLine: "underline",
+                      textAlign: "left",
+                      fontSize: 22,
+                      color: darkText,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="read.selectSection"
+                      defaultMessage="Select a section"
+                    />
+                  </Text>
+                  <Pressable
+                    onPressIn={handlePressInSelectSection}
+                    onPressOut={handlePressOutSelectSection}
+                    onPress={handlePressSelectSection}
+                    style={{
+                      ...styles.menuItem,
+                      backgroundColor: selectSectionColor,
+                      width: "100%",
+                      alignItems: "center",
+                      alignSelf: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.menuItemText,
+                        color: lightText,
+                        fontFamily: selectedHeavyFont,
+                      }}
+                    >
+                      <FormattedMessage
+                        id={selectedSectionId}
+                        defaultMessage={selectedSection}
+                      />
+                    </Text>
+                  </Pressable>
+                  <ScrollView>
+                    <View>
+                      <Text
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          fontFamily: selectedHeavyFont,
+                          textAlign: "left",
+                          textDecorationLine: "underline",
+                          paddingTop: 5,
+                          fontSize: 22,
+                        }}
+                      >
+                        <FormattedMessage
+                          id="notes.write.subject.title"
+                          defaultMessage="Subject"
+                        />
+                      </Text>
+                      <TextInput
+                        spellCheck={currentLang === "en" ? true : false}
+                        placeholder={subjectPlaceholder}
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          backgroundColor: "#FFFFFF",
+                          fontFamily: selectedFont,
+                          padding: 6,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: color700,
+                          fontSize: 18,
+                        }}
+                        onChangeText={setSubjectText}
+                        value={subjectText}
+                        multiline={false}
+                      />
+                      <Text
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          fontFamily: selectedHeavyFont,
+                          textAlign: "left",
+                          textDecorationLine: "underline",
+                          paddingTop: 5,
+                          fontSize: 22,
+                        }}
+                      >
+                        <FormattedMessage
+                          id="notes.write.content.title"
+                          defaultMessage="Content"
+                        />
+                      </Text>
+                      <TextInput
+                        spellCheck={currentLang === "en" ? true : false}
+                        placeholder={noteTextPlaceholder}
+                        style={{
+                          ...styles.menuItemText,
+                          color: darkText,
+                          backgroundColor: "#FFFFFF",
+                          fontFamily: selectedFont,
+                          padding: 6,
+                          borderRadius: 12,
+                          borderWidth: 2,
+                          borderColor: color700,
+                          fontSize: 18,
+                        }}
+                        onChangeText={setNoteText}
+                        value={noteText}
+                        multiline={true}
+                        numberOfLines={6}
+                      />
+                    </View>
+                  </ScrollView>
+                </View>
+                <Pressable
+                  onPressIn={handlePressInSaveNote}
+                  onPressOut={handlePressOutSaveNote}
+                  onPress={handlePressSaveNote}
+                  style={{
+                    ...styles.menuItem,
+                    backgroundColor: saveNoteColor,
+                    alignItems: "center",
+                    alignSelf: "center",
+                    width: "50%",
+                    marginBottom: 2,
+                    marginTop: 6,
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      color: lightText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="read.saveNote"
+                      defaultMessage="Save note"
+                    />
+                  </Text>
+                </Pressable>
+              </View>
+            )}
+            <View
+              style={{
+                ...styles.notesControlsView,
+                backgroundColor: color700,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 0,
+                borderBottomRightRadius: OS === "ios" ? 50 : 0,
+              }}
+            >
+              <View style={styles.notesControls}>
+                <Pressable
+                  onPressIn={handlePressInStats}
+                  onPressOut={handlePressOutStats}
+                  onPress={handlePressStats}
+                >
+                  {!statsIsOpen ? (
+                    <AntDesign
+                      name="linechart"
+                      size={48}
+                      color={statsIconColor}
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="line-chart"
+                      size={48}
+                      color={statsIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInOpenCloseNotebook}
+                  onPressOut={handlePressOutOpenCloseNotebook}
+                  onPress={handlePressOpenCloseNotebook}
+                >
+                  {!notebookIsOpen ? (
+                    <MaterialCommunityIcons
+                      name="notebook-multiple"
+                      size={64}
+                      color={openCloseNotebokIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="book-open-variant"
+                      size={64}
+                      color={openCloseNotebokIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInAddNote}
+                  onPressOut={handlePressOutAddNote}
+                  onPress={handlePressAddNote}
+                >
+                  {!addNoteIsOpen ? (
+                    <MaterialCommunityIcons
+                      name="notebook-plus"
+                      size={48}
+                      color={addNoteIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="pencil-box-multiple"
+                      size={48}
+                      color={addNoteIconColor}
+                    />
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={readNoteIsOpen}
-        >
-          <View style={styles.modal}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={readNoteIsOpen}
+          >
+            <View style={styles.modal}>
+              <View
+                style={{
+                  ...styles.notebookView,
+                  backgroundColor: color700,
+                  alignItems: "center",
+                  justifyContent: "space-evenly",
+                  height: "90%",
+                }}
+              >
+                <View>
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      fontFamily: selectedHeavyFont,
+                      textDecorationLine: "underline",
+                      textAlign: "center",
+                      fontSize: 28,
+                      color: lightText,
+                    }}
+                  >
+                    {readNoteSubject}
+                  </Text>
+                  <Text
+                    style={{
+                      ...styles.menuItemText,
+                      fontFamily: selectedFont,
+                      textAlign: "center",
+                      fontSize: 20,
+                      color: lightText,
+                    }}
+                  >
+                    {moment(readNoteCreationDate).format("YYYY-MM-DD")}
+                    {"\n"}
+                    {moment(readNoteCreationDate).fromNow()}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.page,
+                    backgroundColor: color300,
+                    height: "70%",
+                    paddingTop: 10,
+                  }}
+                >
+                  <ScrollView>
+                    <Text
+                      style={{
+                        fontFamily: selectedFont,
+                        color: darkText,
+                        fontSize: 18,
+                      }}
+                    >
+                      {readNoteText}
+                    </Text>
+                  </ScrollView>
+                </View>
+                <Pressable
+                  onPress={handleCloseReadNote}
+                  style={{
+                    ...styles.notesSectionButton,
+                    width: "50%",
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.notesSectionText,
+                      fontFamily: selectedHeavyFont,
+                      color: lightText,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="notes.close"
+                      defaultMessage={"Close"}
+                    />
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={selectSectionIsVisible}
+          >
             <View
               style={{
                 ...styles.notebookView,
                 backgroundColor: color700,
-                alignItems: "center",
-                justifyContent: "space-evenly",
-                height: "90%",
               }}
             >
-              <View>
-                <Text
-                  style={{
-                    ...styles.menuItemText,
-                    fontFamily: selectedHeavyFont,
-                    textDecorationLine: "underline",
-                    textAlign: "center",
-                    fontSize: 28,
-                    color: lightText,
-                  }}
-                >
-                  {readNoteSubject}
-                </Text>
-                <Text
-                  style={{
-                    ...styles.menuItemText,
-                    fontFamily: selectedFont,
-                    textAlign: "center",
-                    fontSize: 20,
-                    color: lightText,
-                  }}
-                >
-                  {moment(readNoteCreationDate).format("YYYY-MM-DD")}
-                  {"\n"}
-                  {moment(readNoteCreationDate).fromNow()}
-                </Text>
-              </View>
+              <Text
+                style={{
+                  ...styles.menuItemText,
+                  fontFamily: selectedHeavyFont,
+                  textDecorationLine: "underline",
+                  textAlign: "center",
+                  fontSize: 22,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="read.selectSection"
+                  defaultMessage="Select a section"
+                />
+              </Text>
               <View
                 style={{
                   ...styles.page,
                   backgroundColor: color300,
-                  height: "70%",
+                  height: "80%",
                   paddingTop: 10,
                 }}
               >
                 <ScrollView>
-                  <Text
-                    style={{
-                      fontFamily: selectedFont,
-                      color: darkText,
-                      fontSize: 18,
-                    }}
-                  >
-                    {readNoteText}
-                  </Text>
+                  {sectionItems.map((item) => {
+                    return (
+                      <SectionItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        onPress={() =>
+                          handleSelectSection(item.title, item.id, item.param)
+                        }
+                      />
+                    );
+                  })}
                 </ScrollView>
               </View>
-              <Pressable
-                onPress={handleCloseReadNote}
-                style={{
-                  ...styles.notesSectionButton,
-                  width: "50%",
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.notesSectionText,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage id="notes.close" defaultMessage={"Close"} />
-                </Text>
-              </Pressable>
             </View>
-          </View>
-        </Modal>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={selectSectionIsVisible}
-        >
-          <View
-            style={{
-              ...styles.notebookView,
-              backgroundColor: color700,
-            }}
-          >
-            <Text
-              style={{
-                ...styles.menuItemText,
-                fontFamily: selectedHeavyFont,
-                textDecorationLine: "underline",
-                textAlign: "center",
-                fontSize: 22,
-                color: lightText,
-              }}
-            >
-              <FormattedMessage
-                id="read.selectSection"
-                defaultMessage="Select a section"
-              />
-            </Text>
-            <View
-              style={{
-                ...styles.page,
-                backgroundColor: color300,
-                height: "80%",
-                paddingTop: 10,
-              }}
-            >
-              <ScrollView>
-                {sectionItems.map((item) => {
-                  return (
-                    <SectionItem
-                      key={item.id}
-                      id={item.id}
-                      title={item.title}
-                      onPress={() =>
-                        handleSelectSection(item.title, item.id, item.param)
-                      }
-                    />
-                  );
-                })}
-              </ScrollView>
-            </View>
-          </View>
-        </Modal>
-      </Image>
+          </Modal>
+        </ImageBackground>
+      )}
     </View>
   );
 }

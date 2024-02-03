@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ImageBackground,
 } from "react-native";
 import {
   AntDesign,
@@ -569,960 +570,1930 @@ export default function Listen() {
   return (
     <View style={styles.container}>
       <StatusBar hidden />
-      <Image
-        source={{
-          uri: listenBgUri,
-        }}
-        contentFit="cover"
-        transition={100}
-        style={styles.imageBackground}
-      >
-        <View style={styles.mainContainer}>
-          <View style={styles.titleContainer}>
-            <Text
-              style={{
-                ...styles.titleText,
-                color: lightText,
-                fontFamily: selectedFont,
-              }}
-            >
-              <FormattedMessage
-                id="listen.title"
-                defaultMessage="Listening..."
-              />
-            </Text>
-          </View>
-          <View
-            style={{
-              ...styles.audioView,
-              backgroundColor: color500,
-              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
-              borderBottomRightRadius: OS === "ios" ? 50 : 12,
-            }}
-          >
-            <Text
-              style={{
-                ...styles.audioText,
-                color: lightText,
-                fontFamily: selectedFont,
-              }}
-            >
-              {audioList[currentAudioIndex].title}
-            </Text>
-            <View style={styles.audioPlayerView}>
-              <Text
-                style={{
-                  ...styles.audioPlayerText,
-                  color: lightText,
-                  fontFamily: selectedFont,
-                  paddingLeft: 12,
-                }}
-              >
-                {currentPositionString}
-              </Text>
-              <Slider
-                style={{ width: "75%" }}
-                minimumValue={0}
-                maximumValue={sliderMax}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
-                onValueChange={(position) => {
-                  console.log("slider value:", Math.round(position));
-                  const roundedPosition: number = Math.round(position);
-                  handleSeek(roundedPosition * 1000);
-                  calculateCurrentPositionString(roundedPosition);
-                  calculateRemainingTimeString(roundedPosition);
-                }}
-                value={currentPosition}
-              />
-              <Text
-                style={{
-                  ...styles.audioPlayerText,
-                  color: lightText,
-                  fontFamily: selectedFont,
-                  paddingRight: 12,
-                }}
-              >
-                {remainingTimeString}
-              </Text>
-            </View>
-            <View style={styles.audioControlsView}>
-              <Pressable
-                onPress={handleMenuPress}
-                onPressIn={handleMenuPressIn}
-                onPressOut={handleMenuPressOut}
-              >
-                {menuIsOpen ? (
-                  <Entypo
-                    name="triangle-down"
-                    size={48}
-                    color={menuIconColor}
-                  />
-                ) : (
-                  <Entypo name="menu" size={48} color={menuIconColor} />
-                )}
-              </Pressable>
-              <Pressable
-                onPress={handlePreviousPress}
-                onPressIn={handlePreviousPressIn}
-                onPressOut={handlePreviousPressOut}
-                disabled={soundIsLoading}
-              >
-                <Entypo
-                  name="controller-jump-to-start"
-                  size={48}
-                  color={previousIconColor}
-                />
-              </Pressable>
-              <Pressable
-                onPress={handlePlayPausePress}
-                onPressIn={handlePlayPausePressIn}
-                onPressOut={handlePlayPausePressOut}
-                disabled={soundIsLoading}
-              >
-                {soundIsLoading ? (
-                  <ActivityIndicator size={64} color="#CDB7F6" />
-                ) : isPlaying ? (
-                  <AntDesign
-                    name="pausecircle"
-                    size={64}
-                    color={playPauseIconColor}
-                  />
-                ) : (
-                  <AntDesign name="play" size={64} color={playPauseIconColor} />
-                )}
-              </Pressable>
-              <Pressable
-                onPress={handleNextPress}
-                onPressIn={handleNextPressIn}
-                onPressOut={handleNextPressOut}
-                disabled={soundIsLoading}
-              >
-                <Entypo
-                  name="controller-next"
-                  size={48}
-                  color={nextIconColor}
-                />
-              </Pressable>
-              <Pressable
-                onPress={handleInfoBookmarkPress}
-                onPressIn={handleInfoBookmarkPressIn}
-                onPressOut={handleInfoBookmarkPressOut}
-              >
-                {infoBookmarkIsOpen ? (
-                  <FontAwesome5
-                    name="book-reader"
-                    size={48}
-                    color={infoBookmarkIconColor}
-                  />
-                ) : (
-                  <MaterialCommunityIcons
-                    name="book-information-variant"
-                    size={48}
-                    color={infoBookmarkIconColor}
-                  />
-                )}
-              </Pressable>
-            </View>
-          </View>
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={audioMenuIsVisible}
+      {OS === "ios" ? (
+        <Image
+          source={{
+            uri: listenBgUri,
+          }}
+          contentFit="cover"
+          transition={100}
+          style={styles.imageBackground}
         >
-          <View style={styles.modal}>
-            <View
-              style={{
-                ...styles.modalView,
-                backgroundColor: color500,
-              }}
-            >
+          <View style={styles.mainContainer}>
+            <View style={styles.titleContainer}>
               <Text
                 style={{
-                  ...styles.modalTitle,
+                  ...styles.titleText,
                   color: lightText,
-                  fontFamily: selectedHeavyFont,
+                  fontFamily: selectedFont,
                 }}
               >
                 <FormattedMessage
-                  id="listen.audioMenu.title"
-                  defaultMessage="Chapters"
+                  id="listen.title"
+                  defaultMessage="Listening..."
                 />
               </Text>
-              <View style={styles.flatList}>
-                <FlatList
-                  data={audioList}
-                  renderItem={({ item }) => {
-                    console.log("item:", item);
-                    return (
-                      <MenuItem
-                        key={item.uri}
-                        onPress={() => handleMenuItemPress(item.title)}
-                        onPressIn={() => handleMenuItemPressIn(item.title)}
-                        onPressOut={() => handleMenuItemPressOut(item.title)}
-                        title={item.title}
-                        uri={item.uri}
-                      />
-                    );
+            </View>
+            <View
+              style={{
+                ...styles.audioView,
+                backgroundColor: color500,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+                borderBottomRightRadius: OS === "ios" ? 50 : 12,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.audioText,
+                  color: lightText,
+                  fontFamily: selectedFont,
+                }}
+              >
+                {audioList[currentAudioIndex].title}
+              </Text>
+              <View style={styles.audioPlayerView}>
+                <Text
+                  style={{
+                    ...styles.audioPlayerText,
+                    color: lightText,
+                    fontFamily: selectedFont,
+                    paddingLeft: 12,
                   }}
+                >
+                  {currentPositionString}
+                </Text>
+                <Slider
+                  style={{ width: "75%" }}
+                  minimumValue={0}
+                  maximumValue={sliderMax}
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={(position) => {
+                    console.log("slider value:", Math.round(position));
+                    const roundedPosition: number = Math.round(position);
+                    handleSeek(roundedPosition * 1000);
+                    calculateCurrentPositionString(roundedPosition);
+                    calculateRemainingTimeString(roundedPosition);
+                  }}
+                  value={currentPosition}
                 />
+                <Text
+                  style={{
+                    ...styles.audioPlayerText,
+                    color: lightText,
+                    fontFamily: selectedFont,
+                    paddingRight: 12,
+                  }}
+                >
+                  {remainingTimeString}
+                </Text>
               </View>
-              <Pressable
-                style={styles.modalButton}
-                onPress={() => {
-                  setAudioMenuIsVisible(false);
-                  setMenuIsOpen(false);
+              <View style={styles.audioControlsView}>
+                <Pressable
+                  onPress={handleMenuPress}
+                  onPressIn={handleMenuPressIn}
+                  onPressOut={handleMenuPressOut}
+                >
+                  {menuIsOpen ? (
+                    <Entypo
+                      name="triangle-down"
+                      size={48}
+                      color={menuIconColor}
+                    />
+                  ) : (
+                    <Entypo name="menu" size={48} color={menuIconColor} />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handlePreviousPress}
+                  onPressIn={handlePreviousPressIn}
+                  onPressOut={handlePreviousPressOut}
+                  disabled={soundIsLoading}
+                >
+                  <Entypo
+                    name="controller-jump-to-start"
+                    size={48}
+                    color={previousIconColor}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={handlePlayPausePress}
+                  onPressIn={handlePlayPausePressIn}
+                  onPressOut={handlePlayPausePressOut}
+                  disabled={soundIsLoading}
+                >
+                  {soundIsLoading ? (
+                    <ActivityIndicator size={64} color="#CDB7F6" />
+                  ) : isPlaying ? (
+                    <AntDesign
+                      name="pausecircle"
+                      size={64}
+                      color={playPauseIconColor}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="play"
+                      size={64}
+                      color={playPauseIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handleNextPress}
+                  onPressIn={handleNextPressIn}
+                  onPressOut={handleNextPressOut}
+                  disabled={soundIsLoading}
+                >
+                  <Entypo
+                    name="controller-next"
+                    size={48}
+                    color={nextIconColor}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={handleInfoBookmarkPress}
+                  onPressIn={handleInfoBookmarkPressIn}
+                  onPressOut={handleInfoBookmarkPressOut}
+                >
+                  {infoBookmarkIsOpen ? (
+                    <FontAwesome5
+                      name="book-reader"
+                      size={48}
+                      color={infoBookmarkIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="book-information-variant"
+                      size={48}
+                      color={infoBookmarkIconColor}
+                    />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={audioMenuIsVisible}
+          >
+            <View style={styles.modal}>
+              <View
+                style={{
+                  ...styles.modalView,
+                  backgroundColor: color500,
                 }}
               >
                 <Text
                   style={{
-                    ...styles.modalButtonText,
+                    ...styles.modalTitle,
                     color: lightText,
-                    fontFamily: selectedFont,
+                    fontFamily: selectedHeavyFont,
                   }}
                 >
                   <FormattedMessage
-                    id="listen.modal.close"
-                    defaultMessage="Close"
+                    id="listen.audioMenu.title"
+                    defaultMessage="Chapters"
                   />
                 </Text>
-              </Pressable>
+                <View style={styles.flatList}>
+                  <FlatList
+                    data={audioList}
+                    renderItem={({ item }) => {
+                      console.log("item:", item);
+                      return (
+                        <MenuItem
+                          key={item.uri}
+                          onPress={() => handleMenuItemPress(item.title)}
+                          onPressIn={() => handleMenuItemPressIn(item.title)}
+                          onPressOut={() => handleMenuItemPressOut(item.title)}
+                          title={item.title}
+                          uri={item.uri}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+                <Pressable
+                  style={styles.modalButton}
+                  onPress={() => {
+                    setAudioMenuIsVisible(false);
+                    setMenuIsOpen(false);
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.modalButtonText,
+                      color: lightText,
+                      fontFamily: selectedFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="listen.modal.close"
+                      defaultMessage="Close"
+                    />
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </Modal>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={infoBookmarkMenuIsVisible}
-        >
-          <View style={styles.modal}>
-            <View
-              style={{
-                ...styles.modalView,
-                backgroundColor: color500,
-              }}
-            >
-              <Text
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={infoBookmarkMenuIsVisible}
+          >
+            <View style={styles.modal}>
+              <View
                 style={{
-                  ...styles.modalTitle,
-                  color: lightText,
-                  fontFamily: selectedHeavyFont,
+                  ...styles.modalView,
+                  backgroundColor: color500,
                 }}
               >
-                <FormattedMessage
-                  id={`listen.infoBookmarkMenu.${audioList[currentAudioIndex].id}`}
-                  defaultMessage={audioList[currentAudioIndex].title}
-                />
-              </Text>
-              <ScrollView
-                style={{
-                  ...styles.scrollView,
-                  backgroundColor: color700,
-                }}
-                nestedScrollEnabled={true}
-              >
-                {textsList.map((txt) => {
-                  if (txt.index === currentAudioIndex) {
-                    return txt.components.map((comp) => {
-                      switch (comp.type) {
-                        case "main_title":
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.mainTitle,
-                                color: lightText,
-                                fontFamily: selectedHeavyFont,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                                values={{
-                                  s: (chunks) => (
-                                    <Text
-                                      style={{
-                                        textDecorationLine: "line-through",
-                                      }}
-                                    >
-                                      {chunks}
-                                    </Text>
-                                  ),
-                                }}
-                              />
-                            </Text>
-                          );
-                        case "main_subtitle":
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.mainSubtitle,
-                                color: lightText,
-                                fontFamily: selectedHeavyFont,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                              />
-                            </Text>
-                          );
-                        case "author":
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.author,
-                                color: lightText,
-                                fontFamily: selectedFont,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                                values={{
-                                  b: (chunks) => (
-                                    <Text
-                                      style={{
-                                        fontFamily: selectedHeavyFont,
-                                        fontSize: 28,
-                                      }}
-                                    >
-                                      {chunks}
-                                    </Text>
-                                  ),
-                                }}
-                              />
-                            </Text>
-                          );
-                        case "section_title":
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.sectionTitle,
-                                color: lightText,
-                                fontFamily: selectedHeavyFont,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                                values={{
-                                  u: (chunks) => (
-                                    <Text
-                                      style={{
-                                        textDecorationLine: "underline",
-                                      }}
-                                    >
-                                      {chunks}
-                                    </Text>
-                                  ),
-                                }}
-                              />
-                            </Text>
-                          );
-                        case "chapter_title":
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.chapterTitle,
-                                color: lightText,
-                                fontFamily: selectedHeavyFont,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                              />
-                            </Text>
-                          );
-                        case "chapter_content":
-                          if (comp.imageUri && comp.imageUri?.length > 0) {
+                <Text
+                  style={{
+                    ...styles.modalTitle,
+                    color: lightText,
+                    fontFamily: selectedHeavyFont,
+                  }}
+                >
+                  <FormattedMessage
+                    id={`listen.infoBookmarkMenu.${audioList[currentAudioIndex].id}`}
+                    defaultMessage={audioList[currentAudioIndex].title}
+                  />
+                </Text>
+                <ScrollView
+                  style={{
+                    ...styles.scrollView,
+                    backgroundColor: color700,
+                  }}
+                  nestedScrollEnabled={true}
+                >
+                  {textsList.map((txt) => {
+                    if (txt.index === currentAudioIndex) {
+                      return txt.components.map((comp) => {
+                        switch (comp.type) {
+                          case "main_title":
                             return (
-                              <View key={comp.id} style={styles.imageContainer}>
-                                {comp.imageUri?.map((src) => {
-                                  switch (src) {
-                                    case "../assets/images/my_love/ruby.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 40,
-                                            marginBottom: 40,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/ruby.png",
-                                            }}
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.mainTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    s: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "line-through",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "main_subtitle":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.mainSubtitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                />
+                              </Text>
+                            );
+                          case "author":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.author,
+                                  color: lightText,
+                                  fontFamily: selectedFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    b: (chunks) => (
+                                      <Text
+                                        style={{
+                                          fontFamily: selectedHeavyFont,
+                                          fontSize: 28,
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "section_title":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.sectionTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    u: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "underline",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "chapter_title":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.chapterTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                />
+                              </Text>
+                            );
+                          case "chapter_content":
+                            if (comp.imageUri && comp.imageUri?.length > 0) {
+                              return (
+                                <View
+                                  key={comp.id}
+                                  style={styles.imageContainer}
+                                >
+                                  {comp.imageUri?.map((src) => {
+                                    switch (src) {
+                                      case "../assets/images/my_love/ruby.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 40,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "../assets/images/my_love/rose.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 40,
-                                            marginBottom: 60,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/rose.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/ruby.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_love/rose.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 60,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "../assets/images/my_happiness/alina_and_i_prague.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 40,
-                                            marginBottom: 60,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/rose.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_happiness/alina_and_i_prague.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 60,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "../assets/images/my_strength/steel_wire.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 80,
-                                            marginBottom: 70,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/steel_wire.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_strength/steel_wire.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 80,
+                                              marginBottom: 70,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "../assets/images/my_strength/compass.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 30,
-                                            marginBottom: 110,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/compass.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/steel_wire.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_strength/compass.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 30,
+                                              marginBottom: 110,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_inspiration_and_my_motivation/lightbulb.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "4%",
-                                            marginTop: 90,
-                                            marginBottom: 90,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/compass.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/lightbulb.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "4%",
+                                              marginTop: 90,
+                                              marginBottom: 90,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_inspiration_and_my_motivation/sun.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "3%",
-                                            marginTop: 30,
-                                            marginBottom: 90,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/sun.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "3%",
+                                              marginTop: 30,
+                                              marginBottom: 90,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "4%",
-                                            marginTop: 30,
-                                            marginBottom: 90,
-                                            paddingBottom: 20,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "4%",
+                                              marginTop: 30,
+                                              marginBottom: 90,
+                                              paddingBottom: 20,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_peace/ripple.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 100,
-                                            paddingTop: 20,
-                                            marginBottom: 100,
-                                            paddingBottom: 30,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/ripple.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/ripple.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 100,
+                                              paddingTop: 20,
+                                              marginBottom: 100,
+                                              paddingBottom: 30,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_peace/wave.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 20,
-                                            marginBottom: 110,
-                                            paddingBottom: 20,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/wave.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/ripple.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/wave.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 20,
+                                              marginBottom: 110,
+                                              paddingBottom: 20,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_peace/sunset.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 20,
-                                            marginBottom: 100,
-                                            paddingBottom: 20,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/sunset.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/wave.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/sunset.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 20,
+                                              marginBottom: 100,
+                                              paddingBottom: 20,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_peace/storm.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 30,
-                                            marginBottom: 100,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/storm.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/sunset.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/storm.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 30,
+                                              marginBottom: 100,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_peace/galaxy.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 50,
-                                            marginBottom: 140,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/galaxy.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/storm.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/galaxy.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 50,
+                                              marginBottom: 140,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_home/alina.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            paddingTop: 10,
-                                            marginTop: 120,
-                                            marginBottom: 50,
-                                            paddingBottom: 40,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/alina.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/galaxy.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/alina.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              paddingTop: 10,
+                                              marginTop: 120,
+                                              marginBottom: 50,
+                                              paddingBottom: 40,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_home/pajamas.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 60,
-                                            marginBottom: 100,
-                                            paddingBottom: 40,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pajamas.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/alina.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/pajamas.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 60,
+                                              marginBottom: 100,
+                                              paddingBottom: 40,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_home/pictures.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 10,
-                                            marginBottom: 60,
-                                            paddingBottom: 40,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pictures.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pajamas.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/pictures.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 10,
+                                              marginBottom: 60,
+                                              paddingBottom: 40,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_home/portal.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 50,
-                                            marginBottom: 70,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/portal.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pictures.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/portal.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 50,
+                                              marginBottom: 70,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/my_home/river.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "5%",
-                                            marginTop: 80,
-                                            marginBottom: 140,
-                                            paddingBottom: 20,
-                                          }}
-                                        >
-                                          <Image
-                                            source={{
-                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/river.png",
-                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/portal.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/river.png":
+                                        return (
+                                          <View
+                                            key={src}
                                             style={{
                                               width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
+                                              height: "5%",
+                                              marginTop: 80,
+                                              marginBottom: 140,
+                                              paddingBottom: 20,
                                             }}
-                                          />
-                                        </View>
-                                      );
-                                    case "..assets/images/where_are_they_going/where_are_they_going.png":
-                                      return (
-                                        <View
-                                          key={src}
-                                          style={{
-                                            width: "100%",
-                                            height: "20%",
-                                            marginTop: 10,
-                                            marginBottom: 40,
-                                          }}
-                                        >
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/river.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/where_are_they_going/where_are_they_going.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "20%",
+                                              marginTop: 10,
+                                              marginBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      default:
+                                        return (
                                           <Image
+                                            style={{
+                                              width: "100%",
+                                              height: "75%",
+                                              flex: 1,
+                                            }}
+                                            // contentFit="cover"
+                                            key={src}
                                             source={{
                                               uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
                                             }}
-                                            style={{
-                                              width: "100%",
-                                              height: "100%",
-                                              borderRadius: 12,
-                                            }}
+                                            alt={src}
                                           />
-                                        </View>
-                                      );
-                                    default:
-                                      return (
-                                        <Image
-                                          style={{
-                                            width: "100%",
-                                            height: "75%",
-                                            flex: 1,
-                                          }}
-                                          // contentFit="cover"
-                                          key={src}
-                                          source={{
-                                            uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
-                                          }}
-                                          alt={src}
-                                        />
-                                      );
-                                  }
-                                })}
-                                <Text
-                                  style={{
-                                    ...styles.chapterContent,
-                                    fontFamily: selectedFont,
-                                    color: lightText,
-                                  }}
-                                >
-                                  <FormattedMessage
-                                    id={comp.id}
-                                    defaultMessage={comp.title}
-                                    values={{
-                                      i: (chunks) => (
-                                        <Text
-                                          style={{
-                                            fontFamily: selectedHeavyFont,
-                                          }}
-                                        >
-                                          {chunks}
-                                        </Text>
-                                      ),
-                                      u: (chunks) => (
-                                        <Text
-                                          style={{
-                                            textDecorationLine: "underline",
-                                          }}
-                                        >
-                                          {chunks}
-                                        </Text>
-                                      ),
+                                        );
+                                    }
+                                  })}
+                                  <Text
+                                    style={{
+                                      ...styles.chapterContent,
+                                      fontFamily: selectedFont,
+                                      color: lightText,
                                     }}
-                                  />
-                                </Text>
-                              </View>
-                            );
-                          }
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.chapterContent,
-                                fontFamily: selectedFont,
-                                color: lightText,
-                              }}
-                            >
-                              <FormattedMessage
-                                id={comp.id}
-                                defaultMessage={comp.title}
-                                values={{
-                                  i: (chunks) => (
-                                    <Text
-                                      style={{
-                                        fontFamily: selectedHeavyFont,
+                                  >
+                                    <FormattedMessage
+                                      id={comp.id}
+                                      defaultMessage={comp.title}
+                                      values={{
+                                        i: (chunks) => (
+                                          <Text
+                                            style={{
+                                              fontFamily: selectedHeavyFont,
+                                            }}
+                                          >
+                                            {chunks}
+                                          </Text>
+                                        ),
+                                        u: (chunks) => (
+                                          <Text
+                                            style={{
+                                              textDecorationLine: "underline",
+                                            }}
+                                          >
+                                            {chunks}
+                                          </Text>
+                                        ),
                                       }}
-                                    >
-                                      {chunks}
-                                    </Text>
-                                  ),
-                                  u: (chunks) => (
-                                    <Text
-                                      style={{
-                                        textDecorationLine: "underline",
-                                      }}
-                                    >
-                                      {chunks}
-                                    </Text>
-                                  ),
+                                    />
+                                  </Text>
+                                </View>
+                              );
+                            }
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.chapterContent,
+                                  fontFamily: selectedFont,
+                                  color: lightText,
                                 }}
-                              />
-                            </Text>
-                          );
-                        default:
-                          return (
-                            <Text
-                              key={comp.id}
-                              style={{
-                                ...styles.modalText,
-                                color: lightText,
-                                fontFamily: selectedFont,
-                              }}
-                            >
-                              Empty
-                            </Text>
-                          );
-                      }
-                    });
-                  }
-                })}
-              </ScrollView>
-              <Pressable
-                style={styles.modalButton}
-                onPress={() => {
-                  setInfoBookmarkMenuIsVisible(false);
-                  setInfoBookmarkIsOpen(false);
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    i: (chunks) => (
+                                      <Text
+                                        style={{
+                                          fontFamily: selectedHeavyFont,
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                    u: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "underline",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          default:
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.modalText,
+                                  color: lightText,
+                                  fontFamily: selectedFont,
+                                }}
+                              >
+                                Empty
+                              </Text>
+                            );
+                        }
+                      });
+                    }
+                  })}
+                </ScrollView>
+                <Pressable
+                  style={styles.modalButton}
+                  onPress={() => {
+                    setInfoBookmarkMenuIsVisible(false);
+                    setInfoBookmarkIsOpen(false);
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.modalButtonText,
+                      color: lightText,
+                      fontFamily: selectedFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="listen.modal.close"
+                      defaultMessage="Close"
+                    />
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        </Image>
+      ) : (
+        <ImageBackground
+          source={{
+            uri: listenBgUri,
+          }}
+          resizeMode="cover"
+          style={styles.imageBackground}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.titleContainer}>
+              <Text
+                style={{
+                  ...styles.titleText,
+                  color: lightText,
+                  fontFamily: selectedFont,
+                }}
+              >
+                <FormattedMessage
+                  id="listen.title"
+                  defaultMessage="Listening..."
+                />
+              </Text>
+            </View>
+            <View
+              style={{
+                ...styles.audioView,
+                backgroundColor: color500,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 0,
+                borderBottomRightRadius: OS === "ios" ? 50 : 0,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.audioText,
+                  color: lightText,
+                  fontFamily: selectedFont,
+                }}
+              >
+                {audioList[currentAudioIndex].title}
+              </Text>
+              <View style={styles.audioPlayerView}>
+                <Text
+                  style={{
+                    ...styles.audioPlayerText,
+                    color: lightText,
+                    fontFamily: selectedFont,
+                    paddingLeft: 12,
+                  }}
+                >
+                  {currentPositionString}
+                </Text>
+                <Slider
+                  style={{ width: "75%" }}
+                  minimumValue={0}
+                  maximumValue={sliderMax}
+                  minimumTrackTintColor="#FFFFFF"
+                  maximumTrackTintColor="#000000"
+                  onValueChange={(position) => {
+                    console.log("slider value:", Math.round(position));
+                    const roundedPosition: number = Math.round(position);
+                    handleSeek(roundedPosition * 1000);
+                    calculateCurrentPositionString(roundedPosition);
+                    calculateRemainingTimeString(roundedPosition);
+                  }}
+                  value={currentPosition}
+                />
+                <Text
+                  style={{
+                    ...styles.audioPlayerText,
+                    color: lightText,
+                    fontFamily: selectedFont,
+                    paddingRight: 12,
+                  }}
+                >
+                  {remainingTimeString}
+                </Text>
+              </View>
+              <View style={styles.audioControlsView}>
+                <Pressable
+                  onPress={handleMenuPress}
+                  onPressIn={handleMenuPressIn}
+                  onPressOut={handleMenuPressOut}
+                >
+                  {menuIsOpen ? (
+                    <Entypo
+                      name="triangle-down"
+                      size={48}
+                      color={menuIconColor}
+                    />
+                  ) : (
+                    <Entypo name="menu" size={48} color={menuIconColor} />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handlePreviousPress}
+                  onPressIn={handlePreviousPressIn}
+                  onPressOut={handlePreviousPressOut}
+                  disabled={soundIsLoading}
+                >
+                  <Entypo
+                    name="controller-jump-to-start"
+                    size={48}
+                    color={previousIconColor}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={handlePlayPausePress}
+                  onPressIn={handlePlayPausePressIn}
+                  onPressOut={handlePlayPausePressOut}
+                  disabled={soundIsLoading}
+                >
+                  {soundIsLoading ? (
+                    <ActivityIndicator size={64} color="#CDB7F6" />
+                  ) : isPlaying ? (
+                    <AntDesign
+                      name="pausecircle"
+                      size={64}
+                      color={playPauseIconColor}
+                    />
+                  ) : (
+                    <AntDesign
+                      name="play"
+                      size={64}
+                      color={playPauseIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPress={handleNextPress}
+                  onPressIn={handleNextPressIn}
+                  onPressOut={handleNextPressOut}
+                  disabled={soundIsLoading}
+                >
+                  <Entypo
+                    name="controller-next"
+                    size={48}
+                    color={nextIconColor}
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={handleInfoBookmarkPress}
+                  onPressIn={handleInfoBookmarkPressIn}
+                  onPressOut={handleInfoBookmarkPressOut}
+                >
+                  {infoBookmarkIsOpen ? (
+                    <FontAwesome5
+                      name="book-reader"
+                      size={48}
+                      color={infoBookmarkIconColor}
+                    />
+                  ) : (
+                    <MaterialCommunityIcons
+                      name="book-information-variant"
+                      size={48}
+                      color={infoBookmarkIconColor}
+                    />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={audioMenuIsVisible}
+          >
+            <View style={styles.modal}>
+              <View
+                style={{
+                  ...styles.modalView,
+                  backgroundColor: color500,
                 }}
               >
                 <Text
                   style={{
-                    ...styles.modalButtonText,
+                    ...styles.modalTitle,
                     color: lightText,
-                    fontFamily: selectedFont,
+                    fontFamily: selectedHeavyFont,
                   }}
                 >
                   <FormattedMessage
-                    id="listen.modal.close"
-                    defaultMessage="Close"
+                    id="listen.audioMenu.title"
+                    defaultMessage="Chapters"
                   />
                 </Text>
-              </Pressable>
+                <View style={styles.flatList}>
+                  <FlatList
+                    data={audioList}
+                    renderItem={({ item }) => {
+                      console.log("item:", item);
+                      return (
+                        <MenuItem
+                          key={item.uri}
+                          onPress={() => handleMenuItemPress(item.title)}
+                          onPressIn={() => handleMenuItemPressIn(item.title)}
+                          onPressOut={() => handleMenuItemPressOut(item.title)}
+                          title={item.title}
+                          uri={item.uri}
+                        />
+                      );
+                    }}
+                  />
+                </View>
+                <Pressable
+                  style={styles.modalButton}
+                  onPress={() => {
+                    setAudioMenuIsVisible(false);
+                    setMenuIsOpen(false);
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.modalButtonText,
+                      color: lightText,
+                      fontFamily: selectedFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="listen.modal.close"
+                      defaultMessage="Close"
+                    />
+                  </Text>
+                </Pressable>
+              </View>
             </View>
-          </View>
-        </Modal>
-      </Image>
+          </Modal>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={infoBookmarkMenuIsVisible}
+          >
+            <View style={styles.modal}>
+              <View
+                style={{
+                  ...styles.modalView,
+                  backgroundColor: color500,
+                }}
+              >
+                <Text
+                  style={{
+                    ...styles.modalTitle,
+                    color: lightText,
+                    fontFamily: selectedHeavyFont,
+                  }}
+                >
+                  <FormattedMessage
+                    id={`listen.infoBookmarkMenu.${audioList[currentAudioIndex].id}`}
+                    defaultMessage={audioList[currentAudioIndex].title}
+                  />
+                </Text>
+                <ScrollView
+                  style={{
+                    ...styles.scrollView,
+                    backgroundColor: color700,
+                  }}
+                  nestedScrollEnabled={true}
+                >
+                  {textsList.map((txt) => {
+                    if (txt.index === currentAudioIndex) {
+                      return txt.components.map((comp) => {
+                        switch (comp.type) {
+                          case "main_title":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.mainTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    s: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "line-through",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "main_subtitle":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.mainSubtitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                />
+                              </Text>
+                            );
+                          case "author":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.author,
+                                  color: lightText,
+                                  fontFamily: selectedFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    b: (chunks) => (
+                                      <Text
+                                        style={{
+                                          fontFamily: selectedHeavyFont,
+                                          fontSize: 28,
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "section_title":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.sectionTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    u: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "underline",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          case "chapter_title":
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.chapterTitle,
+                                  color: lightText,
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                />
+                              </Text>
+                            );
+                          case "chapter_content":
+                            if (comp.imageUri && comp.imageUri?.length > 0) {
+                              return (
+                                <View
+                                  key={comp.id}
+                                  style={styles.imageContainer}
+                                >
+                                  {comp.imageUri?.map((src) => {
+                                    switch (src) {
+                                      case "../assets/images/my_love/ruby.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/ruby.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_love/rose.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 60,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_love/rose.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_happiness/alina_and_i_prague.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 40,
+                                              marginBottom: 60,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_strength/steel_wire.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 80,
+                                              marginBottom: 70,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/steel_wire.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "../assets/images/my_strength/compass.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 30,
+                                              marginBottom: 110,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_strength/compass.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/lightbulb.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "4%",
+                                              marginTop: 90,
+                                              marginBottom: 90,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/sun.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "3%",
+                                              marginTop: 30,
+                                              marginBottom: 90,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "4%",
+                                              marginTop: 30,
+                                              marginBottom: 90,
+                                              paddingBottom: 20,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/ripple.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 100,
+                                              paddingTop: 20,
+                                              marginBottom: 100,
+                                              paddingBottom: 30,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/ripple.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/wave.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 20,
+                                              marginBottom: 110,
+                                              paddingBottom: 20,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/wave.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/sunset.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 20,
+                                              marginBottom: 100,
+                                              paddingBottom: 20,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/sunset.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/storm.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 30,
+                                              marginBottom: 100,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/storm.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_peace/galaxy.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 50,
+                                              marginBottom: 140,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_peace/galaxy.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/alina.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              paddingTop: 10,
+                                              marginTop: 120,
+                                              marginBottom: 50,
+                                              paddingBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/alina.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/pajamas.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 60,
+                                              marginBottom: 100,
+                                              paddingBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pajamas.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/pictures.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 10,
+                                              marginBottom: 60,
+                                              paddingBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/pictures.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/portal.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 50,
+                                              marginBottom: 70,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/portal.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/my_home/river.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "5%",
+                                              marginTop: 80,
+                                              marginBottom: 140,
+                                              paddingBottom: 20,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/my_home/river.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      case "..assets/images/where_are_they_going/where_are_they_going.png":
+                                        return (
+                                          <View
+                                            key={src}
+                                            style={{
+                                              width: "100%",
+                                              height: "20%",
+                                              marginTop: 10,
+                                              marginBottom: 40,
+                                            }}
+                                          >
+                                            <Image
+                                              source={{
+                                                uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                              }}
+                                              style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                borderRadius: 12,
+                                              }}
+                                            />
+                                          </View>
+                                        );
+                                      default:
+                                        return (
+                                          <Image
+                                            style={{
+                                              width: "100%",
+                                              height: "75%",
+                                              flex: 1,
+                                            }}
+                                            // contentFit="cover"
+                                            key={src}
+                                            source={{
+                                              uri: "http://192.168.4.22:9090/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png",
+                                            }}
+                                            alt={src}
+                                          />
+                                        );
+                                    }
+                                  })}
+                                  <Text
+                                    style={{
+                                      ...styles.chapterContent,
+                                      fontFamily: selectedFont,
+                                      color: lightText,
+                                    }}
+                                  >
+                                    <FormattedMessage
+                                      id={comp.id}
+                                      defaultMessage={comp.title}
+                                      values={{
+                                        i: (chunks) => (
+                                          <Text
+                                            style={{
+                                              fontFamily: selectedHeavyFont,
+                                            }}
+                                          >
+                                            {chunks}
+                                          </Text>
+                                        ),
+                                        u: (chunks) => (
+                                          <Text
+                                            style={{
+                                              textDecorationLine: "underline",
+                                            }}
+                                          >
+                                            {chunks}
+                                          </Text>
+                                        ),
+                                      }}
+                                    />
+                                  </Text>
+                                </View>
+                              );
+                            }
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.chapterContent,
+                                  fontFamily: selectedFont,
+                                  color: lightText,
+                                }}
+                              >
+                                <FormattedMessage
+                                  id={comp.id}
+                                  defaultMessage={comp.title}
+                                  values={{
+                                    i: (chunks) => (
+                                      <Text
+                                        style={{
+                                          fontFamily: selectedHeavyFont,
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                    u: (chunks) => (
+                                      <Text
+                                        style={{
+                                          textDecorationLine: "underline",
+                                        }}
+                                      >
+                                        {chunks}
+                                      </Text>
+                                    ),
+                                  }}
+                                />
+                              </Text>
+                            );
+                          default:
+                            return (
+                              <Text
+                                key={comp.id}
+                                style={{
+                                  ...styles.modalText,
+                                  color: lightText,
+                                  fontFamily: selectedFont,
+                                }}
+                              >
+                                Empty
+                              </Text>
+                            );
+                        }
+                      });
+                    }
+                  })}
+                </ScrollView>
+                <Pressable
+                  style={styles.modalButton}
+                  onPress={() => {
+                    setInfoBookmarkMenuIsVisible(false);
+                    setInfoBookmarkIsOpen(false);
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.modalButtonText,
+                      color: lightText,
+                      fontFamily: selectedFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id="listen.modal.close"
+                      defaultMessage="Close"
+                    />
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </Modal>
+        </ImageBackground>
+      )}
     </View>
   );
 }

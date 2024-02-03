@@ -6,6 +6,7 @@ import {
   Text,
   ToastAndroid,
   View,
+  ImageBackground,
 } from "react-native";
 import { FormattedMessage, useIntl } from "react-intl";
 import {
@@ -204,223 +205,440 @@ export default function Photos() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: photosBgUri,
-        }}
-        contentFit="cover"
-        transition={100}
-        style={styles.imageBackground}
-      >
-        <View style={styles.mainContainer}>
-          <View style={styles.topView}></View>
-          {listOfAlbumsIsOpen && (
-            <View
-              style={{
-                ...styles.photosView,
-                backgroundColor: color700,
-              }}
-            >
-              <Text
-                style={{
-                  fontFamily: selectedHeavyFont,
-                  color: lightText,
-                  fontSize: 32,
-                  textDecorationLine: "underline",
-                  paddingBottom: 6,
-                }}
-              >
-                <FormattedMessage
-                  id="photos.albums.title"
-                  defaultMessage="Photo Albums"
-                />
-              </Text>
+      {OS === "ios" ? (
+        <Image
+          source={{
+            uri: photosBgUri,
+          }}
+          contentFit="cover"
+          transition={100}
+          style={styles.imageBackground}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.topView}></View>
+            {listOfAlbumsIsOpen && (
               <View
                 style={{
-                  ...styles.albumsContainer,
-                  backgroundColor: color300,
+                  ...styles.photosView,
+                  backgroundColor: color700,
                 }}
               >
-                <ScrollView ref={albumsSVRef}>
-                  {albums.map((album) => (
-                    <AlbumButton
-                      key={album.id}
-                      id={album.id}
-                      title={album.title}
-                      index={album.index}
-                      photos={album.photos}
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 32,
+                    textDecorationLine: "underline",
+                    paddingBottom: 6,
+                  }}
+                >
+                  <FormattedMessage
+                    id="photos.albums.title"
+                    defaultMessage="Photo Albums"
+                  />
+                </Text>
+                <View
+                  style={{
+                    ...styles.albumsContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  <ScrollView ref={albumsSVRef}>
+                    {albums.map((album) => (
+                      <AlbumButton
+                        key={album.id}
+                        id={album.id}
+                        title={album.title}
+                        index={album.index}
+                      />
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
+            {viewAlbumIsOpen && (
+              <View
+                style={{
+                  ...styles.photosView,
+                  backgroundColor: color700,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 32,
+                    paddingBottom: 6,
+                    textAlign: "center",
+                  }}
+                >
+                  {albums[currentAlbumIndex].title}
+                </Text>
+                <View
+                  style={{
+                    ...styles.albumsContainer,
+                    width: "90%",
+                    height: "70%",
+                    borderWidth: 0,
+                  }}
+                >
+                  {albumIsLoading ? (
+                    <ActivityIndicator
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      size="large"
+                      color={color500}
                     />
-                  ))}
-                </ScrollView>
+                  ) : (
+                    <Image
+                      // source={currentAlbumPhotos[currentPhotoIndex]}
+                      source={{
+                        uri: uri,
+                      }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      contentFit="contain"
+                      transition={300}
+                    />
+                  )}
+                </View>
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 26,
+                    paddingTop: 6,
+                    textAlign: "center",
+                  }}
+                >
+                  {`(${currentPhotoIndex + 1} / ${currentAlbumLength})`}
+                </Text>
               </View>
-            </View>
-          )}
-          {viewAlbumIsOpen && (
+            )}
             <View
               style={{
-                ...styles.photosView,
+                ...styles.photosControlsView,
                 backgroundColor: color700,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+                borderBottomRightRadius: OS === "ios" ? 50 : 12,
               }}
             >
-              <Text
-                style={{
-                  fontFamily: selectedHeavyFont,
-                  color: lightText,
-                  fontSize: 32,
-                  paddingBottom: 6,
-                  textAlign: "center",
-                }}
-              >
-                {albums[currentAlbumIndex].title}
-              </Text>
-              <View
-                style={{
-                  ...styles.albumsContainer,
-                  width: "90%",
-                  height: "70%",
-                  borderWidth: 0,
-                }}
-              >
-                {albumIsLoading ? (
-                  <ActivityIndicator
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    size="large"
-                    color={color500}
+              <View style={styles.photosControls}>
+                <Pressable
+                  onPressIn={handlePressInMenu}
+                  onPressOut={handlePressOutMenu}
+                  onPress={handlePressMenu}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!listOfAlbumsIsOpen ? (
+                    <Entypo name="menu" size={48} color={menuIconColor} />
+                  ) : (
+                    <Entypo
+                      name="triangle-down"
+                      size={48}
+                      color={menuIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInPreviousPhoto}
+                  onPressOut={handlePressOutPreviousPhoto}
+                  onPress={handlePressPreviousPhoto}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  <MaterialIcons
+                    name="navigate-before"
+                    size={48}
+                    color={viewAlbumIsOpen ? previousPhotoIconColor : "#808080"}
                   />
-                ) : (
-                  <Image
-                    // source={currentAlbumPhotos[currentPhotoIndex]}
-                    source={{
-                      uri: uri,
-                    }}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                    }}
-                    contentFit="contain"
-                    transition={300}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInAlbums}
+                  onPressOut={handlePressOutAlbums}
+                  onPress={handlePressAlbums}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!viewAlbumIsOpen ? (
+                    <MaterialIcons
+                      name="photo-album"
+                      size={48}
+                      color={albumsIconColor}
+                    />
+                  ) : (
+                    <Fontisto
+                      name="photograph"
+                      size={48}
+                      color={albumsIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInNextPhoto}
+                  onPressOut={handlePressOutNextPhoto}
+                  onPress={handlePressNextPhoto}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  <MaterialIcons
+                    name="navigate-next"
+                    size={48}
+                    color={viewAlbumIsOpen ? nextPhotoIconColor : "#808080"}
                   />
-                )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInShare}
+                  onPressOut={handlePressOutShare}
+                  onPress={handlePressShare}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!shareIsOpen ? (
+                    <FontAwesome
+                      name="share-alt"
+                      size={48}
+                      color={viewAlbumIsOpen ? shareIconColor : "#808080"}
+                    />
+                  ) : (
+                    <MaterialIcons
+                      name="ios-share"
+                      size={48}
+                      color={viewAlbumIsOpen ? shareIconColor : "#808080"}
+                    />
+                  )}
+                </Pressable>
               </View>
-              <Text
-                style={{
-                  fontFamily: selectedHeavyFont,
-                  color: lightText,
-                  fontSize: 26,
-                  paddingTop: 6,
-                  textAlign: "center",
-                }}
-              >
-                {`(${currentPhotoIndex + 1} / ${currentAlbumLength})`}
-              </Text>
-            </View>
-          )}
-          <View
-            style={{
-              ...styles.photosControlsView,
-              backgroundColor: color700,
-              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
-              borderBottomRightRadius: OS === "ios" ? 50 : 12,
-            }}
-          >
-            <View style={styles.photosControls}>
-              <Pressable
-                onPressIn={handlePressInMenu}
-                onPressOut={handlePressOutMenu}
-                onPress={handlePressMenu}
-                style={{
-                  padding: 6,
-                }}
-              >
-                {!listOfAlbumsIsOpen ? (
-                  <Entypo name="menu" size={48} color={menuIconColor} />
-                ) : (
-                  <Entypo
-                    name="triangle-down"
-                    size={48}
-                    color={menuIconColor}
-                  />
-                )}
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInPreviousPhoto}
-                onPressOut={handlePressOutPreviousPhoto}
-                onPress={handlePressPreviousPhoto}
-                style={{
-                  padding: 6,
-                }}
-              >
-                <MaterialIcons
-                  name="navigate-before"
-                  size={48}
-                  color={viewAlbumIsOpen ? previousPhotoIconColor : "#808080"}
-                />
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInAlbums}
-                onPressOut={handlePressOutAlbums}
-                onPress={handlePressAlbums}
-                style={{
-                  padding: 6,
-                }}
-              >
-                {!viewAlbumIsOpen ? (
-                  <MaterialIcons
-                    name="photo-album"
-                    size={48}
-                    color={albumsIconColor}
-                  />
-                ) : (
-                  <Fontisto
-                    name="photograph"
-                    size={48}
-                    color={albumsIconColor}
-                  />
-                )}
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInNextPhoto}
-                onPressOut={handlePressOutNextPhoto}
-                onPress={handlePressNextPhoto}
-                style={{
-                  padding: 6,
-                }}
-              >
-                <MaterialIcons
-                  name="navigate-next"
-                  size={48}
-                  color={viewAlbumIsOpen ? nextPhotoIconColor : "#808080"}
-                />
-              </Pressable>
-              <Pressable
-                onPressIn={handlePressInShare}
-                onPressOut={handlePressOutShare}
-                onPress={handlePressShare}
-                style={{
-                  padding: 6,
-                }}
-              >
-                {!shareIsOpen ? (
-                  <FontAwesome
-                    name="share-alt"
-                    size={48}
-                    color={viewAlbumIsOpen ? shareIconColor : "#808080"}
-                  />
-                ) : (
-                  <MaterialIcons
-                    name="ios-share"
-                    size={48}
-                    color={viewAlbumIsOpen ? shareIconColor : "#808080"}
-                  />
-                )}
-              </Pressable>
             </View>
           </View>
-        </View>
-      </Image>
+        </Image>
+      ) : (
+        <ImageBackground
+          source={{
+            uri: photosBgUri,
+          }}
+          resizeMode="cover"
+          style={styles.imageBackground}
+        >
+          <View style={styles.mainContainer}>
+            <View style={styles.topView}></View>
+            {listOfAlbumsIsOpen && (
+              <View
+                style={{
+                  ...styles.photosView,
+                  backgroundColor: color700,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 32,
+                    textDecorationLine: "underline",
+                    paddingBottom: 6,
+                  }}
+                >
+                  <FormattedMessage
+                    id="photos.albums.title"
+                    defaultMessage="Photo Albums"
+                  />
+                </Text>
+                <View
+                  style={{
+                    ...styles.albumsContainer,
+                    backgroundColor: color300,
+                  }}
+                >
+                  <ScrollView ref={albumsSVRef}>
+                    {albums.map((album) => (
+                      <AlbumButton
+                        key={album.id}
+                        id={album.id}
+                        title={album.title}
+                        index={album.index}
+                      />
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+            )}
+            {viewAlbumIsOpen && (
+              <View
+                style={{
+                  ...styles.photosView,
+                  backgroundColor: color700,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 32,
+                    paddingBottom: 6,
+                    textAlign: "center",
+                  }}
+                >
+                  {albums[currentAlbumIndex].title}
+                </Text>
+                <View
+                  style={{
+                    ...styles.albumsContainer,
+                    width: "90%",
+                    height: "70%",
+                    borderWidth: 0,
+                  }}
+                >
+                  {albumIsLoading ? (
+                    <ActivityIndicator
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      size="large"
+                      color={color500}
+                    />
+                  ) : (
+                    <Image
+                      // source={currentAlbumPhotos[currentPhotoIndex]}
+                      source={{
+                        uri: uri,
+                      }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                      }}
+                      contentFit="contain"
+                      transition={300}
+                    />
+                  )}
+                </View>
+                <Text
+                  style={{
+                    fontFamily: selectedHeavyFont,
+                    color: lightText,
+                    fontSize: 26,
+                    paddingTop: 6,
+                    textAlign: "center",
+                  }}
+                >
+                  {`(${currentPhotoIndex + 1} / ${currentAlbumLength})`}
+                </Text>
+              </View>
+            )}
+            <View
+              style={{
+                ...styles.photosControlsView,
+                backgroundColor: color700,
+                borderBottomLeftRadius: OS === "ios" ? 50 : 0,
+                borderBottomRightRadius: OS === "ios" ? 50 : 0,
+              }}
+            >
+              <View style={styles.photosControls}>
+                <Pressable
+                  onPressIn={handlePressInMenu}
+                  onPressOut={handlePressOutMenu}
+                  onPress={handlePressMenu}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!listOfAlbumsIsOpen ? (
+                    <Entypo name="menu" size={48} color={menuIconColor} />
+                  ) : (
+                    <Entypo
+                      name="triangle-down"
+                      size={48}
+                      color={menuIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInPreviousPhoto}
+                  onPressOut={handlePressOutPreviousPhoto}
+                  onPress={handlePressPreviousPhoto}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  <MaterialIcons
+                    name="navigate-before"
+                    size={48}
+                    color={viewAlbumIsOpen ? previousPhotoIconColor : "#808080"}
+                  />
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInAlbums}
+                  onPressOut={handlePressOutAlbums}
+                  onPress={handlePressAlbums}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!viewAlbumIsOpen ? (
+                    <MaterialIcons
+                      name="photo-album"
+                      size={48}
+                      color={albumsIconColor}
+                    />
+                  ) : (
+                    <Fontisto
+                      name="photograph"
+                      size={48}
+                      color={albumsIconColor}
+                    />
+                  )}
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInNextPhoto}
+                  onPressOut={handlePressOutNextPhoto}
+                  onPress={handlePressNextPhoto}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  <MaterialIcons
+                    name="navigate-next"
+                    size={48}
+                    color={viewAlbumIsOpen ? nextPhotoIconColor : "#808080"}
+                  />
+                </Pressable>
+                <Pressable
+                  onPressIn={handlePressInShare}
+                  onPressOut={handlePressOutShare}
+                  onPress={handlePressShare}
+                  style={{
+                    padding: 6,
+                  }}
+                >
+                  {!shareIsOpen ? (
+                    <FontAwesome
+                      name="share-alt"
+                      size={48}
+                      color={viewAlbumIsOpen ? shareIconColor : "#808080"}
+                    />
+                  ) : (
+                    <MaterialIcons
+                      name="ios-share"
+                      size={48}
+                      color={viewAlbumIsOpen ? shareIconColor : "#808080"}
+                    />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+      )}
     </View>
   );
 }
@@ -433,7 +651,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     flex: 1,
-    contentFit: "cover",
+    // contentFit: "cover",
     width: "100%",
     height: "100%",
   },

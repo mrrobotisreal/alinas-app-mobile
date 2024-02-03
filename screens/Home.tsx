@@ -208,7 +208,7 @@ export default function Home({ navigation }: any) {
             ...styles.titleContainer,
             backgroundColor: color300,
             borderColor: color500,
-            paddingTop: OS === "ios" ? 56 : 0,
+            paddingTop: OS === "ios" ? 56 : 20,
             borderTopLeftRadius: OS === "ios" ? 50 : 0,
             borderTopRightRadius: OS === "ios" ? 50 : 0,
           }}
@@ -217,7 +217,7 @@ export default function Home({ navigation }: any) {
             style={{
               ...styles.titleText,
               backgroundColor: color500,
-              padding: 10,
+              padding: OS === "ios" ? 10 : 4,
               borderRadius: 12,
             }}
           >
@@ -271,6 +271,7 @@ export default function Home({ navigation }: any) {
             ...styles.flatlistView,
             backgroundColor: color300,
             borderColor: color500,
+            padding: OS === "ios" ? 20 : 14,
             marginBottom: OS === "ios" ? 4 : 0,
             borderBottomLeftRadius: OS === "ios" ? 50 : 0,
             borderBottomRightRadius: OS === "ios" ? 50 : 0,
@@ -392,7 +393,7 @@ const styles = StyleSheet.create({
   flatlistView: {
     borderWidth: 6,
     borderRadius: 12,
-    padding: 20,
+    // padding: 20,
     width: "100%",
   },
   menuItem: {
