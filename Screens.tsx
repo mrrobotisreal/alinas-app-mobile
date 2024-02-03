@@ -1,5 +1,4 @@
 import { useMemo, useContext } from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useIntl } from "react-intl";
 
@@ -241,31 +240,21 @@ export default function Screens() {
   );
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Photos"
-          component={Photos}
-          options={PhotosOptions}
-        />
-        <Stack.Screen name="Read" component={Read} options={ReadOptions} />
-        <Stack.Screen
-          name="Listen"
-          component={Listen}
-          options={ListenOptions}
-        />
-        <Stack.Screen name="Notes" component={Notes} options={NotesOptions} />
-        <Stack.Screen
-          name="Settings"
-          component={Settings}
-          options={SettingsOptions}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={Home}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Photos" component={Photos} options={PhotosOptions} />
+      <Stack.Screen name="Read" component={Read} options={ReadOptions} />
+      <Stack.Screen name="Listen" component={Listen} options={ListenOptions} />
+      <Stack.Screen name="Notes" component={Notes} options={NotesOptions} />
+      <Stack.Screen
+        name="Settings"
+        component={Settings}
+        options={SettingsOptions}
+      />
+    </Stack.Navigator>
   );
 }

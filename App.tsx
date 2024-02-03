@@ -1,3 +1,6 @@
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
 import { AppState, Platform } from "react-native";
 import type { AppStateStatus } from "react-native";
@@ -91,16 +94,20 @@ export default function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <WrapperContext>
-        <BookImagesCacheProvider>
-          <BackgroundImagesCacheProvider>
-            <PhotoAlbumsImagesCacheProvider>
-              <Screens />
-            </PhotoAlbumsImagesCacheProvider>
-          </BackgroundImagesCacheProvider>
-        </BookImagesCacheProvider>
-      </WrapperContext>
-    </QueryClientProvider>
+    <NavigationContainer>
+      <SafeAreaProvider>
+        <QueryClientProvider client={queryClient}>
+          <WrapperContext>
+            <BookImagesCacheProvider>
+              <BackgroundImagesCacheProvider>
+                <PhotoAlbumsImagesCacheProvider>
+                  <Screens />
+                </PhotoAlbumsImagesCacheProvider>
+              </BackgroundImagesCacheProvider>
+            </BookImagesCacheProvider>
+          </WrapperContext>
+        </QueryClientProvider>
+      </SafeAreaProvider>
+    </NavigationContainer>
   );
 }
