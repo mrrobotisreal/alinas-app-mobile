@@ -17,6 +17,7 @@ web-build/
 
 # iOS
 ios/
+ios_development.cer
 
 # Android
 android/
