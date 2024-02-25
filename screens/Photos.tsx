@@ -34,7 +34,11 @@ function getUri(albumId: string, photoIndex: number) {
 
   // http://192.168.4.22:9090
   const uri = `${serverURL}/assets/photosAlbums/${albumId}/${albumId}${
-    index >= 10 ? "0" + index : "00" + index
+    index >= 10 && index < 100
+      ? "0" + index
+      : index >= 100
+      ? `${index}`
+      : "00" + index
   }.jpg`;
 
   return uri;

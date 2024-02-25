@@ -1,10 +1,20 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { serverURL } from "../constants/urls";
+import {
+  myExternalCauseSectionItems,
+  theJudgeSectionItems,
+} from "../constants/books";
 import axios from "axios";
+
+export interface SectionItem {
+  title: string;
+  id: string;
+}
 
 export type BookStateContext = {
   currentBook: string;
   changeBook: (selectedBook: string) => void;
+  sectionItems: SectionItem[];
 };
 export type BookContextProps = {
   children?: ReactNode;
@@ -13,15 +23,19 @@ export type BookContextProps = {
 const initialState: BookStateContext = {
   currentBook: "My External Cause",
   changeBook: (selectedBook: string) => void 0,
+  sectionItems: myExternalCauseSectionItems,
 };
 
 export const BookContext = createContext(initialState);
 
 export const BookContextProvider = ({ children }: BookContextProps) => {
   const [currentBook, setCurrentBook] = useState<string>("My External Cause");
+  const [sectionItems, setSectionItems] = useState<SectionItem[]>(
+    myExternalCauseSectionItems
+  );
 
   const changeBook = (selectedBook: string) => {
-    // saveBookSelection(selectedBook);
+    saveBookSelection(selectedBook);
     setCurrentBook(selectedBook);
   };
 
@@ -29,33 +43,47 @@ export const BookContextProvider = ({ children }: BookContextProps) => {
     axios
       .get(`${serverURL}/getBook`)
       .then(({ data }) => {
-        console.log("incoming lang:", data);
-        // setCurrentLang(data);
-        changeBook(data);
+        console.log("incoming book:", data);
+        setCurrentBook(data);
       })
       .catch((err) => console.error(err));
   };
 
   const saveBookSelection = async (id: string) => {
+    console.log("saving book selection:", id);
     axios
       .post(`${serverURL}/saveBookSelection`, {
-        lang: id,
+        book: id,
       })
       .then(({ data }) => {
-        // getSavedLang();
+        console.log("book selection saved:", data);
       })
       .catch((err) => console.error(err));
   };
 
-  // useEffect(() => {
-  //   getSavedBook();
-  // }, []);
+  useEffect(() => {
+    getSavedBook();
+  }, []);
+
+  useEffect(() => {
+    switch (currentBook) {
+      case "My External Cause":
+        setSectionItems(myExternalCauseSectionItems);
+        break;
+      case "The Judge":
+        setSectionItems(theJudgeSectionItems);
+        break;
+      // default:
+      //   setSectionItems(myExternalCauseSectionItems);
+    }
+  }, [currentBook]);
 
   return (
     <BookContext.Provider
       value={{
         currentBook,
         changeBook,
+        sectionItems,
       }}
     >
       {children}

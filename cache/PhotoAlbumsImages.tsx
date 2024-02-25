@@ -10,6 +10,7 @@ import {
   parisAlbum,
   portugalAlbum,
   portugalPhotoshootAlbum,
+  frankfurtAlbum,
 } from "../constants/assetPaths";
 import { Image } from "expo-image";
 
@@ -61,6 +62,11 @@ function loadAlbumImages(
       console.log("loading portugal photoshoot album images...");
       setAlbumIsLoading(true);
       preloadImages(portugalPhotoshootAlbum, updateAlbumIsLoading);
+      break;
+    case "frankfurt":
+      console.log("loading frankfurt album images...");
+      setAlbumIsLoading(true);
+      preloadImages(frankfurtAlbum, updateAlbumIsLoading);
       break;
     default:
       setAlbumIsLoading(true);

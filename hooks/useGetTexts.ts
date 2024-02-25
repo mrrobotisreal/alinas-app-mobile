@@ -1,3 +1,7 @@
+import { serverURL } from "../constants/urls";
+import { useContext, useState, useEffect } from "react";
+import { BookContext } from "../context/BookContext";
+
 export type TextObjectType =
   | "main_title"
   | "main_subtitle"
@@ -19,7 +23,11 @@ export type TextObject = {
   imageUri?: string[];
 };
 
-const textsList: TextListObject[] = [
+interface UseGetTextsReturns {
+  textsList: TextListObject[];
+}
+
+const myExternalCauseTextsList: TextListObject[] = [
   {
     title: "Introduction",
     index: 0,
@@ -86,8 +94,10 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "my_love_content",
         imageUri: [
-          "../assets/images/my_love/ruby.png",
-          "../assets/images/my_love/rose.png",
+          // "../assets/images/my_love/ruby.png",
+          // "../assets/images/my_love/rose.png",
+          `${serverURL}/assets/myExternalCause_images/my_love/ruby.png`,
+          `${serverURL}/assets/myExternalCause_images/my_love/rose.png`,
         ],
       },
     ],
@@ -105,7 +115,10 @@ const textsList: TextListObject[] = [
         id: "textsList.my_happiness_content",
         type: "chapter_content",
         title: "my_happiness_content",
-        imageUri: ["../assets/images/my_happiness/alina_and_i_prague.png"],
+        imageUri: [
+          // "../assets/images/my_happiness/alina_and_i_prague.png",
+          `${serverURL}/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png`,
+        ],
       },
     ],
   },
@@ -123,8 +136,10 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "my_strength_content",
         imageUri: [
-          "../assets/images/my_strength/steel_wire.png",
-          "../assets/images/my_strength/compass.png",
+          // "../assets/images/my_strength/steel_wire.png",
+          // "../assets/images/my_strength/compass.png",
+          `${serverURL}/assets/myExternalCause_images/my_strength/steel_wire.png`,
+          `${serverURL}/assets/myExternalCause_images/my_strength/compass.png`,
         ],
       },
     ],
@@ -143,9 +158,12 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "my_inspiration_and_my_motivation_content",
         imageUri: [
-          "..assets/images/my_inspiration_and_my_motivation/lightbulb.png",
-          "..assets/images/my_inspiration_and_my_motivation/sun.png",
-          "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+          // "..assets/images/my_inspiration_and_my_motivation/lightbulb.png",
+          // "..assets/images/my_inspiration_and_my_motivation/sun.png",
+          // "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png",
+          `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png`,
+          `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png`,
+          `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png`,
         ],
       },
     ],
@@ -164,11 +182,16 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "my_peace_content",
         imageUri: [
-          "..assets/images/my_peace/ripple.png",
-          "..assets/images/my_peace/wave.png",
-          "..assets/images/my_peace/sunset.png",
-          "..assets/images/my_peace/storm.png",
-          "..assets/images/my_peace/galaxy.png",
+          // "..assets/images/my_peace/ripple.png",
+          // "..assets/images/my_peace/wave.png",
+          // "..assets/images/my_peace/sunset.png",
+          // "..assets/images/my_peace/storm.png",
+          // "..assets/images/my_peace/galaxy.png",
+          `${serverURL}/assets/myExternalCause_images/my_peace/ripple.png`,
+          `${serverURL}/assets/myExternalCause_images/my_peace/wave.png`,
+          `${serverURL}/assets/myExternalCause_images/my_peace/sunset.png`,
+          `${serverURL}/assets/myExternalCause_images/my_peace/storm.png`,
+          `${serverURL}/assets/myExternalCause_images/my_peace/galaxy.png`,
         ],
       },
     ],
@@ -187,11 +210,16 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "my_home_content",
         imageUri: [
-          "..assets/images/my_home/alina.png",
-          "..assets/images/my_home/pajamas.png",
-          "..assets/images/my_home/pictures.png",
-          "..assets/images/my_home/portal.png",
-          "..assets/images/my_home/river.png",
+          // "..assets/images/my_home/alina.png",
+          // "..assets/images/my_home/pajamas.png",
+          // "..assets/images/my_home/pictures.png",
+          // "..assets/images/my_home/portal.png",
+          // "..assets/images/my_home/river.png",
+          `${serverURL}/assets/myExternalCause_images/my_home/alina.png`,
+          `${serverURL}/assets/myExternalCause_images/my_home/pajamas.png`,
+          `${serverURL}/assets/myExternalCause_images/my_home/pictures.png`,
+          `${serverURL}/assets/myExternalCause_images/my_home/portal.png`,
+          `${serverURL}/assets/myExternalCause_images/my_home/river.png`,
         ],
       },
     ],
@@ -210,7 +238,8 @@ const textsList: TextListObject[] = [
         type: "chapter_content",
         title: "where_are_they_going_content",
         imageUri: [
-          "..assets/images/where_are_they_going/where_are_they_going.png",
+          // "..assets/images/where_are_they_going/where_are_they_going.png",
+          `${serverURL}/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png`,
         ],
       },
     ],
@@ -270,7 +299,117 @@ const textsList: TextListObject[] = [
   },
 ];
 
-export function useGetTexts() {
+const theJudgeTextsList: TextListObject[] = [
+  {
+    title: "Title page",
+    index: 0,
+    components: [
+      {
+        id: "theJudgeTextsList.main_title",
+        type: "main_title",
+        title: "main_title",
+      },
+      {
+        id: "theJudgeTextsList.author",
+        type: "author",
+        title: "author",
+      },
+      {
+        id: "theJudgeTextsList.co_author",
+        type: "author",
+        title: "co_author",
+      },
+      {
+        id: "theJudgeTextsList.translators",
+        type: "author",
+        title: "translators",
+      },
+      {
+        id: "theJudgeTextsList.artist",
+        type: "author",
+        title: "artist",
+        imageUri: [
+          `${serverURL}/assets/backgrounds/The_Judge_front_cover_mint.png`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Chapter 1: The judge and the auras",
+    index: 1,
+    components: [
+      {
+        id: "theJudgeTextsList.chapter_1_title",
+        type: "chapter_title",
+        title: "chapter_1_title",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content",
+        type: "chapter_content",
+        title: "chapter_1_content",
+        imageUri: [
+          `${serverURL}/assets/theJudge_images/chapter1_defendant.png`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Chapter 2: High profile cases",
+    index: 2,
+    components: [
+      {
+        id: "theJudgeTextsList.chapter_2_title",
+        type: "chapter_title",
+        title: "chapter_2_title",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content",
+        type: "chapter_content",
+        title: "chapter_2_content",
+        imageUri: [`${serverURL}/assets/theJudge_images/chapter2_office.png`],
+      },
+    ],
+  },
+  {
+    title: "Chapter 3: Publicity",
+    index: 3,
+    components: [
+      {
+        id: "theJudgeTextsList.chapter_3_title",
+        type: "chapter_title",
+        title: "chapter_3_title",
+      },
+      // {
+      //   id: "theJudgeTextsList.chapter_3_content",
+      //   type: "chapter_content",
+      //   title: "chapter_3_content",
+      //   imageUri: [
+      //     `${serverURL}/assets/theJudge_images/chapter3_paparazzi.png`,
+      //   ],
+      // },
+    ],
+  },
+];
+
+export function useGetTexts(): UseGetTextsReturns {
+  const { currentBook } = useContext(BookContext);
+  const [textsList, setTextsList] = useState<TextListObject[]>(
+    myExternalCauseTextsList
+  );
+
+  useEffect(() => {
+    switch (currentBook) {
+      case "My External Cause":
+        setTextsList(myExternalCauseTextsList);
+        break;
+      case "The Judge":
+        setTextsList(theJudgeTextsList);
+        break;
+      default:
+        setTextsList(myExternalCauseTextsList);
+    }
+  }, [currentBook]);
+
   return {
     textsList,
   };

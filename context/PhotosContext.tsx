@@ -58,6 +58,11 @@ const initialState: PhotosStateContext = {
       index: 3,
       title: "Paris\n(❤️🗽 with my love 🗼🎄)",
     },
+    {
+      id: "frankfurt",
+      index: 4,
+      title: "Frankfurt\n(with my Love ❤️)",
+    },
   ],
   fetchAlbumLength,
 };

@@ -100,43 +100,43 @@ const sectionItems = [
 export default function Notes({ navigation }: any) {
   const intl = useIntl();
   const generalLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.general",
+    id: "listen.infoBookmarkMenu.myExternalCause.general",
   });
   const introLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.introduction",
+    id: "listen.infoBookmarkMenu.myExternalCause.introduction",
   });
   const anatomyLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.anatomy_of_everything",
+    id: "listen.infoBookmarkMenu.myExternalCause.anatomy_of_everything",
   });
   const loveLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_love",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_love",
   });
   const happinessLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_happiness",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_happiness",
   });
   const strengthLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_strength",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_strength",
   });
   const inspirationLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_inspiration_and_my_motivation",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_inspiration_and_my_motivation",
   });
   const peaceLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_peace",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_peace",
   });
   const homeLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.my_home",
+    id: "listen.infoBookmarkMenu.myExternalCause.my_home",
   });
   const whereLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.where_are_they_going",
+    id: "listen.infoBookmarkMenu.myExternalCause.where_are_they_going",
   });
   const everythingLabel = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.i_want_everything_with_you",
+    id: "listen.infoBookmarkMenu.myExternalCause.i_want_everything_with_you",
   });
   const outro1Label = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.outro_part_1",
+    id: "listen.infoBookmarkMenu.myExternalCause.outro_part_1",
   });
   const outro2Label = intl.formatMessage({
-    id: "listen.infoBookmarkMenu.outro_part_2",
+    id: "listen.infoBookmarkMenu.myExternalCause.outro_part_2",
   });
   const { color300, color500, color700, lightText, darkText, notesBgUri } =
     useContext(ThemeContext);
@@ -316,7 +316,7 @@ export default function Notes({ navigation }: any) {
     setSelectedSection(title);
     setSectionParam(param);
     setSelectSectionIsVisible(false);
-    setSelectedSectionId(`listen.infoBookmarkMenu.${id}`);
+    setSelectedSectionId(`listen.infoBookmarkMenu.myExternalCause.${id}`);
   };
   const handlePressInSaveNote = () => setSaveNoteColor(color500);
   const handlePressOutSaveNote = () => setSaveNoteColor(color700);
@@ -1053,7 +1053,7 @@ export default function Notes({ navigation }: any) {
           }}
         >
           <FormattedMessage
-            id={`listen.infoBookmarkMenu.${id}`}
+            id={`listen.infoBookmarkMenu.myExternalCause.${id}`}
             defaultMessage={title}
           />
         </Text>

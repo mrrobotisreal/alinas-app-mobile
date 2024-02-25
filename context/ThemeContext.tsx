@@ -294,7 +294,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     axios
       .get(`${serverURL}/getTheme`)
       .then(({ data }) => {
-        console.log("incoming them:", data);
+        console.log("incoming theme:", data);
         setCurrentTheme(data);
         changeTheme(data);
       })
@@ -302,6 +302,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   };
 
   const saveThemeSelection = async (theme: string) => {
+    console.log("saving theme selection:", theme);
     axios
       .post(`${serverURL}/saveThemeSelection`, {
         theme: theme,
@@ -317,20 +318,26 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    console.log("theme current book:", currentBook);
     switch (currentBook) {
       case "My External Cause":
         setHomeBgUri(
           `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
         );
         break;
+      case "The Judge":
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
+        );
+        break;
       case "Passportal":
         setHomeBgUri(
-          `${serverURL}/assets/backgrounds/passportal_front_cover_${currentTheme}.png`
+          `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
         );
         break;
       case "Love Drunk":
         setHomeBgUri(
-          `${serverURL}/assets/backgrounds/love_drunk_front_cover_${currentTheme}.png`
+          `${serverURL}/assets/backgrounds/Love_drunk_front_cover_${currentTheme}.png`
         );
         break;
     }

@@ -286,52 +286,52 @@ export default function Listen() {
   };
 
   const handleLoading = async (sound: Audio.Sound) => {
-    // switch (audioList[currentAudioIndex].uri) {
-    //   case "../assets/audio/000_introduction.m4a":
-    //     await sound.loadAsync(require("../assets/audio/000_introduction.m4a"));
-    //     break;
-    //   case "../assets/audio/001_anatomy_of_everything.m4a":
-    //     await sound.loadAsync(
-    //       require("../assets/audio/001_anatomy_of_everything.m4a")
-    //     );
-    //     break;
-    //   case "../assets/audio/002_my_love.m4a":
-    //     await sound.loadAsync(require("../assets/audio/002_my_love.m4a"));
-    //     break;
-    //   case "../assets/audio/003_my_happiness.m4a":
-    //     await sound.loadAsync(require("../assets/audio/003_my_happiness.m4a"));
-    //     break;
-    //   case "../assets/audio/004_my_strength.m4a":
-    //     await sound.loadAsync(require("../assets/audio/004_my_strength.m4a"));
-    //     break;
-    //   case "../assets/audio/005_my_inspiration_and_my_motivation.m4a":
-    //     await sound.loadAsync(
-    //       require("../assets/audio/005_my_inspiration_and_my_motivation.m4a")
-    //     );
-    //     break;
-    //   case "../assets/audio/006_my_peace.m4a":
-    //     await sound.loadAsync(require("../assets/audio/006_my_peace.m4a"));
-    //     break;
-    //   case "../assets/audio/007_my_home.m4a":
-    //     await sound.loadAsync(require("../assets/audio/007_my_home.m4a"));
-    //     break;
-    //   case "../assets/audio/008_where_are_they_going_where_are_we_going.m4a":
-    //     await sound.loadAsync(
-    //       require("../assets/audio/008_where_are_they_going_where_are_we_going.m4a")
-    //     );
-    //     break;
-    //   case "../assets/audio/009_I_want_everything_with_you.m4a":
-    //     await sound.loadAsync(
-    //       require("../assets/audio/009_I_want_everything_with_you.m4a")
-    //     );
-    //     break;
-    //   case "../assets/audio/outro_part_1.m4a":
-    //     await sound.loadAsync(require("../assets/audio/outro_part_1.m4a"));
-    //     break;
-    //   case "../assets/audio/outro_part_2.m4a":
-    //     await sound.loadAsync(require("../assets/audio/outro_part_2.m4a"));
-    //     break;
-    // }
+    switch (audioList[currentAudioIndex].uri) {
+      case "../assets/audio/000_introduction.m4a":
+        await sound.loadAsync(require("../assets/audio/000_introduction.m4a"));
+        break;
+      case "../assets/audio/001_anatomy_of_everything.m4a":
+        await sound.loadAsync(
+          require("../assets/audio/001_anatomy_of_everything.m4a")
+        );
+        break;
+      case "../assets/audio/002_my_love.m4a":
+        await sound.loadAsync(require("../assets/audio/002_my_love.m4a"));
+        break;
+      case "../assets/audio/003_my_happiness.m4a":
+        await sound.loadAsync(require("../assets/audio/003_my_happiness.m4a"));
+        break;
+      case "../assets/audio/004_my_strength.m4a":
+        await sound.loadAsync(require("../assets/audio/004_my_strength.m4a"));
+        break;
+      case "../assets/audio/005_my_inspiration_and_my_motivation.m4a":
+        await sound.loadAsync(
+          require("../assets/audio/005_my_inspiration_and_my_motivation.m4a")
+        );
+        break;
+      case "../assets/audio/006_my_peace.m4a":
+        await sound.loadAsync(require("../assets/audio/006_my_peace.m4a"));
+        break;
+      case "../assets/audio/007_my_home.m4a":
+        await sound.loadAsync(require("../assets/audio/007_my_home.m4a"));
+        break;
+      case "../assets/audio/008_where_are_they_going_where_are_we_going.m4a":
+        await sound.loadAsync(
+          require("../assets/audio/008_where_are_they_going_where_are_we_going.m4a")
+        );
+        break;
+      case "../assets/audio/009_I_want_everything_with_you.m4a":
+        await sound.loadAsync(
+          require("../assets/audio/009_I_want_everything_with_you.m4a")
+        );
+        break;
+      case "../assets/audio/outro_part_1.m4a":
+        await sound.loadAsync(require("../assets/audio/outro_part_1.m4a"));
+        break;
+      case "../assets/audio/outro_part_2.m4a":
+        await sound.loadAsync(require("../assets/audio/outro_part_2.m4a"));
+        break;
+    }
 
     // below works, but need to rework whole implementation
     // const allLoadedSounds: Audio.Sound[] = [];
@@ -346,16 +346,16 @@ export default function Listen() {
 
     // setAllSounds(allLoadedSounds);
 
-    const id = audioList[currentAudioIndex].id;
-    console.log("audio uri:", audioObjMyExternalCause[id]);
+    // const id = audioList[currentAudioIndex].id;
+    // console.log("audio uri:", audioObjMyExternalCause[id]);
 
-    try {
-      await sound.loadAsync({ uri: audioObjMyExternalCause[id] });
-      console.log("sound loaded successfully");
-    } catch (err) {
-      console.log("HANDLING LOAD ERROR");
-      console.error(err);
-    }
+    // try {
+    //   await sound.loadAsync({ uri: audioObjMyExternalCause[id] });
+    //   console.log("sound loaded successfully");
+    // } catch (err) {
+    //   console.log("HANDLING LOAD ERROR");
+    //   console.error(err);
+    // }
 
     return sound;
   };
@@ -817,7 +817,7 @@ export default function Listen() {
                   }}
                 >
                   <FormattedMessage
-                    id={`listen.infoBookmarkMenu.${audioList[currentAudioIndex].id}`}
+                    id={`listen.infoBookmarkMenu.myExternalCause.${audioList[currentAudioIndex].id}`}
                     defaultMessage={audioList[currentAudioIndex].title}
                   />
                 </Text>
@@ -1778,7 +1778,7 @@ export default function Listen() {
                   }}
                 >
                   <FormattedMessage
-                    id={`listen.infoBookmarkMenu.${audioList[currentAudioIndex].id}`}
+                    id={`listen.infoBookmarkMenu.myExternalCause.${audioList[currentAudioIndex].id}`}
                     defaultMessage={audioList[currentAudioIndex].title}
                   />
                 </Text>

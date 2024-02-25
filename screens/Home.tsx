@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, ReactNode } from "react";
+import { useContext, useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,6 @@ import * as Haptics from "expo-haptics";
 import { FormattedMessage, useIntl } from "react-intl";
 import { serverURL } from "../constants/urls";
 import { Image } from "expo-image";
-import { BookImagesCache } from "../cache/BookImages";
 
 /**
  * Context
@@ -23,7 +22,12 @@ import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
 
-const bookList: string[] = ["My External Cause", "Passportal", "Love Drunk"];
+const bookList: string[] = [
+  "My External Cause",
+  "The Judge",
+  "Passportal",
+  "Love Drunk",
+];
 
 type MenuItem = {
   id: string;
@@ -39,15 +43,12 @@ export default function Home({ navigation }: any) {
   const intl = useIntl();
   const { color300, color500, color700, lightText, homeBgUri, currentTheme } =
     useContext(ThemeContext);
-  const { bookImagesList, MyExternalCause, LoveDrunk, Passportal, imagesObj } =
-    useContext(BookImagesCache);
-  const [bookImage, setBookImage] = useState<ReactNode>(MyExternalCause);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { currentBook, changeBook } = useContext(BookContext);
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
   const [menuIconColor, setMenuIconColor] = useState<string>(color500);
-  const [selectedBook, setSelectedBook] = useState<string>("My External Cause");
+  const [selectedBook, setSelectedBook] = useState<string>(currentBook);
   const [selectedBookIndex, setSelectedBookIndex] = useState<number>(0);
   const [smallBookCoverColor, setSmallBookCoverColor] =
     useState<string>(color300);
@@ -81,13 +82,22 @@ export default function Home({ navigation }: any) {
   ];
 
   useEffect(() => {
+    console.log("selectedBook:", selectedBook);
     setBookUri(homeBgUri);
     switch (selectedBook) {
       case "My External Cause":
         setBookUri(
           `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
         );
-        changeBook("My External Cause");
+        // changeBook("My External Cause");
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
+        break;
+      case "The Judge":
+        setBookUri(
+          `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
+        );
+        // changeBook("The Judge");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
@@ -95,8 +105,7 @@ export default function Home({ navigation }: any) {
         setBookUri(
           `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
         );
-        setBookImage(Passportal);
-        changeBook("Passportal");
+        // changeBook("Passportal");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
@@ -104,22 +113,38 @@ export default function Home({ navigation }: any) {
         setBookUri(
           `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${currentTheme}.png`
         );
-        setBookImage(LoveDrunk);
-        changeBook("Love Drunk");
+        // changeBook("Love Drunk");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         break;
       default:
-        setBookUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
-        );
-        setBookImage(MyExternalCause);
-        changeBook("My External Cause");
-        setMenuIconColor(color500);
-        setSmallBookCoverColor(color300);
+      // setBookUri(
+      //   `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+      // );
+      // changeBook("My External Cause");
+      // setMenuIconColor(color500);
+      // setSmallBookCoverColor(color300);
+      // break;
+    }
+  }, [selectedBook, homeBgUri, color300, color500, color700]);
+
+  useEffect(() => {
+    switch (currentBook) {
+      case "My External Cause":
+        setSelectedBookIndex(0);
+        break;
+      case "The Judge":
+        setSelectedBookIndex(1);
+        break;
+      case "Passportal":
+        setSelectedBookIndex(2);
+        break;
+      case "Love Drunk":
+        setSelectedBookIndex(3);
         break;
     }
-  }, [selectedBook, homeBgUri, color300, color500, color700, imagesObj]);
+    setSelectedBook(currentBook);
+  }, [currentBook]);
 
   /**
    * Functions
@@ -324,6 +349,7 @@ export default function Home({ navigation }: any) {
                 onPressOut={() => setMenuIconColor(color500)}
                 onPress={() => {
                   setMenuIsVisible(true);
+                  changeBook(selectedBook);
                 }}
                 style={{
                   alignContent: "center",
