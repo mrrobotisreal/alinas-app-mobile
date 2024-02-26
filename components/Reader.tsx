@@ -1,6 +1,7 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, RefObject } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
+import { BookContext } from "../context/BookContext";
 import { Animated, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { FormattedMessage } from "react-intl";
@@ -15,9 +16,9 @@ export default function Reader({
   currentPageIndex,
   pagePosition,
 }: ReaderProps) {
-  const pageSVRef = useRef<ScrollView>();
   const { color700, darkText } = useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { pageSVRef } = useContext(BookContext);
   const { textsList } = useGetTexts();
 
   return (

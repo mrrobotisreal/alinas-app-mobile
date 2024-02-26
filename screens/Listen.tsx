@@ -1,6 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import {
   ActivityIndicator,
+  Animated,
+  Easing,
   FlatList,
   Modal,
   Pressable,
@@ -9,7 +11,6 @@ import {
   StyleSheet,
   Text,
   View,
-  ImageBackground,
 } from "react-native";
 import {
   AntDesign,
@@ -21,29 +22,27 @@ import { Audio, AVPlaybackStatus } from "expo-av";
 import { FormattedMessage } from "react-intl";
 import Slider from "@react-native-community/slider";
 import { useGetAudioList } from "../hooks/useGetAudioList";
-import { useGetTexts } from "../hooks/useGetTexts";
-import { Image } from "expo-image";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
 import BackgroundImage from "../components/BackgroundImage";
-import {
-  audioMyExternalCause,
-  audioObjMyExternalCause,
-} from "../constants/assetPaths";
+import Reader from "../components/Reader";
+import * as Haptics from "expo-haptics";
 
 export default function Listen() {
   /**
    * Hooks, State, Context
    */
   const { audioList } = useGetAudioList();
-  const { textsList } = useGetTexts();
-  const { color300, color500, color700, lightText, darkText, listenBgUri } =
+  const { color300, color500, color700, lightText, listenBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
-  const { currentBook } = useContext(BookContext);
+  const { currentBook, pageSVRef } = useContext(BookContext);
+  const [pagePosition, setPagePosition] = useState<Animated.ValueXY>(
+    new Animated.ValueXY({ x: 0, y: 0 })
+  );
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true);
   const [sound, setSound] = useState<Audio.Sound>();
   const [allSounds, setAllSounds] = useState<Audio.Sound[]>([]);
@@ -297,10 +296,24 @@ export default function Listen() {
     if (status?.isLoaded) {
       await sound?.unloadAsync();
     }
-    setCurrentAudioIndex(
-      currentAudioIndex === 0 ? audioList.length - 1 : currentAudioIndex - 1
-    );
-    setCurrentPosition(0);
+    if (infoBookmarkMenuIsVisible) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setTimeout(() => {
+        setCurrentAudioIndex(
+          currentAudioIndex === 0 ? audioList.length - 1 : currentAudioIndex - 1
+        );
+      }, 200);
+      animatePageRight();
+      pageSVRef?.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+    } else {
+      setCurrentAudioIndex(
+        currentAudioIndex === 0 ? audioList.length - 1 : currentAudioIndex - 1
+      );
+      setCurrentPosition(0);
+    }
   };
 
   const handleLoading = async (sound: Audio.Sound) => {
@@ -525,10 +538,45 @@ export default function Listen() {
     if (status?.isLoaded) {
       await sound?.unloadAsync();
     }
-    setCurrentAudioIndex(
-      currentAudioIndex === audioList.length - 1 ? 0 : currentAudioIndex + 1
-    );
-    setCurrentPosition(0);
+    if (infoBookmarkMenuIsVisible) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      setTimeout(() => {
+        setCurrentAudioIndex(
+          currentAudioIndex === audioList.length - 1 ? 0 : currentAudioIndex + 1
+        );
+        setCurrentPosition(0);
+      }, 200);
+      animatePageRight();
+      pageSVRef?.current?.scrollTo({
+        y: 0,
+        animated: true,
+      });
+    } else {
+      setCurrentAudioIndex(
+        currentAudioIndex === audioList.length - 1 ? 0 : currentAudioIndex + 1
+      );
+      setCurrentPosition(0);
+    }
+  };
+  const animatePageRight = () => {
+    Animated.timing(pagePosition, {
+      toValue: { x: 400, y: 0 },
+      duration: 200,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+    setTimeout(() => {
+      setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
+      setTimeout(() => animatePageFromLeft(), 250);
+    }, 300);
+  };
+  const animatePageFromLeft = () => {
+    Animated.timing(pagePosition, {
+      toValue: { x: 0, y: 0 },
+      duration: 200,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
   };
 
   const handleInfoBookmarkPressIn = () => setInfoBookmarkIconColor(color300);
@@ -618,7 +666,7 @@ export default function Listen() {
       <BackgroundImage uri={listenBgUri}>
         <View style={styles.mainContainer}>
           <View style={styles.titleContainer}>
-            <Text
+            {/* <Text
               style={{
                 ...styles.titleText,
                 color: lightText,
@@ -629,8 +677,14 @@ export default function Listen() {
                 id="listen.title"
                 defaultMessage="Listening..."
               />
-            </Text>
+            </Text> */}
           </View>
+          {infoBookmarkMenuIsVisible && (
+            <Reader
+              currentPageIndex={currentAudioIndex}
+              pagePosition={pagePosition}
+            />
+          )}
           <View
             style={{
               ...styles.audioView,
@@ -854,7 +908,8 @@ export default function Listen() {
                   defaultMessage={audioList[currentAudioIndex].title}
                 />
               </Text>
-              <ScrollView
+              <Reader currentPageIndex={currentAudioIndex} />
+              {/* <ScrollView
                 style={{
                   ...styles.scrollView,
                   backgroundColor: color700,
@@ -1537,7 +1592,7 @@ export default function Listen() {
                     });
                   }
                 })}
-              </ScrollView>
+              </ScrollView> */}
               <Pressable
                 style={styles.modalButton}
                 onPress={() => {

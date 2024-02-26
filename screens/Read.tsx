@@ -19,25 +19,23 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { ReactNode, useContext, useRef, useState } from "react";
 import { useGetTexts } from "../hooks/useGetTexts";
 import { useGetAudioList } from "../hooks/useGetAudioList";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
-import { Image } from "expo-image";
 import BackgroundImage from "../components/BackgroundImage";
 import Reader from "../components/Reader";
 
 export default function Read() {
   const intl = useIntl();
-  const pageSVRef = useRef<ScrollView>();
   const { color300, color500, color700, lightText, darkText, readBgUri } =
     useContext(ThemeContext);
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
-  const { currentBook, sectionItems } = useContext(BookContext);
+  const { currentBook, sectionItems, pageSVRef } = useContext(BookContext);
   const { audioList } = useGetAudioList();
   const { textsList } = useGetTexts();
   const [currentPageIndex, setCurrentPageIndex] = useState<number>(0);
@@ -102,7 +100,7 @@ export default function Read() {
       );
     }, 200);
     animatePageRight();
-    pageSVRef.current?.scrollTo({
+    pageSVRef?.current?.scrollTo({
       y: 0,
       animated: true,
     });
@@ -135,7 +133,7 @@ export default function Read() {
     setBookIsOpen(!bookIsOpen);
     setTableOfContentsIsOpen(false);
     setNotepadIsOpen(false);
-    pageSVRef.current?.scrollTo({
+    pageSVRef?.current?.scrollTo({
       y: 0,
       animated: true,
     });
@@ -151,7 +149,7 @@ export default function Read() {
       );
     }, 200);
     animatePageLeft();
-    pageSVRef.current?.scrollTo({
+    pageSVRef?.current?.scrollTo({
       y: 0,
       animated: true,
     });

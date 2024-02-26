@@ -1,4 +1,12 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useState,
+  useRef,
+  MutableRefObject,
+} from "react";
+import { ScrollView } from "react-native";
 import { serverURL } from "../constants/urls";
 import {
   myExternalCauseSectionItems,
@@ -15,6 +23,7 @@ export type BookStateContext = {
   currentBook: string;
   changeBook: (selectedBook: string) => void;
   sectionItems: SectionItem[];
+  pageSVRef?: MutableRefObject<ScrollView | undefined>;
 };
 export type BookContextProps = {
   children?: ReactNode;
@@ -29,6 +38,7 @@ const initialState: BookStateContext = {
 export const BookContext = createContext(initialState);
 
 export const BookContextProvider = ({ children }: BookContextProps) => {
+  const pageSVRef = useRef<ScrollView | undefined>();
   const [currentBook, setCurrentBook] = useState<string>("My External Cause");
   const [sectionItems, setSectionItems] = useState<SectionItem[]>(
     myExternalCauseSectionItems
@@ -84,6 +94,7 @@ export const BookContextProvider = ({ children }: BookContextProps) => {
         currentBook,
         changeBook,
         sectionItems,
+        pageSVRef,
       }}
     >
       {children}
