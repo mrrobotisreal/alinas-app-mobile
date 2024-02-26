@@ -73,22 +73,22 @@ const myExternalCauseAudioList: AudioObject[] = [
 const theJudgeAudioList: AudioObject[] = [
   {
     id: "theJudge.title_page",
-    uri: "",
+    uri: "../assets/audio/theJudge/Chapter1.mp3",
     title: "Title Page",
   },
   {
     id: "theJudge.chapter1",
-    uri: "",
+    uri: "../assets/audio/theJudge/Chapter1.mp3",
     title: "Chapter 1: The judge and the auras",
   },
   {
     id: "theJudge.chapter2",
-    uri: "",
+    uri: "../assets/audio/theJudge/Chapter2.m4a",
     title: "Chapter 2: High profile cases",
   },
   {
     id: "theJudge.chapter3",
-    uri: "",
+    uri: "../assets/audio/theJudge/Chapter2.m4a",
     title: "Chapter 3: Publicity",
   },
 ];
@@ -100,6 +100,8 @@ export function useGetAudioList() {
   );
 
   useEffect(() => {
+    console.log("useGetAudioList currentBook:", currentBook);
+    console.log("useGetAudioList audioList length:", audioList.length);
     switch (currentBook) {
       case "My External Cause":
         setAudioList(myExternalCauseAudioList);

@@ -17,6 +17,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { PlatformContext } from "../context/PlatformContext";
 import { Image } from "expo-image";
+import BackgroundImage from "../components/BackgroundImage";
 
 export default function Settings() {
   const intl = useIntl();
@@ -387,590 +388,283 @@ export default function Settings() {
 
   return (
     <View style={styles.container}>
-      {OS === "ios" ? (
-        <Image
-          source={{
-            uri: settingsBgUri,
-          }}
-          contentFit="cover"
-          transition={100}
-          style={styles.imageBackground}
-        >
-          <View style={styles.mainContainer}>
+      <BackgroundImage uri={settingsBgUri}>
+        <View style={styles.mainContainer}>
+          <View
+            style={{
+              ...styles.topView,
+              borderColor: lightText,
+            }}
+          ></View>
+          {fontIsOpen && (
             <View
               style={{
-                ...styles.topView,
-                borderColor: lightText,
-              }}
-            ></View>
-            {fontIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.font"
-                    defaultMessage="Fonts"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {fontsList.map((item) => {
-                      return (
-                        <FontItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            {translateIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.translate"
-                    defaultMessage="Translations"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {translationsList.map((item) => {
-                      return (
-                        <TranslateItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            {themeIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.theme"
-                    defaultMessage="Themes"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {themesList.map((item) => {
-                      return (
-                        <ThemeItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            <View
-              style={{
-                ...styles.settingsControlsView,
+                ...styles.settingsView,
                 backgroundColor: color700,
                 borderColor: lightText,
-                borderBottomLeftRadius: OS === "ios" ? 50 : 12,
-                borderBottomRightRadius: OS === "ios" ? 50 : 12,
               }}
             >
-              <View style={styles.settingsControls}>
-                <Pressable
-                  onPressIn={handlePressInFont}
-                  onPressOut={handlePressOutFont}
-                  onPress={handlePressFont}
-                >
-                  {!fontIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="format-font"
-                      size={48}
-                      color={fontIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={48}
-                      color={fontIconColor}
-                    />
-                  )}
-                </Pressable>
-                <Pressable
-                  onPressIn={handlePressInTranslate}
-                  onPressOut={handlePressOutTranslate}
-                  onPress={handlePressTranslate}
-                >
-                  {!translateIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="google-translate"
-                      size={64}
-                      color={translateIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={64}
-                      color={translateIconColor}
-                    />
-                  )}
-                </Pressable>
-                <Pressable
-                  onPressIn={handlePressInTheme}
-                  onPressOut={handlePressOutTheme}
-                  onPress={handlePressTheme}
-                >
-                  {!themeIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="theme-light-dark"
-                      size={48}
-                      color={themeIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={48}
-                      color={themeIconColor}
-                    />
-                  )}
-                </Pressable>
+              <Text
+                style={{
+                  ...styles.settingsTitle,
+                  fontFamily: selectedHeavyFont,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="settings.title.font"
+                  defaultMessage="Fonts"
+                />
+              </Text>
+              <View
+                style={{
+                  ...styles.settingsContainer,
+                  backgroundColor: color300,
+                  borderColor: lightText,
+                }}
+              >
+                <ScrollView>
+                  {fontsList.map((item) => {
+                    return (
+                      <FontItem key={item.id} id={item.id} title={item.title} />
+                    );
+                  })}
+                </ScrollView>
               </View>
             </View>
-          </View>
-          <StatusBar
-            hidden={true}
-            translucent={true}
-            backgroundColor="rgba(40,40,40,0.8)"
-            style="dark"
-          />
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={fontInfoIsOpen}
-          >
-            <View style={styles.modal}>
-              <View
-                style={{
-                  ...styles.modalView,
-                  backgroundColor: color700,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.fontInfoTitle,
-                    color: lightText,
-                    textDecorationLine: "underline",
-                    fontFamily: selectedHeavyFont,
-                    fontSize: 28,
-                  }}
-                >
-                  <FormattedMessage
-                    id={`settings.font.${selectedFontTitleId}`}
-                    defaultMessage={"Font Info"}
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.fontInfoView,
-                    backgroundColor: color300,
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...styles.fontInfoText,
-                      color: color700,
-                      fontFamily: selectedFont,
-                      fontSize: 22,
-                    }}
-                  >
-                    <FormattedMessage
-                      id={`settings.font.${"nexaInfo"}`}
-                      defaultMessage={
-                        "Font info and hints can be found here, my world."
-                      }
-                    />
-                  </Text>
-                </View>
-                <Pressable
-                  onPressIn={handlePressInFontInfo}
-                  onPressOut={handlePressOutFontInfo}
-                  onPress={handlePressFontInfo}
-                  style={{
-                    ...styles.menuItem,
-                    borderColor: fontInfoTextColor,
-                    backgroundColor: fontInfoColor,
-                    width: "50%",
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...styles.menuItemText,
-                      color: fontInfoTextColor,
-                      fontFamily: selectedFont,
-                      fontSize: 26,
-                    }}
-                  >
-                    <FormattedMessage
-                      id="notes.close"
-                      defaultMessage={"Close"}
-                    />
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
-        </Image>
-      ) : (
-        <ImageBackground
-          source={{
-            uri: settingsBgUri,
-          }}
-          resizeMode="cover"
-          style={styles.imageBackground}
-        >
-          <View style={styles.mainContainer}>
+          )}
+          {translateIsOpen && (
             <View
               style={{
-                ...styles.topView,
-                borderColor: lightText,
-              }}
-            ></View>
-            {fontIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.font"
-                    defaultMessage="Fonts"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {fontsList.map((item) => {
-                      return (
-                        <FontItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            {translateIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.translate"
-                    defaultMessage="Translations"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {translationsList.map((item) => {
-                      return (
-                        <TranslateItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            {themeIsOpen && (
-              <View
-                style={{
-                  ...styles.settingsView,
-                  backgroundColor: color700,
-                  borderColor: lightText,
-                }}
-              >
-                <Text
-                  style={{
-                    ...styles.settingsTitle,
-                    fontFamily: selectedHeavyFont,
-                    color: lightText,
-                  }}
-                >
-                  <FormattedMessage
-                    id="settings.title.theme"
-                    defaultMessage="Themes"
-                  />
-                </Text>
-                <View
-                  style={{
-                    ...styles.settingsContainer,
-                    backgroundColor: color300,
-                    borderColor: lightText,
-                  }}
-                >
-                  <ScrollView>
-                    {themesList.map((item) => {
-                      return (
-                        <ThemeItem
-                          key={item.id}
-                          id={item.id}
-                          title={item.title}
-                        />
-                      );
-                    })}
-                  </ScrollView>
-                </View>
-              </View>
-            )}
-            <View
-              style={{
-                ...styles.settingsControlsView,
+                ...styles.settingsView,
                 backgroundColor: color700,
                 borderColor: lightText,
-                borderBottomLeftRadius: OS === "ios" ? 50 : 0,
-                borderBottomRightRadius: OS === "ios" ? 50 : 0,
               }}
             >
-              <View style={styles.settingsControls}>
-                <Pressable
-                  onPressIn={handlePressInFont}
-                  onPressOut={handlePressOutFont}
-                  onPress={handlePressFont}
-                >
-                  {!fontIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="format-font"
-                      size={48}
-                      color={fontIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={48}
-                      color={fontIconColor}
-                    />
-                  )}
-                </Pressable>
-                <Pressable
-                  onPressIn={handlePressInTranslate}
-                  onPressOut={handlePressOutTranslate}
-                  onPress={handlePressTranslate}
-                >
-                  {!translateIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="google-translate"
-                      size={64}
-                      color={translateIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={64}
-                      color={translateIconColor}
-                    />
-                  )}
-                </Pressable>
-                <Pressable
-                  onPressIn={handlePressInTheme}
-                  onPressOut={handlePressOutTheme}
-                  onPress={handlePressTheme}
-                >
-                  {!themeIsOpen ? (
-                    <MaterialCommunityIcons
-                      name="theme-light-dark"
-                      size={48}
-                      color={themeIconColor}
-                    />
-                  ) : (
-                    <MaterialCommunityIcons
-                      name="wrench"
-                      size={48}
-                      color={themeIconColor}
-                    />
-                  )}
-                </Pressable>
-              </View>
-            </View>
-          </View>
-          <StatusBar
-            hidden={true}
-            translucent={true}
-            backgroundColor="rgba(40,40,40,0.8)"
-            style="dark"
-          />
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={fontInfoIsOpen}
-          >
-            <View style={styles.modal}>
+              <Text
+                style={{
+                  ...styles.settingsTitle,
+                  fontFamily: selectedHeavyFont,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="settings.title.translate"
+                  defaultMessage="Translations"
+                />
+              </Text>
               <View
                 style={{
-                  ...styles.modalView,
-                  backgroundColor: color700,
+                  ...styles.settingsContainer,
+                  backgroundColor: color300,
+                  borderColor: lightText,
+                }}
+              >
+                <ScrollView>
+                  {translationsList.map((item) => {
+                    return (
+                      <TranslateItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </View>
+          )}
+          {themeIsOpen && (
+            <View
+              style={{
+                ...styles.settingsView,
+                backgroundColor: color700,
+                borderColor: lightText,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.settingsTitle,
+                  fontFamily: selectedHeavyFont,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="settings.title.theme"
+                  defaultMessage="Themes"
+                />
+              </Text>
+              <View
+                style={{
+                  ...styles.settingsContainer,
+                  backgroundColor: color300,
+                  borderColor: lightText,
+                }}
+              >
+                <ScrollView>
+                  {themesList.map((item) => {
+                    return (
+                      <ThemeItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </View>
+          )}
+          <View
+            style={{
+              ...styles.settingsControlsView,
+              backgroundColor: color700,
+              borderColor: lightText,
+              borderBottomLeftRadius: OS === "ios" ? 50 : 12,
+              borderBottomRightRadius: OS === "ios" ? 50 : 12,
+            }}
+          >
+            <View style={styles.settingsControls}>
+              <Pressable
+                onPressIn={handlePressInFont}
+                onPressOut={handlePressOutFont}
+                onPress={handlePressFont}
+              >
+                {!fontIsOpen ? (
+                  <MaterialCommunityIcons
+                    name="format-font"
+                    size={48}
+                    color={fontIconColor}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="wrench"
+                    size={48}
+                    color={fontIconColor}
+                  />
+                )}
+              </Pressable>
+              <Pressable
+                onPressIn={handlePressInTranslate}
+                onPressOut={handlePressOutTranslate}
+                onPress={handlePressTranslate}
+              >
+                {!translateIsOpen ? (
+                  <MaterialCommunityIcons
+                    name="google-translate"
+                    size={64}
+                    color={translateIconColor}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="wrench"
+                    size={64}
+                    color={translateIconColor}
+                  />
+                )}
+              </Pressable>
+              <Pressable
+                onPressIn={handlePressInTheme}
+                onPressOut={handlePressOutTheme}
+                onPress={handlePressTheme}
+              >
+                {!themeIsOpen ? (
+                  <MaterialCommunityIcons
+                    name="theme-light-dark"
+                    size={48}
+                    color={themeIconColor}
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="wrench"
+                    size={48}
+                    color={themeIconColor}
+                  />
+                )}
+              </Pressable>
+            </View>
+          </View>
+        </View>
+        <StatusBar
+          hidden={true}
+          translucent={true}
+          backgroundColor="rgba(40,40,40,0.8)"
+          style="dark"
+        />
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={fontInfoIsOpen}
+        >
+          <View style={styles.modal}>
+            <View
+              style={{
+                ...styles.modalView,
+                backgroundColor: color700,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.fontInfoTitle,
+                  color: lightText,
+                  textDecorationLine: "underline",
+                  fontFamily: selectedHeavyFont,
+                  fontSize: 28,
+                }}
+              >
+                <FormattedMessage
+                  id={`settings.font.${selectedFontTitleId}`}
+                  defaultMessage={"Font Info"}
+                />
+              </Text>
+              <View
+                style={{
+                  ...styles.fontInfoView,
+                  backgroundColor: color300,
                 }}
               >
                 <Text
                   style={{
-                    ...styles.fontInfoTitle,
-                    color: lightText,
-                    textDecorationLine: "underline",
-                    fontFamily: selectedHeavyFont,
-                    fontSize: 28,
+                    ...styles.fontInfoText,
+                    color: color700,
+                    fontFamily: selectedFont,
+                    fontSize: 22,
                   }}
                 >
                   <FormattedMessage
-                    id={`settings.font.${selectedFontTitleId}`}
-                    defaultMessage={"Font Info"}
+                    id={`settings.font.${"nexaInfo"}`}
+                    defaultMessage={
+                      "Font info and hints can be found here, my world."
+                    }
                   />
                 </Text>
-                <View
-                  style={{
-                    ...styles.fontInfoView,
-                    backgroundColor: color300,
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...styles.fontInfoText,
-                      color: color700,
-                      fontFamily: selectedFont,
-                      fontSize: 22,
-                    }}
-                  >
-                    <FormattedMessage
-                      id={`settings.font.${"nexaInfo"}`}
-                      defaultMessage={
-                        "Font info and hints can be found here, my world."
-                      }
-                    />
-                  </Text>
-                </View>
-                <Pressable
-                  onPressIn={handlePressInFontInfo}
-                  onPressOut={handlePressOutFontInfo}
-                  onPress={handlePressFontInfo}
-                  style={{
-                    ...styles.menuItem,
-                    borderColor: fontInfoTextColor,
-                    backgroundColor: fontInfoColor,
-                    width: "50%",
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...styles.menuItemText,
-                      color: fontInfoTextColor,
-                      fontFamily: selectedFont,
-                      fontSize: 26,
-                    }}
-                  >
-                    <FormattedMessage
-                      id="notes.close"
-                      defaultMessage={"Close"}
-                    />
-                  </Text>
-                </Pressable>
               </View>
+              <Pressable
+                onPressIn={handlePressInFontInfo}
+                onPressOut={handlePressOutFontInfo}
+                onPress={handlePressFontInfo}
+                style={{
+                  ...styles.menuItem,
+                  borderColor: fontInfoTextColor,
+                  backgroundColor: fontInfoColor,
+                  width: "50%",
+                }}
+              >
+                <Text
+                  style={{
+                    ...styles.menuItemText,
+                    color: fontInfoTextColor,
+                    fontFamily: selectedFont,
+                    fontSize: 26,
+                  }}
+                >
+                  <FormattedMessage id="notes.close" defaultMessage={"Close"} />
+                </Text>
+              </Pressable>
             </View>
-          </Modal>
-        </ImageBackground>
-      )}
+          </View>
+        </Modal>
+      </BackgroundImage>
     </View>
   );
 }
