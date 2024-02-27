@@ -382,9 +382,9 @@ const myExternalCauseTextsList: TextListObject[] = [
         title: "my_peace_title",
       },
       {
-        id: "textsList.my_peace_content",
+        id: "textsList.my_peace_content.p1",
         type: "chapter_content",
-        title: "my_peace_content",
+        title: "my_peace_content.p1",
         // imageUri: [
         //   // "..assets/images/my_peace/ripple.png",
         //   // "..assets/images/my_peace/wave.png",
@@ -398,6 +398,41 @@ const myExternalCauseTextsList: TextListObject[] = [
         //   `${serverURL}/assets/myExternalCause_images/my_peace/galaxy.png`,
         // ],
       },
+      {
+        id: "textsList.my_peace_content.p2",
+        type: "chapter_content",
+        title: "my_peace_content.p2",
+      },
+      {
+        id: "textsList.my_peace_content.p3",
+        type: "chapter_content",
+        title: "my_peace_content.p3",
+      },
+      {
+        id: "textsList.my_peace_content.p4",
+        type: "chapter_content",
+        title: "my_peace_content.p4",
+      },
+      {
+        id: "textsList.my_peace_content.p5",
+        type: "chapter_content",
+        title: "my_peace_content.p5",
+      },
+      {
+        id: "textsList.my_peace_content.p6",
+        type: "chapter_content",
+        title: "my_peace_content.p6",
+      },
+      {
+        id: "textsList.my_peace_content.p7",
+        type: "chapter_content",
+        title: "my_peace_content.p7",
+      },
+      {
+        id: "textsList.my_peace_content.p8",
+        type: "chapter_content",
+        title: "my_peace_content.p8",
+      },
     ],
   },
   {
@@ -410,9 +445,9 @@ const myExternalCauseTextsList: TextListObject[] = [
         title: "my_home_title",
       },
       {
-        id: "textsList.my_home_content",
+        id: "textsList.my_home_content.p1",
         type: "chapter_content",
-        title: "my_home_content",
+        title: "my_home_content.p1",
         // imageUri: [
         //   // "..assets/images/my_home/alina.png",
         //   // "..assets/images/my_home/pajamas.png",
@@ -425,6 +460,41 @@ const myExternalCauseTextsList: TextListObject[] = [
         //   `${serverURL}/assets/myExternalCause_images/my_home/portal.png`,
         //   `${serverURL}/assets/myExternalCause_images/my_home/river.png`,
         // ],
+      },
+      {
+        id: "textsList.my_home_content.p2",
+        type: "chapter_content",
+        title: "my_home_content.p2",
+      },
+      {
+        id: "textsList.my_home_content.p3",
+        type: "chapter_content",
+        title: "my_home_content.p3",
+      },
+      {
+        id: "textsList.my_home_content.p4",
+        type: "chapter_content",
+        title: "my_home_content.p4",
+      },
+      {
+        id: "textsList.my_home_content.p5",
+        type: "chapter_content",
+        title: "my_home_content.p5",
+      },
+      {
+        id: "textsList.my_home_content.p6",
+        type: "chapter_content",
+        title: "my_home_content.p6",
+      },
+      {
+        id: "textsList.my_home_content.p7",
+        type: "chapter_content",
+        title: "my_home_content.p7",
+      },
+      {
+        id: "textsList.my_home_content.p8",
+        type: "chapter_content",
+        title: "my_home_content.p8",
       },
     ],
   },
@@ -458,9 +528,54 @@ const myExternalCauseTextsList: TextListObject[] = [
         title: "i_want_everything_with_you_title",
       },
       {
-        id: "textsList.i_want_everything_with_you_content",
+        id: "textsList.i_want_everything_with_you_content.p1",
         type: "chapter_content",
-        title: "i_want_everything_with_you_content",
+        title: "i_want_everything_with_you_content.p1",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p2",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p2",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p3",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p3",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p4",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p4",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p5",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p5",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p6",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p6",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p7",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p7",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p8",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p8",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p9",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p9",
+      },
+      {
+        id: "textsList.i_want_everything_with_you_content.p10",
+        type: "chapter_content",
+        title: "i_want_everything_with_you_content.p10",
       },
       {
         id: "textsList.the_end",
@@ -548,12 +663,72 @@ const theJudgeTextsList: TextListObject[] = [
         title: "chapter_1_title",
       },
       {
-        id: "theJudgeTextsList.chapter_1_content",
+        id: "theJudgeTextsList.chapter_1_content.p1",
         type: "chapter_content",
-        title: "chapter_1_content",
+        title: "chapter_1_content.p1",
         // imageUri: [
         //   `${serverURL}/assets/theJudge_images/chapter1_defendant.png`,
         // ],
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p2",
+        type: "chapter_content",
+        title: "chapter_1_content.p2",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p3",
+        type: "chapter_content",
+        title: "chapter_1_content.p3",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p4",
+        type: "chapter_content",
+        title: "chapter_1_content.p4",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p5",
+        type: "chapter_content",
+        title: "chapter_1_content.p5",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p6",
+        type: "chapter_content",
+        title: "chapter_1_content.p6",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p7",
+        type: "chapter_content",
+        title: "chapter_1_content.p7",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p8",
+        type: "chapter_content",
+        title: "chapter_1_content.p8",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p9",
+        type: "chapter_content",
+        title: "chapter_1_content.p9",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p10",
+        type: "chapter_content",
+        title: "chapter_1_content.p10",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p11",
+        type: "chapter_content",
+        title: "chapter_1_content.p11",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p12",
+        type: "chapter_content",
+        title: "chapter_1_content.p12",
+      },
+      {
+        id: "theJudgeTextsList.chapter_1_content.p13",
+        type: "chapter_content",
+        title: "chapter_1_content.p13",
       },
     ],
   },
@@ -567,10 +742,160 @@ const theJudgeTextsList: TextListObject[] = [
         title: "chapter_2_title",
       },
       {
-        id: "theJudgeTextsList.chapter_2_content",
+        id: "theJudgeTextsList.chapter_2_content.p1",
         type: "chapter_content",
-        title: "chapter_2_content",
+        title: "chapter_2_content.p1",
         // imageUri: [`${serverURL}/assets/theJudge_images/chapter2_office.png`],
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p2",
+        type: "chapter_content",
+        title: "chapter_2_content.p2",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p3",
+        type: "chapter_content",
+        title: "chapter_2_content.p3",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p4",
+        type: "chapter_content",
+        title: "chapter_2_content.p4",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p5",
+        type: "chapter_content",
+        title: "chapter_2_content.p5",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p6",
+        type: "chapter_content",
+        title: "chapter_2_content.p6",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p7",
+        type: "chapter_content",
+        title: "chapter_2_content.p7",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p8",
+        type: "chapter_content",
+        title: "chapter_2_content.p8",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p9",
+        type: "chapter_content",
+        title: "chapter_2_content.p9",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p10",
+        type: "chapter_content",
+        title: "chapter_2_content.p10",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p11",
+        type: "chapter_content",
+        title: "chapter_2_content.p11",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p12",
+        type: "chapter_content",
+        title: "chapter_2_content.p12",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p13",
+        type: "chapter_content",
+        title: "chapter_2_content.p13",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p14",
+        type: "chapter_content",
+        title: "chapter_2_content.p14",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p15",
+        type: "chapter_content",
+        title: "chapter_2_content.p15",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p16",
+        type: "chapter_content",
+        title: "chapter_2_content.p16",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p17",
+        type: "chapter_content",
+        title: "chapter_2_content.p17",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p18",
+        type: "chapter_content",
+        title: "chapter_2_content.p18",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p19",
+        type: "chapter_content",
+        title: "chapter_2_content.p19",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p20",
+        type: "chapter_content",
+        title: "chapter_2_content.p20",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p21",
+        type: "chapter_content",
+        title: "chapter_2_content.p21",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p22",
+        type: "chapter_content",
+        title: "chapter_2_content.p22",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p23",
+        type: "chapter_content",
+        title: "chapter_2_content.p23",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p24",
+        type: "chapter_content",
+        title: "chapter_2_content.p24",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p25",
+        type: "chapter_content",
+        title: "chapter_2_content.p25",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p26",
+        type: "chapter_content",
+        title: "chapter_2_content.p26",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p27",
+        type: "chapter_content",
+        title: "chapter_2_content.p27",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p28",
+        type: "chapter_content",
+        title: "chapter_2_content.p28",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p29",
+        type: "chapter_content",
+        title: "chapter_2_content.p29",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p30",
+        type: "chapter_content",
+        title: "chapter_2_content.p30",
+      },
+      {
+        id: "theJudgeTextsList.chapter_2_content.p31",
+        type: "chapter_content",
+        title: "chapter_2_content.p31",
       },
     ],
   },
