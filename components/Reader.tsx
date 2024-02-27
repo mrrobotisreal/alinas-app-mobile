@@ -1,4 +1,4 @@
-import { useContext, useRef, RefObject } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { BookContext } from "../context/BookContext";
@@ -215,69 +215,69 @@ export default function Reader({
                           </Text>
                         );
                       case "chapter_content":
-                        if (comp.imageUri && comp.imageUri?.length > 0) {
-                          return (
-                            <View key={comp.id} style={styles.imageContainer}>
-                              {comp.imageUri?.map((src) => {
-                                return (
-                                  <View
-                                    key={src}
-                                    style={{
-                                      width: "100%",
-                                      height: "100%",
-                                      // marginTop: 40,
-                                      // marginBottom: 40,
-                                    }}
-                                  >
-                                    <Image
-                                      source={{
-                                        uri: src,
-                                      }}
-                                      style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        borderRadius: 12,
-                                      }}
-                                      contentFit="contain"
-                                    />
-                                  </View>
-                                );
-                              })}
-                              <Text
-                                style={{
-                                  ...styles.chapterContent,
-                                  color: darkText,
-                                  fontFamily: selectedFont,
-                                }}
-                              >
-                                <FormattedMessage
-                                  id={comp.id}
-                                  defaultMessage={comp.title}
-                                  values={{
-                                    i: (chunks) => (
-                                      <Text
-                                        style={{
-                                          fontFamily: selectedHeavyFont,
-                                        }}
-                                      >
-                                        {chunks}
-                                      </Text>
-                                    ),
-                                    u: (chunks) => (
-                                      <Text
-                                        style={{
-                                          textDecorationLine: "underline",
-                                        }}
-                                      >
-                                        {chunks}
-                                      </Text>
-                                    ),
-                                  }}
-                                />
-                              </Text>
-                            </View>
-                          );
-                        }
+                        // if (comp.imageUri && comp.imageUri?.length > 0) {
+                        //   return (
+                        // <View key={comp.id} style={styles.imageContainer}>
+                        //   {comp.imageUri?.map((src) => {
+                        //     return (
+                        //       <View
+                        //         key={src}
+                        //         style={{
+                        //           width: "100%",
+                        //           height: "100%",
+                        //           // marginTop: 40,
+                        //           // marginBottom: 40,
+                        //         }}
+                        //       >
+                        //         <Image
+                        //           source={{
+                        //             uri: src,
+                        //           }}
+                        //           style={{
+                        //             width: "100%",
+                        //             height: "100%",
+                        //             borderRadius: 12,
+                        //           }}
+                        //           contentFit="contain"
+                        //         />
+                        //       </View>
+                        //     );
+                        //   })}
+                        //   <Text
+                        //     style={{
+                        //       ...styles.chapterContent,
+                        //       color: darkText,
+                        //       fontFamily: selectedFont,
+                        //     }}
+                        //   >
+                        //     <FormattedMessage
+                        //       id={comp.id}
+                        //       defaultMessage={comp.title}
+                        //       values={{
+                        //         i: (chunks) => (
+                        //           <Text
+                        //             style={{
+                        //               fontFamily: selectedHeavyFont,
+                        //             }}
+                        //           >
+                        //             {chunks}
+                        //           </Text>
+                        //         ),
+                        //         u: (chunks) => (
+                        //           <Text
+                        //             style={{
+                        //               textDecorationLine: "underline",
+                        //             }}
+                        //           >
+                        //             {chunks}
+                        //           </Text>
+                        //         ),
+                        //       }}
+                        //     />
+                        //   </Text>
+                        // </View>
+                        //   );
+                        // }
                         return (
                           <Text
                             key={comp.id}
@@ -312,6 +312,36 @@ export default function Reader({
                               }}
                             />
                           </Text>
+                        );
+                      case "image":
+                        return (
+                          // <View key={comp.id} style={styles.imageContainer}>
+                          comp.imageUri?.map((src) => {
+                            return (
+                              <View
+                                key={src}
+                                style={{
+                                  width: "100%",
+                                  height: "100%",
+                                  // marginTop: 40,
+                                  // marginBottom: 40,
+                                }}
+                              >
+                                <Image
+                                  source={{
+                                    uri: src,
+                                  }}
+                                  style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    borderRadius: 12,
+                                  }}
+                                  contentFit="contain"
+                                />
+                              </View>
+                            );
+                          })
+                          // </View>
                         );
                       default:
                         return (
@@ -361,6 +391,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   bookView: {
+    flex: 1,
     height: "80%",
     width: "100%",
     borderWidth: 6,
