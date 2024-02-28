@@ -83,6 +83,7 @@ export default function Read() {
     setTableOfContentsIsOpen(!tableOfContentsIsOpen);
     setBookIsOpen(false);
     setNotepadIsOpen(false);
+    setSelectSectionIsVisible(false);
   };
   const handlePressMenuItem = (i: number) => {
     setCurrentPageIndex(i);
@@ -133,6 +134,7 @@ export default function Read() {
     setBookIsOpen(!bookIsOpen);
     setTableOfContentsIsOpen(false);
     setNotepadIsOpen(false);
+    setSelectSectionIsVisible(false);
     pageSVRef?.current?.scrollTo({
       y: 0,
       animated: true,
@@ -183,15 +185,22 @@ export default function Read() {
     setNotepadIsOpen(!notepadIsOpen);
     setTableOfContentsIsOpen(false);
     setBookIsOpen(false);
+    setSelectSectionIsVisible(false);
   };
   const handlePressInSelectSection = () => setSelectSectionColor(color500);
   const handlePressOutSelectSection = () => setSelectSectionColor(color700);
   const handlePressSelectSection = () => {
+    setTableOfContentsIsOpen(false);
+    setBookIsOpen(false);
+    setNotepadIsOpen(false);
     setSelectSectionIsVisible(true);
   };
   const handleSelectSection = (title: string, id: string) => {
     setSelectedSection(title);
+    setTableOfContentsIsOpen(false);
+    setBookIsOpen(false);
     setSelectSectionIsVisible(false);
+    setNotepadIsOpen(true);
     setSelectedSectionId(`listen.infoBookmarkMenu.myExternalCause.${id}`);
   };
   const handlePressInSaveNote = () => setSaveNoteColor(color500);
@@ -201,13 +210,19 @@ export default function Read() {
     // create hook to call server with axios
     // on success or failure, show toast
     if (!selectedSection || selectedSection === "") {
-      ToastAndroid.show(toastDropdownText, ToastAndroid.SHORT);
+      if (OS === "android") {
+        ToastAndroid.show(toastDropdownText, ToastAndroid.SHORT);
+      }
       return;
     } else if (!subjectText || subjectText === "") {
-      ToastAndroid.show(toastSubjectText, ToastAndroid.SHORT);
+      if (OS === "android") {
+        ToastAndroid.show(toastSubjectText, ToastAndroid.SHORT);
+      }
       return;
     } else if (!noteText || noteText === "") {
-      ToastAndroid.show(toastNoteTextText, ToastAndroid.SHORT);
+      if (OS === "android") {
+        ToastAndroid.show(toastNoteTextText, ToastAndroid.SHORT);
+      }
       return;
     }
     setSelectedSection("General");
@@ -266,13 +281,13 @@ export default function Read() {
       <BackgroundImage uri={readBgUri}>
         <View style={styles.mainContainer}>
           <View style={styles.topView}></View>
-          {!bookIsOpen ? null : (
+          {bookIsOpen && (
             <Reader
               currentPageIndex={currentPageIndex}
               pagePosition={pagePosition}
             />
           )}
-          {!tableOfContentsIsOpen ? null : (
+          {tableOfContentsIsOpen && (
             <View
               style={{
                 ...styles.bookView,
@@ -318,7 +333,7 @@ export default function Read() {
               </View>
             </View>
           )}
-          {!notepadIsOpen ? null : (
+          {notepadIsOpen && (
             <View
               style={{
                 ...styles.bookView,
@@ -475,6 +490,51 @@ export default function Read() {
               </Pressable>
             </View>
           )}
+          {selectSectionIsVisible && (
+            <View
+              style={{
+                ...styles.bookView,
+                backgroundColor: color700,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.menuItemText,
+                  fontFamily: selectedHeavyFont,
+                  textDecorationLine: "underline",
+                  textAlign: "center",
+                  fontSize: 22,
+                  color: lightText,
+                }}
+              >
+                <FormattedMessage
+                  id="read.selectSection"
+                  defaultMessage="Select a section"
+                />
+              </Text>
+              <View
+                style={{
+                  ...styles.page,
+                  backgroundColor: color300,
+                  height: "80%",
+                  paddingTop: 10,
+                }}
+              >
+                <ScrollView>
+                  {sectionItems.map((item) => {
+                    return (
+                      <SectionItem
+                        key={item.id}
+                        id={item.id}
+                        title={item.title}
+                        onPress={() => handleSelectSection(item.title, item.id)}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            </View>
+          )}
           <View
             style={{
               ...styles.bookControlsView,
@@ -565,7 +625,7 @@ export default function Read() {
             </View>
           </View>
         </View>
-        <Modal
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={selectSectionIsVisible}
@@ -613,7 +673,7 @@ export default function Read() {
               </ScrollView>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
       </BackgroundImage>
     </View>
   );
