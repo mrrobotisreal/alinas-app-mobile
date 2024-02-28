@@ -315,6 +315,26 @@ export default function Listen() {
       setCurrentPosition(0);
     }
   };
+  const animatePageRight = () => {
+    Animated.timing(pagePosition, {
+      toValue: { x: 400, y: 0 },
+      duration: 200,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+    setTimeout(() => {
+      setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
+      setTimeout(() => animatePageFromLeft(), 250);
+    }, 300);
+  };
+  const animatePageFromLeft = () => {
+    Animated.timing(pagePosition, {
+      toValue: { x: 0, y: 0 },
+      duration: 200,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  };
 
   const handleLoading = async (sound: Audio.Sound) => {
     if (currentBook === "My External Cause") {
@@ -546,7 +566,7 @@ export default function Listen() {
         );
         setCurrentPosition(0);
       }, 200);
-      animatePageRight();
+      animatePageLeft();
       pageSVRef?.current?.scrollTo({
         y: 0,
         animated: true,
@@ -558,19 +578,20 @@ export default function Listen() {
       setCurrentPosition(0);
     }
   };
-  const animatePageRight = () => {
+  const animatePageLeft = () => {
     Animated.timing(pagePosition, {
-      toValue: { x: 400, y: 0 },
+      toValue: { x: -400, y: 0 },
       duration: 200,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
     setTimeout(() => {
       setPagePosition(new Animated.ValueXY({ x: 0, y: 0 }));
-      setTimeout(() => animatePageFromLeft(), 250);
+      setTimeout(() => animatePageFromRight(), 250);
     }, 300);
+    // setTimeout(() => animatePageFromRight(), 350);
   };
-  const animatePageFromLeft = () => {
+  const animatePageFromRight = () => {
     Animated.timing(pagePosition, {
       toValue: { x: 0, y: 0 },
       duration: 200,
@@ -801,18 +822,21 @@ export default function Listen() {
                 onPress={handleInfoBookmarkPress}
                 onPressIn={handleInfoBookmarkPressIn}
                 onPressOut={handleInfoBookmarkPressOut}
+                disabled
               >
                 {infoBookmarkIsOpen ? (
                   <FontAwesome5
                     name="book-reader"
                     size={48}
-                    color={infoBookmarkIconColor}
+                    // color={infoBookmarkIconColor}
+                    color="#a7a7a7"
                   />
                 ) : (
                   <MaterialCommunityIcons
                     name="book-information-variant"
                     size={48}
-                    color={infoBookmarkIconColor}
+                    // color={infoBookmarkIconColor}
+                    color="#a7a7a7"
                   />
                 )}
               </Pressable>
