@@ -45,7 +45,6 @@ export default function Read() {
   const [tableOfContentsIsOpen, setTableOfContentsIsOpen] =
     useState<boolean>(false);
   const [menuIconColor, setMenuIconColor] = useState<string>("#FFFFFF");
-  const [bookId, setBookId] = useState<string>(audioList[0].id);
   const [bookIsOpen, setBookIsOpen] = useState<boolean>(false);
   const [bookIsOpenColor, setBookIsOpenColor] = useState<string>("#FFFFFF");
   const [previousPageIconColor, setPreviousPageIconColor] =
@@ -97,7 +96,7 @@ export default function Read() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(
-        currentPageIndex === 0 ? audioList.length - 1 : currentPageIndex - 1
+        currentPageIndex === 0 ? textsList.length - 1 : currentPageIndex - 1
       );
     }, 200);
     animatePageRight();
@@ -147,7 +146,7 @@ export default function Read() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(
-        currentPageIndex === audioList.length - 1 ? 0 : currentPageIndex + 1
+        currentPageIndex === textsList.length - 1 ? 0 : currentPageIndex + 1
       );
     }, 200);
     animatePageLeft();
@@ -296,10 +295,10 @@ export default function Read() {
             >
               <View style={styles.page}>
                 <ScrollView>
-                  {audioList.map((item, i) => {
+                  {textsList.map((item, i) => {
                     return (
                       <Pressable
-                        key={item.id}
+                        key={item.title}
                         onPress={() => handlePressMenuItem(i)}
                       >
                         <MenuItem
@@ -314,15 +313,26 @@ export default function Read() {
                               ...styles.menuItemText,
                               color: darkText,
                               fontFamily:
-                                audioList[currentPageIndex].title === item.title
+                                textsList[currentPageIndex].title === item.title
                                   ? selectedHeavyFont
                                   : selectedFont,
                               textAlign: "center",
                             }}
                           >
                             <FormattedMessage
-                              id={`listen.infoBookmarkMenu.${item.id}`}
+                              id={`${item.id}`}
                               defaultMessage={item.title}
+                              values={{
+                                u: (chunks) => (
+                                  <Text
+                                    style={{
+                                      textDecorationLine: "underline",
+                                    }}
+                                  >
+                                    {chunks}
+                                  </Text>
+                                ),
+                              }}
                             />
                           </Text>
                         </MenuItem>

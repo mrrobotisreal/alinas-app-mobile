@@ -36,332 +36,663 @@ export default function Reader({
           pagePosition.getLayout(),
         ]}
       >
-        <ScrollView ref={pageSVRef}>
-          {textsList.map((txt) => {
+        <ScrollView
+          // contentContainerStyle={{
+          //   alignItems: "center",
+          //   height: "100%",
+          //   width: "100%",
+          // }}
+          ref={pageSVRef}
+        >
+          {textsList[currentPageIndex].components.map((comp) => {
+            switch (comp.type) {
+              case "main_title":
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.mainTitle,
+                      color: darkText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                      values={{
+                        s: (chunks) => (
+                          <Text
+                            style={{
+                              textDecorationLine: "line-through",
+                            }}
+                          >
+                            {chunks}
+                          </Text>
+                        ),
+                      }}
+                    />
+                  </Text>
+                );
+              case "main_subtitle":
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.mainSubtitle,
+                      color: darkText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                    />
+                  </Text>
+                );
+              case "author":
+                if (comp.imageUri && comp.imageUri?.length > 0) {
+                  return (
+                    <View key={comp.id} style={styles.imageContainer}>
+                      <Text
+                        key={comp.id}
+                        style={{
+                          ...styles.author,
+                          color: darkText,
+                          fontFamily: selectedFont,
+                          marginVertical: 4,
+                          paddingVertical: 4,
+                        }}
+                      >
+                        <FormattedMessage
+                          id={comp.id}
+                          defaultMessage={comp.title}
+                          values={{
+                            b: (chunks) => (
+                              <Text
+                                style={{
+                                  fontFamily: selectedHeavyFont,
+                                }}
+                              >
+                                {chunks}
+                              </Text>
+                            ),
+                          }}
+                        />
+                      </Text>
+                      {comp.imageUri?.map((src) => {
+                        return (
+                          <View
+                            key={src}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              marginTop: 20,
+                              borderRadius: 12,
+                              // marginBottom: 10,
+                            }}
+                          >
+                            <Image
+                              source={{
+                                uri: src,
+                              }}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: 12,
+                              }}
+                              contentFit="contain"
+                            />
+                          </View>
+                        );
+                      })}
+                    </View>
+                  );
+                }
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.author,
+                      color: darkText,
+                      fontFamily: selectedFont,
+                      marginVertical: 4,
+                      paddingVertical: 4,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                      values={{
+                        b: (chunks) => (
+                          <Text
+                            style={{
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            {chunks}
+                          </Text>
+                        ),
+                      }}
+                    />
+                  </Text>
+                );
+              case "section_title":
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.sectionTitle,
+                      color: darkText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                      values={{
+                        u: (chunks) => (
+                          <Text
+                            style={{
+                              textDecorationLine: "underline",
+                            }}
+                          >
+                            {chunks}
+                          </Text>
+                        ),
+                      }}
+                    />
+                  </Text>
+                );
+              case "chapter_title":
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.chapterTitle,
+                      color: darkText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                    />
+                  </Text>
+                );
+              case "chapter_content":
+                // if (comp.imageUri && comp.imageUri?.length > 0) {
+                //   return (
+                // <View key={comp.id} style={styles.imageContainer}>
+                //   {comp.imageUri?.map((src) => {
+                //     return (
+                //       <View
+                //         key={src}
+                //         style={{
+                //           width: "100%",
+                //           height: "100%",
+                //           // marginTop: 40,
+                //           // marginBottom: 40,
+                //         }}
+                //       >
+                //         <Image
+                //           source={{
+                //             uri: src,
+                //           }}
+                //           style={{
+                //             width: "100%",
+                //             height: "100%",
+                //             borderRadius: 12,
+                //           }}
+                //           contentFit="contain"
+                //         />
+                //       </View>
+                //     );
+                //   })}
+                //   <Text
+                //     style={{
+                //       ...styles.chapterContent,
+                //       color: darkText,
+                //       fontFamily: selectedFont,
+                //     }}
+                //   >
+                //     <FormattedMessage
+                //       id={comp.id}
+                //       defaultMessage={comp.title}
+                //       values={{
+                //         i: (chunks) => (
+                //           <Text
+                //             style={{
+                //               fontFamily: selectedHeavyFont,
+                //             }}
+                //           >
+                //             {chunks}
+                //           </Text>
+                //         ),
+                //         u: (chunks) => (
+                //           <Text
+                //             style={{
+                //               textDecorationLine: "underline",
+                //             }}
+                //           >
+                //             {chunks}
+                //           </Text>
+                //         ),
+                //       }}
+                //     />
+                //   </Text>
+                // </View>
+                //   );
+                // }
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.chapterContent,
+                      color: darkText,
+                      fontFamily: selectedFont,
+                    }}
+                  >
+                    <FormattedMessage
+                      id={comp.id}
+                      defaultMessage={comp.title}
+                      values={{
+                        i: (chunks) => (
+                          <Text
+                            style={{
+                              fontFamily: selectedHeavyFont,
+                            }}
+                          >
+                            {chunks}
+                          </Text>
+                        ),
+                        u: (chunks) => (
+                          <Text
+                            style={{
+                              textDecorationLine: "underline",
+                            }}
+                          >
+                            {chunks}
+                          </Text>
+                        ),
+                      }}
+                    />
+                  </Text>
+                );
+              case "image":
+                return (
+                  // <View key={comp.id} style={styles.imageContainer}>
+                  comp.imageUri?.map((src) => {
+                    return (
+                      <View
+                        key={src}
+                        style={{
+                          // width: "100%",
+                          // height: "100%",
+                          width: comp.size?.width || 400,
+                          height: comp.size?.height || 400,
+                          alignContent: "center",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                      >
+                        <Image
+                          source={{
+                            uri: src,
+                          }}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: 12,
+                          }}
+                          contentFit="contain"
+                          // resizeMode="contain"
+                        />
+                      </View>
+                    );
+                  })
+                  // </View>
+                );
+              default:
+                return (
+                  <Text
+                    key={comp.id}
+                    style={{
+                      ...styles.chapterTitle,
+                      color: darkText,
+                      fontFamily: selectedHeavyFont,
+                    }}
+                  >
+                    Empty
+                  </Text>
+                );
+            }
+          })}
+          {/* {textsList.map((txt) => {
             if (txt.index === currentPageIndex) {
               return (
-                <View key={txt.title}>
-                  {txt.components.map((comp) => {
-                    switch (comp.type) {
-                      case "main_title":
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.mainTitle,
-                              color: darkText,
-                              fontFamily: selectedHeavyFont,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                              values={{
-                                s: (chunks) => (
-                                  <Text
-                                    style={{
-                                      textDecorationLine: "line-through",
-                                    }}
-                                  >
-                                    {chunks}
-                                  </Text>
-                                ),
-                              }}
-                            />
-                          </Text>
-                        );
-                      case "main_subtitle":
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.mainSubtitle,
-                              color: darkText,
-                              fontFamily: selectedHeavyFont,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                            />
-                          </Text>
-                        );
-                      case "author":
-                        if (comp.imageUri && comp.imageUri?.length > 0) {
-                          return (
-                            <View key={comp.id} style={styles.imageContainer}>
-                              <Text
-                                key={comp.id}
-                                style={{
-                                  ...styles.author,
-                                  color: darkText,
-                                  fontFamily: selectedFont,
-                                  marginVertical: 4,
-                                  paddingVertical: 4,
-                                }}
-                              >
-                                <FormattedMessage
-                                  id={comp.id}
-                                  defaultMessage={comp.title}
-                                  values={{
-                                    b: (chunks) => (
-                                      <Text
-                                        style={{
-                                          fontFamily: selectedHeavyFont,
-                                        }}
-                                      >
-                                        {chunks}
-                                      </Text>
-                                    ),
+                // <View key={txt.title}>
+                txt.components.map((comp) => {
+                  switch (comp.type) {
+                    case "main_title":
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.mainTitle,
+                            color: darkText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                            values={{
+                              s: (chunks) => (
+                                <Text
+                                  style={{
+                                    textDecorationLine: "line-through",
                                   }}
-                                />
-                              </Text>
-                              {comp.imageUri?.map((src) => {
-                                return (
-                                  <View
-                                    key={src}
-                                    style={{
-                                      width: "100%",
-                                      height: "100%",
-                                      marginTop: 20,
-                                      // marginBottom: 10,
-                                    }}
-                                  >
-                                    <Image
-                                      source={{
-                                        uri: src,
-                                      }}
+                                >
+                                  {chunks}
+                                </Text>
+                              ),
+                            }}
+                          />
+                        </Text>
+                      );
+                    case "main_subtitle":
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.mainSubtitle,
+                            color: darkText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                          />
+                        </Text>
+                      );
+                    case "author":
+                      if (comp.imageUri && comp.imageUri?.length > 0) {
+                        return (
+                          <View key={comp.id} style={styles.imageContainer}>
+                            <Text
+                              key={comp.id}
+                              style={{
+                                ...styles.author,
+                                color: darkText,
+                                fontFamily: selectedFont,
+                                marginVertical: 4,
+                                paddingVertical: 4,
+                              }}
+                            >
+                              <FormattedMessage
+                                id={comp.id}
+                                defaultMessage={comp.title}
+                                values={{
+                                  b: (chunks) => (
+                                    <Text
                                       style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        borderRadius: 12,
+                                        fontFamily: selectedHeavyFont,
                                       }}
-                                    />
-                                  </View>
-                                );
-                              })}
-                            </View>
-                          );
-                        }
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.author,
-                              color: darkText,
-                              fontFamily: selectedFont,
-                              marginVertical: 4,
-                              paddingVertical: 4,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                              values={{
-                                b: (chunks) => (
-                                  <Text
-                                    style={{
-                                      fontFamily: selectedHeavyFont,
-                                    }}
-                                  >
-                                    {chunks}
-                                  </Text>
-                                ),
-                              }}
-                            />
-                          </Text>
-                        );
-                      case "section_title":
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.sectionTitle,
-                              color: darkText,
-                              fontFamily: selectedHeavyFont,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                              values={{
-                                u: (chunks) => (
-                                  <Text
-                                    style={{
-                                      textDecorationLine: "underline",
-                                    }}
-                                  >
-                                    {chunks}
-                                  </Text>
-                                ),
-                              }}
-                            />
-                          </Text>
-                        );
-                      case "chapter_title":
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.chapterTitle,
-                              color: darkText,
-                              fontFamily: selectedHeavyFont,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                            />
-                          </Text>
-                        );
-                      case "chapter_content":
-                        // if (comp.imageUri && comp.imageUri?.length > 0) {
-                        //   return (
-                        // <View key={comp.id} style={styles.imageContainer}>
-                        //   {comp.imageUri?.map((src) => {
-                        //     return (
-                        //       <View
-                        //         key={src}
-                        //         style={{
-                        //           width: "100%",
-                        //           height: "100%",
-                        //           // marginTop: 40,
-                        //           // marginBottom: 40,
-                        //         }}
-                        //       >
-                        //         <Image
-                        //           source={{
-                        //             uri: src,
-                        //           }}
-                        //           style={{
-                        //             width: "100%",
-                        //             height: "100%",
-                        //             borderRadius: 12,
-                        //           }}
-                        //           contentFit="contain"
-                        //         />
-                        //       </View>
-                        //     );
-                        //   })}
-                        //   <Text
-                        //     style={{
-                        //       ...styles.chapterContent,
-                        //       color: darkText,
-                        //       fontFamily: selectedFont,
-                        //     }}
-                        //   >
-                        //     <FormattedMessage
-                        //       id={comp.id}
-                        //       defaultMessage={comp.title}
-                        //       values={{
-                        //         i: (chunks) => (
-                        //           <Text
-                        //             style={{
-                        //               fontFamily: selectedHeavyFont,
-                        //             }}
-                        //           >
-                        //             {chunks}
-                        //           </Text>
-                        //         ),
-                        //         u: (chunks) => (
-                        //           <Text
-                        //             style={{
-                        //               textDecorationLine: "underline",
-                        //             }}
-                        //           >
-                        //             {chunks}
-                        //           </Text>
-                        //         ),
-                        //       }}
-                        //     />
-                        //   </Text>
-                        // </View>
-                        //   );
-                        // }
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.chapterContent,
-                              color: darkText,
-                              fontFamily: selectedFont,
-                            }}
-                          >
-                            <FormattedMessage
-                              id={comp.id}
-                              defaultMessage={comp.title}
-                              values={{
-                                i: (chunks) => (
-                                  <Text
-                                    style={{
-                                      fontFamily: selectedHeavyFont,
-                                    }}
-                                  >
-                                    {chunks}
-                                  </Text>
-                                ),
-                                u: (chunks) => (
-                                  <Text
-                                    style={{
-                                      textDecorationLine: "underline",
-                                    }}
-                                  >
-                                    {chunks}
-                                  </Text>
-                                ),
-                              }}
-                            />
-                          </Text>
-                        );
-                      case "image":
-                        return (
-                          // <View key={comp.id} style={styles.imageContainer}>
-                          comp.imageUri?.map((src) => {
-                            return (
-                              <View
-                                key={src}
-                                style={{
-                                  width: "100%",
-                                  height: "100%",
-                                  // marginTop: 40,
-                                  // marginBottom: 40,
+                                    >
+                                      {chunks}
+                                    </Text>
+                                  ),
                                 }}
-                              >
-                                <Image
-                                  source={{
-                                    uri: src,
-                                  }}
+                              />
+                            </Text>
+                            {comp.imageUri?.map((src) => {
+                              return (
+                                <View
+                                  key={src}
                                   style={{
                                     width: "100%",
                                     height: "100%",
+                                    marginTop: 20,
                                     borderRadius: 12,
+                                    // marginBottom: 10,
                                   }}
-                                  contentFit="contain"
-                                />
-                              </View>
-                            );
-                          })
-                          // </View>
+                                >
+                                  <Image
+                                    source={{
+                                      uri: src,
+                                    }}
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      borderRadius: 12,
+                                    }}
+                                    contentFit="contain"
+                                  />
+                                </View>
+                              );
+                            })}
+                          </View>
                         );
-                      default:
-                        return (
-                          <Text
-                            key={comp.id}
-                            style={{
-                              ...styles.chapterTitle,
-                              color: darkText,
-                              fontFamily: selectedHeavyFont,
+                      }
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.author,
+                            color: darkText,
+                            fontFamily: selectedFont,
+                            marginVertical: 4,
+                            paddingVertical: 4,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                            values={{
+                              b: (chunks) => (
+                                <Text
+                                  style={{
+                                    fontFamily: selectedHeavyFont,
+                                  }}
+                                >
+                                  {chunks}
+                                </Text>
+                              ),
                             }}
-                          >
-                            Empty
-                          </Text>
-                        );
-                    }
-                  })}
-                </View>
+                          />
+                        </Text>
+                      );
+                    case "section_title":
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.sectionTitle,
+                            color: darkText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                            values={{
+                              u: (chunks) => (
+                                <Text
+                                  style={{
+                                    textDecorationLine: "underline",
+                                  }}
+                                >
+                                  {chunks}
+                                </Text>
+                              ),
+                            }}
+                          />
+                        </Text>
+                      );
+                    case "chapter_title":
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.chapterTitle,
+                            color: darkText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                          />
+                        </Text>
+                      );
+                    case "chapter_content":
+                      // if (comp.imageUri && comp.imageUri?.length > 0) {
+                      //   return (
+                      // <View key={comp.id} style={styles.imageContainer}>
+                      //   {comp.imageUri?.map((src) => {
+                      //     return (
+                      //       <View
+                      //         key={src}
+                      //         style={{
+                      //           width: "100%",
+                      //           height: "100%",
+                      //           // marginTop: 40,
+                      //           // marginBottom: 40,
+                      //         }}
+                      //       >
+                      //         <Image
+                      //           source={{
+                      //             uri: src,
+                      //           }}
+                      //           style={{
+                      //             width: "100%",
+                      //             height: "100%",
+                      //             borderRadius: 12,
+                      //           }}
+                      //           contentFit="contain"
+                      //         />
+                      //       </View>
+                      //     );
+                      //   })}
+                      //   <Text
+                      //     style={{
+                      //       ...styles.chapterContent,
+                      //       color: darkText,
+                      //       fontFamily: selectedFont,
+                      //     }}
+                      //   >
+                      //     <FormattedMessage
+                      //       id={comp.id}
+                      //       defaultMessage={comp.title}
+                      //       values={{
+                      //         i: (chunks) => (
+                      //           <Text
+                      //             style={{
+                      //               fontFamily: selectedHeavyFont,
+                      //             }}
+                      //           >
+                      //             {chunks}
+                      //           </Text>
+                      //         ),
+                      //         u: (chunks) => (
+                      //           <Text
+                      //             style={{
+                      //               textDecorationLine: "underline",
+                      //             }}
+                      //           >
+                      //             {chunks}
+                      //           </Text>
+                      //         ),
+                      //       }}
+                      //     />
+                      //   </Text>
+                      // </View>
+                      //   );
+                      // }
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.chapterContent,
+                            color: darkText,
+                            fontFamily: selectedFont,
+                          }}
+                        >
+                          <FormattedMessage
+                            id={comp.id}
+                            defaultMessage={comp.title}
+                            values={{
+                              i: (chunks) => (
+                                <Text
+                                  style={{
+                                    fontFamily: selectedHeavyFont,
+                                  }}
+                                >
+                                  {chunks}
+                                </Text>
+                              ),
+                              u: (chunks) => (
+                                <Text
+                                  style={{
+                                    textDecorationLine: "underline",
+                                  }}
+                                >
+                                  {chunks}
+                                </Text>
+                              ),
+                            }}
+                          />
+                        </Text>
+                      );
+                    case "image":
+                      return (
+                        // <View key={comp.id} style={styles.imageContainer}>
+                        comp.imageUri?.map((src) => {
+                          return (
+                            // <View
+                            //   key={src}
+                            //   style={{
+                            //     width: "100%",
+                            //     height: "100%",
+                            //   }}
+                            // >
+                            <Image
+                              source={{
+                                uri: src,
+                              }}
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                borderRadius: 12,
+                              }}
+                              contentFit="contain"
+                            />
+                            // </View>
+                          );
+                        })
+                        // </View>
+                      );
+                    default:
+                      return (
+                        <Text
+                          key={comp.id}
+                          style={{
+                            ...styles.chapterTitle,
+                            color: darkText,
+                            fontFamily: selectedHeavyFont,
+                          }}
+                        >
+                          Empty
+                        </Text>
+                      );
+                  }
+                })
+                // </View>
               );
             }
-          })}
+          })} */}
         </ScrollView>
       </Animated.View>
     </View>

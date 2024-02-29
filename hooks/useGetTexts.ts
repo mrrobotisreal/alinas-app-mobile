@@ -13,6 +13,7 @@ export type TextObjectType =
   | "image";
 
 export type TextListObject = {
+  id: string;
   title: string;
   index: number;
   components: TextObject[];
@@ -23,6 +24,10 @@ export type TextObject = {
   type: TextObjectType;
   title: string;
   imageUri?: string[];
+  size?: {
+    width: number;
+    height: number;
+  };
 };
 
 interface UseGetTextsReturns {
@@ -35,7 +40,8 @@ export function useGetTexts(): UseGetTextsReturns {
   const myExternalCauseTextsList: TextListObject[] = useMemo(
     () => [
       {
-        title: "Introduction",
+        id: "textsList.main_title",
+        title: "Title page",
         index: 0,
         components: [
           {
@@ -59,6 +65,26 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "starring",
           },
           {
+            id: "title_image",
+            type: "image",
+            title: "title_image",
+            imageUri: [
+              `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`,
+            ],
+          },
+        ],
+      },
+      {
+        id: "textsList.introduction_title",
+        title: "Introduction",
+        index: 1,
+        components: [
+          {
+            id: "textsList.introduction_title",
+            type: "chapter_title",
+            title: "introduction_title",
+          },
+          {
             id: "textsList.introduction.p1",
             type: "chapter_content",
             title: "introduction.p1",
@@ -76,8 +102,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.the_anatomy_of_everything_title",
         title: "The Anatomy of Everything",
-        index: 1,
+        index: 2,
         components: [
           {
             id: "textsList.the_anatomy_of_everything_title",
@@ -97,8 +124,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.my_love_title",
         title: "My Love",
-        index: 2,
+        index: 3,
         components: [
           {
             id: "textsList.you_are_my_everything_title",
@@ -110,34 +138,18 @@ export function useGetTexts(): UseGetTextsReturns {
             type: "chapter_title",
             title: "my_love_title",
           },
-          // {
-          //   id: "textsList.my_love_image.ruby",
-          //   type: "image",
-          //   title: "my_love_image.ruby",
-          //   imageUri: [
-          //     // "../assets/images/my_love/ruby.png",
-          //     `${serverURL}/assets/myExternalCause_images/my_love/ruby.png`,
-          //   ],
-          // },
-          // {
-          //   id: "textsList.my_love_image.rose",
-          //   type: "image",
-          //   title: "my_love_image.rose",
-          //   imageUri: [
-          //     // "../assets/images/my_love/rose.png",
-          //     `${serverURL}/assets/myExternalCause_images/my_love/rose.png`,
-          //   ],
-          // },
+          {
+            id: "textsList.my_love_image.ruby",
+            type: "image",
+            title: "my_love_image.ruby",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_love/ruby.png`,
+            ],
+          },
           {
             id: "textsList.my_love_content.p1",
             type: "chapter_content",
             title: "my_love_content.p1",
-            // imageUri: [
-            //   // "../assets/images/my_love/ruby.png",
-            //   // "../assets/images/my_love/rose.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_love/ruby.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_love/rose.png`,
-            // ],
           },
           {
             id: "textsList.my_love_content.p2",
@@ -153,6 +165,14 @@ export function useGetTexts(): UseGetTextsReturns {
             id: "textsList.my_love_content.p4",
             type: "chapter_content",
             title: "my_love_content.p4",
+          },
+          {
+            id: "textsList.my_love_image.rose",
+            type: "image",
+            title: "my_love_image.rose",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_love/rose.png`,
+            ],
           },
           {
             id: "textsList.my_love_content.p5",
@@ -177,8 +197,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.my_happiness_title",
         title: "My Happiness",
-        index: 3,
+        index: 4,
         components: [
           {
             id: "textsList.my_happiness_title",
@@ -186,13 +207,17 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_happiness_title",
           },
           {
+            id: "textsList.my_happiness_image.alina_and_i_prague",
+            type: "image",
+            title: "my_happiness_image.alina_and_i_prague",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png`,
+            ],
+          },
+          {
             id: "textsList.my_happiness_content.p1",
             type: "chapter_content",
             title: "my_happiness_content.p1",
-            // imageUri: [
-            //   // "../assets/images/my_happiness/alina_and_i_prague.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_happiness/alina_and_i_prague.png`,
-            // ],
           },
           {
             id: "textsList.my_happiness_content.p2",
@@ -242,8 +267,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.my_strength_title",
         title: "My Strength",
-        index: 4,
+        index: 5,
         components: [
           {
             id: "textsList.my_strength_title",
@@ -251,15 +277,17 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_strength_title",
           },
           {
+            id: "textsList.my_strength_image.steel_wire",
+            type: "image",
+            title: "my_strength_image.steel_wire",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_strength/steel_wire.png`,
+            ],
+          },
+          {
             id: "textsList.my_strength_content.p1",
             type: "chapter_content",
             title: "my_strength_content.p1",
-            // imageUri: [
-            //   // "../assets/images/my_strength/steel_wire.png",
-            //   // "../assets/images/my_strength/compass.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_strength/steel_wire.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_strength/compass.png`,
-            // ],
           },
           {
             id: "textsList.my_strength_content.p2",
@@ -275,6 +303,14 @@ export function useGetTexts(): UseGetTextsReturns {
             id: "textsList.my_strength_content.p4",
             type: "chapter_content",
             title: "my_strength_content.p4",
+          },
+          {
+            id: "textsList.my_strength_image.compass",
+            type: "image",
+            title: "my_strength_image.compass",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_strength/compass.png`,
+            ],
           },
           {
             id: "textsList.my_strength_content.p5",
@@ -294,8 +330,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.my_inspiration_and_my_motivation_title",
         title: "My Inspiration and My Motivation",
-        index: 5,
+        index: 6,
         components: [
           {
             id: "textsList.my_inspiration_and_my_motivation_title",
@@ -303,17 +340,17 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_inspiration_and_my_motivation_title",
           },
           {
+            id: "textsList.my_inspiration_and_my_motivation_image.lightbulb",
+            type: "image",
+            title: "my_inspiration_and_my_motivation_image.lightbulb",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png`,
+            ],
+          },
+          {
             id: "textsList.my_inspiration_and_my_motivation_content.p1",
             type: "chapter_content",
             title: "my_inspiration_and_my_motivation_content.p1",
-            // imageUri: [
-            //   // "..assets/images/my_inspiration_and_my_motivation/lightbulb.png",
-            //   // "..assets/images/my_inspiration_and_my_motivation/sun.png",
-            //   // "..assets/images/my_inspiration_and_my_motivation/sun_lightbulb.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/lightbulb.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png`,
-            // ],
           },
           {
             id: "textsList.my_inspiration_and_my_motivation_content.p2",
@@ -329,6 +366,14 @@ export function useGetTexts(): UseGetTextsReturns {
             id: "textsList.my_inspiration_and_my_motivation_content.p4",
             type: "chapter_content",
             title: "my_inspiration_and_my_motivation_content.p4",
+          },
+          {
+            id: "textsList.my_inspiration_and_my_motivation_image.sun",
+            type: "image",
+            title: "my_inspiration_and_my_motivation_image.sun",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun.png`,
+            ],
           },
           {
             id: "textsList.my_inspiration_and_my_motivation_content.p5",
@@ -349,6 +394,14 @@ export function useGetTexts(): UseGetTextsReturns {
             id: "textsList.my_inspiration_and_my_motivation_content.p8",
             type: "chapter_content",
             title: "my_inspiration_and_my_motivation_content.p8",
+          },
+          {
+            id: "textsList.my_inspiration_and_my_motivation_image.sun_lightbulb",
+            type: "image",
+            title: "my_inspiration_and_my_motivation_image.sun_lightbulb",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_inspiration_and_my_motivation/sun_lightbulb.png`,
+            ],
           },
           {
             id: "textsList.my_inspiration_and_my_motivation_content.p9",
@@ -378,8 +431,9 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.my_peace_title",
         title: "My Peace",
-        index: 6,
+        index: 7,
         components: [
           {
             id: "textsList.my_peace_title",
@@ -387,26 +441,30 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_peace_title",
           },
           {
+            id: "textsList.my_peace_image.ripple",
+            type: "image",
+            title: "my_peace_image.ripple",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_peace/ripple.png`,
+            ],
+          },
+          {
             id: "textsList.my_peace_content.p1",
             type: "chapter_content",
             title: "my_peace_content.p1",
-            // imageUri: [
-            //   // "..assets/images/my_peace/ripple.png",
-            //   // "..assets/images/my_peace/wave.png",
-            //   // "..assets/images/my_peace/sunset.png",
-            //   // "..assets/images/my_peace/storm.png",
-            //   // "..assets/images/my_peace/galaxy.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_peace/ripple.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_peace/wave.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_peace/sunset.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_peace/storm.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_peace/galaxy.png`,
-            // ],
           },
           {
             id: "textsList.my_peace_content.p2",
             type: "chapter_content",
             title: "my_peace_content.p2",
+          },
+          {
+            id: "textsList.my_peace_image.wave",
+            type: "image",
+            title: "my_peace_image.wave",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_peace/wave.png`,
+            ],
           },
           {
             id: "textsList.my_peace_content.p3",
@@ -429,20 +487,45 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_peace_content.p6",
           },
           {
+            id: "textsList.my_peace_image.sunset",
+            type: "image",
+            title: "my_peace_image.sunset",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_peace/sunset.png`,
+            ],
+          },
+          {
             id: "textsList.my_peace_content.p7",
             type: "chapter_content",
             title: "my_peace_content.p7",
+          },
+          {
+            id: "textsList.my_peace_image.storm",
+            type: "image",
+            title: "my_peace_image.storm",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_peace/storm.png`,
+            ],
           },
           {
             id: "textsList.my_peace_content.p8",
             type: "chapter_content",
             title: "my_peace_content.p8",
           },
+          {
+            id: "textsList.my_peace_image.galaxy",
+            type: "image",
+            title: "my_peace_image.galaxy",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_peace/galaxy.png`,
+            ],
+          },
         ],
       },
       {
+        id: "textsList.my_home_title",
         title: "My Home",
-        index: 7,
+        index: 8,
         components: [
           {
             id: "textsList.my_home_title",
@@ -450,21 +533,17 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_home_title",
           },
           {
+            id: "textsList.my_home_image.alina",
+            type: "image",
+            title: "my_home_image.alina",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_home/alina.png`,
+            ],
+          },
+          {
             id: "textsList.my_home_content.p1",
             type: "chapter_content",
             title: "my_home_content.p1",
-            // imageUri: [
-            //   // "..assets/images/my_home/alina.png",
-            //   // "..assets/images/my_home/pajamas.png",
-            //   // "..assets/images/my_home/pictures.png",
-            //   // "..assets/images/my_home/portal.png",
-            //   // "..assets/images/my_home/river.png",
-            //   `${serverURL}/assets/myExternalCause_images/my_home/alina.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_home/pajamas.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_home/pictures.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_home/portal.png`,
-            //   `${serverURL}/assets/myExternalCause_images/my_home/river.png`,
-            // ],
           },
           {
             id: "textsList.my_home_content.p2",
@@ -487,9 +566,25 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_home_content.p5",
           },
           {
+            id: "textsList.my_home_image.pajamas",
+            type: "image",
+            title: "my_home_image.pajamas",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_home/pajamas.png`,
+            ],
+          },
+          {
             id: "textsList.my_home_content.p6",
             type: "chapter_content",
             title: "my_home_content.p6",
+          },
+          {
+            id: "textsList.my_home_image.pictures",
+            type: "image",
+            title: "my_home_image.pictures",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_home/pictures.png`,
+            ],
           },
           {
             id: "textsList.my_home_content.p7",
@@ -497,15 +592,32 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "my_home_content.p7",
           },
           {
+            id: "textsList.my_home_image.portal",
+            type: "image",
+            title: "my_home_image.portal",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_home/portal.png`,
+            ],
+          },
+          {
             id: "textsList.my_home_content.p8",
             type: "chapter_content",
             title: "my_home_content.p8",
           },
+          {
+            id: "textsList.my_home_image.river",
+            type: "image",
+            title: "my_home_image.river",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/my_home/river.png`,
+            ],
+          },
         ],
       },
       {
+        id: "textsList.where_are_they_going_title",
         title: "Where are they going?\nWhere are WE going?",
-        index: 8,
+        index: 9,
         components: [
           {
             id: "textsList.where_are_they_going_title",
@@ -513,19 +625,24 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "where_are_they_going_title",
           },
           {
+            id: "textsList.where_are_they_going_image",
+            type: "image",
+            title: "where_are_they_going_image",
+            imageUri: [
+              `${serverURL}/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png`,
+            ],
+          },
+          {
             id: "textsList.where_are_they_going_content",
             type: "chapter_content",
             title: "where_are_they_going_content",
-            // imageUri: [
-            //   // "..assets/images/where_are_they_going/where_are_they_going.png",
-            //   `${serverURL}/assets/myExternalCause_images/where_are_they_going/where_are_they_going.png`,
-            // ],
           },
         ],
       },
       {
+        id: "textsList.i_want_everything_with_you_title",
         title: "I want EVERYTHING with you",
-        index: 9,
+        index: 10,
         components: [
           {
             id: "textsList.i_want_everything_with_you_title",
@@ -600,9 +717,15 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.outro_part_1_title",
         title: "Особлива кінцівка, частина 1",
-        index: 10,
+        index: 11,
         components: [
+          {
+            id: "textsList.outro_part_1_title",
+            type: "chapter_title",
+            title: "Особлива кінцівка, частина 1",
+          },
           {
             id: "textsList.outro_part_1",
             type: "chapter_content",
@@ -611,9 +734,15 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "textsList.outro_part_2_title",
         title: "Особлива кінцівка, частина 2",
-        index: 11,
+        index: 12,
         components: [
+          {
+            id: "textsList.outro_part_2_title",
+            type: "chapter_title",
+            title: "Особлива кінцівка, частина 2",
+          },
           {
             id: "textsList.outro_part_2",
             type: "chapter_content",
@@ -627,6 +756,7 @@ export function useGetTexts(): UseGetTextsReturns {
   const theJudgeTextsList: TextListObject[] = useMemo(
     () => [
       {
+        id: "theJudgeTextsList.main_title",
         title: "Title page",
         index: 0,
         components: [
@@ -654,6 +784,11 @@ export function useGetTexts(): UseGetTextsReturns {
             id: "theJudgeTextsList.artist",
             type: "author",
             title: "artist",
+          },
+          {
+            id: "title_image",
+            type: "image",
+            title: "title_image",
             imageUri: [
               `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`,
             ],
@@ -661,6 +796,7 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "theJudgeTextsList.chapter_1_title",
         title: "Chapter 1: The judge and the auras",
         index: 1,
         components: [
@@ -670,12 +806,17 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "chapter_1_title",
           },
           {
+            id: "image",
+            title: "image",
+            type: "image",
+            imageUri: [
+              `${serverURL}/assets/theJudge_images/chapter1_defendant.png`,
+            ],
+          },
+          {
             id: "theJudgeTextsList.chapter_1_content.p1",
             type: "chapter_content",
             title: "chapter_1_content.p1",
-            // imageUri: [
-            //   `${serverURL}/assets/theJudge_images/chapter1_defendant.png`,
-            // ],
           },
           {
             id: "theJudgeTextsList.chapter_1_content.p2",
@@ -740,6 +881,7 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "theJudgeTextsList.chapter_2_title",
         title: "Chapter 2: High profile cases",
         index: 2,
         components: [
@@ -749,10 +891,21 @@ export function useGetTexts(): UseGetTextsReturns {
             title: "chapter_2_title",
           },
           {
+            id: "image",
+            title: "image",
+            type: "image",
+            imageUri: [
+              `${serverURL}/assets/theJudge_images/chapter2_office.png`,
+            ],
+            size: {
+              width: 300,
+              height: 300,
+            },
+          },
+          {
             id: "theJudgeTextsList.chapter_2_content.p1",
             type: "chapter_content",
             title: "chapter_2_content.p1",
-            // imageUri: [`${serverURL}/assets/theJudge_images/chapter2_office.png`],
           },
           {
             id: "theJudgeTextsList.chapter_2_content.p2",
@@ -907,6 +1060,7 @@ export function useGetTexts(): UseGetTextsReturns {
         ],
       },
       {
+        id: "theJudgeTextsList.chapter_3_title",
         title: "Chapter 3: Publicity",
         index: 3,
         components: [
@@ -915,13 +1069,18 @@ export function useGetTexts(): UseGetTextsReturns {
             type: "chapter_title",
             title: "chapter_3_title",
           },
+          {
+            id: "image",
+            title: "image",
+            type: "image",
+            imageUri: [
+              `${serverURL}/assets/theJudge_images/chapter3_paparazzi.png`,
+            ],
+          },
           // {
           //   id: "theJudgeTextsList.chapter_3_content",
           //   type: "chapter_content",
-          //   title: "chapter_3_content",
-          //   imageUri: [
-          //     `${serverURL}/assets/theJudge_images/chapter3_paparazzi.png`,
-          //   ],
+          //   title: "chapter_3_content.p1",
           // },
         ],
       },
