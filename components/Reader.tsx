@@ -36,14 +36,7 @@ export default function Reader({
           pagePosition.getLayout(),
         ]}
       >
-        <ScrollView
-          // contentContainerStyle={{
-          //   alignItems: "center",
-          //   height: "100%",
-          //   width: "100%",
-          // }}
-          ref={pageSVRef}
-        >
+        <ScrollView ref={pageSVRef}>
           {textsList[currentPageIndex].components.map((comp) => {
             switch (comp.type) {
               case "main_title":
