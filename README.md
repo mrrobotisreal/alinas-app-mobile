@@ -9,7 +9,7 @@
 
 <!-- Alina and I in Portugal -->
 
-![Alina_and_I_in_Portugal](http://3.76.7.134:9090/assets/photosAlbums/portugalPhotoshoot/portugalPhotoshoot016.jpg)
+![Alina_and_I_in_Portugal](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/photosAlbums/portugalPhotoshoot/portugalPhotoshoot016.jpg?raw=true)
 
 <!-- TABLE OF CONTENTS -->
 
@@ -196,35 +196,33 @@ npx expo start
 
 ## Usage
 
-### Navigating and using the app
+### Navigating and using the app (Note: the GIF demos below may take a moment to load, but there are demos below)
 
 - Choosing and selecting a book
 
-![choosing_a_book](http://3.76.7.134:9090/assets/app_readme/choosing_a_book.mov.gif)
+![choosing_a_book](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/choosing_a_book.mov.gif?raw=true)
 
 - Viewing photo albums and photos with the Photos viewer
 
-![using_photos](http://3.76.7.134:9090/assets/app_readme/using_photos.mov.gif)
+![using_photos](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/using_photos.mov.gif?raw=true)
 
 - Reading the book with the Reader
 
-![using_read](http://3.76.7.134:9090/assets/app_readme/using_read.mov.gif)
+![using_read](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/using_read.mov.gif?raw=true)
 
 - Listening to the audiobook version of the book with the Listener
 
-![using_listen](http://3.76.7.134:9090/assets/app_readme/using_listen.mov.gif)
+![using_listen](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/using_listen.mov.gif?raw=true)
 
-- Watching YouTube videos with the Video viewer (note: still being developed, no demo yet)
-
-![using_watch](http://3.76.7.134:9090/assets/app_readme/using_watch.mov.gif)
+<!-- - Watching YouTube videos with the Video viewer (note: still being developed, no demo yet) -->
 
 - Writing and reading notes, and viewing stats with the Notes viewer
 
-![using_notes](http://3.76.7.134:9090/assets/app_readme/using_notes.mov.gif)
+![using_notes](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/using_notes.mov.gif?raw=true)
 
 - Changing Font settings, Language settings, and Theme settings
 
-![changing_settings](http://3.76.7.134:9090/assets/app_readme/changing_settings.mov.gif)
+![changing_settings](https://github.com/mrrobotisreal/alina-notes-server-public/blob/main/assets/app_readme/changing_settings.mov.gif?raw=true)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
