@@ -28,6 +28,7 @@ import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
 import BackgroundImage from "../components/BackgroundImage";
 import Reader from "../components/Reader";
+import Toast from "react-native-root-toast";
 
 export default function Read() {
   const intl = useIntl();
@@ -53,7 +54,7 @@ export default function Read() {
   const [notepadIsOpen, setNotepadIsOpen] = useState<boolean>(false);
   const [notepadIconColor, setNotepadIconColor] = useState<string>("#FFFFFF");
   const [saveNoteColor, setSaveNoteColor] = useState<string>(color700);
-  const [selectedSection, setSelectedSection] = useState<string>("General");
+  const [selectedSection, setSelectedSection] = useState<string>("");
   const [selectSectionColor, setSelectSectionColor] =
     useState<string>(color700);
   const [selectSectionIsVisible, setSelectSectionIsVisible] =
@@ -210,17 +211,44 @@ export default function Read() {
     // on success or failure, show toast
     if (!selectedSection || selectedSection === "") {
       if (OS === "android") {
-        ToastAndroid.show(toastDropdownText, ToastAndroid.SHORT);
+        ToastAndroid.show(toastDropdownText, ToastAndroid.LONG);
+      } else if (OS === "ios") {
+        const toast = Toast.show(toastDropdownText, {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
       return;
     } else if (!subjectText || subjectText === "") {
       if (OS === "android") {
-        ToastAndroid.show(toastSubjectText, ToastAndroid.SHORT);
+        ToastAndroid.show(toastSubjectText, ToastAndroid.LONG);
+      } else if (OS === "ios") {
+        const toast = Toast.show(toastSubjectText, {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
       return;
     } else if (!noteText || noteText === "") {
       if (OS === "android") {
-        ToastAndroid.show(toastNoteTextText, ToastAndroid.SHORT);
+        ToastAndroid.show(toastNoteTextText, ToastAndroid.LONG);
+      } else if (OS === "ios") {
+        const toast = Toast.show(toastNoteTextText, {
+          duration: Toast.durations.LONG,
+          position: Toast.positions.CENTER,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
       }
       return;
     }
@@ -267,7 +295,7 @@ export default function Read() {
           }}
         >
           <FormattedMessage
-            id={`listen.infoBookmarkMenu.${id}`}
+            id={`listen.infoBookmarkMenu.myExternalCause.${id}`}
             defaultMessage={title}
           />
         </Text>
@@ -432,7 +460,8 @@ export default function Read() {
                       }}
                       onChangeText={setSubjectText}
                       value={subjectText}
-                      multiline={false}
+                      multiline={true}
+                      numberOfLines={1}
                     />
                     <Text
                       style={{

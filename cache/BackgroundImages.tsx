@@ -23,6 +23,7 @@ async function preloadImages(
         `${serverURL}/assets/backgrounds/photos_viewer_${theme}.png`,
         `${serverURL}/assets/backgrounds/hummingbird_reader_${theme}.png`,
         `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_${theme}.png`,
+        `${serverURL}/assets/background/yt_viewer_${theme}.png`,
         `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_${theme}.png`,
         `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_${theme}.png`
       );

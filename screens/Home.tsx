@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,6 +13,7 @@ import * as Haptics from "expo-haptics";
 import { FormattedMessage, useIntl } from "react-intl";
 import { serverURL } from "../constants/urls";
 import { Image } from "expo-image";
+import Toast from "react-native-root-toast";
 
 /**
  * Context
@@ -21,6 +22,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
+import { LocalContext } from "../context/LocalContext";
 
 const bookList: string[] = [
   "My External Cause",
@@ -46,18 +48,99 @@ export default function Home({ navigation }: any) {
   const { selectedFont, selectedHeavyFont } = useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { currentBook, changeBook } = useContext(BookContext);
+  const { currentLang } = useContext(LocalContext);
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
   const [menuIconColor, setMenuIconColor] = useState<string>(color500);
   const [selectedBook, setSelectedBook] = useState<string>(currentBook);
+  const [selectedBookTranslation, setSelectedBookTranslation] =
+    useState<string>(currentBook); // intl.formatMessage({ id: "textsList.main_title" });
   const [selectedBookIndex, setSelectedBookIndex] = useState<number>(0);
   const [smallBookCoverColor, setSmallBookCoverColor] =
     useState<string>(color300);
   const [bookUri, setBookUri] = useState<string>(homeBgUri);
-  const photosText = intl.formatMessage({ id: "home.photosButton" });
-  const readText = intl.formatMessage({ id: "home.readButton" });
-  const listenText = intl.formatMessage({ id: "home.listenButton" });
-  const notesText = intl.formatMessage({ id: "home.notesButton" });
-  const settingsText = intl.formatMessage({ id: "home.settingsButton" });
+  const photosText = useMemo(
+    () => intl.formatMessage({ id: "home.photosButton" }),
+    [currentLang]
+  );
+  const readText = useMemo(
+    () => intl.formatMessage({ id: "home.readButton" }),
+    [currentLang]
+  );
+  const listenText = useMemo(
+    () => intl.formatMessage({ id: "home.listenButton" }),
+    [currentLang]
+  );
+  const watchText = useMemo(
+    () => intl.formatMessage({ id: "home.watchButton" }),
+    [currentLang]
+  );
+  const notesText = useMemo(
+    () => intl.formatMessage({ id: "home.notesButton" }),
+    [currentLang]
+  );
+  const settingsText = useMemo(
+    () => intl.formatMessage({ id: "home.settingsButton" }),
+    [currentLang]
+  );
+  const myExternalCauseText = useMemo(
+    () => intl.formatMessage({ id: "home.book.myExternalCause" }),
+    [currentLang]
+  );
+  const theJudgeText = useMemo(
+    () => intl.formatMessage({ id: "home.book.theJudge" }),
+    [currentLang]
+  );
+  const passportalText = useMemo(
+    () => intl.formatMessage({ id: "home.book.passportal" }),
+    [currentLang]
+  );
+  const loveDrunkText = useMemo(
+    () => intl.formatMessage({ id: "home.book.loveDrunk" }),
+    [currentLang]
+  );
+  const selectedBookText = useMemo(() => {
+    switch (selectedBook) {
+      case "My External Cause":
+        return myExternalCauseText;
+      case "The Judge":
+        return theJudgeText;
+      case "Passportal":
+        return passportalText;
+      case "Love Drunk":
+        return loveDrunkText;
+      default:
+        return myExternalCauseText;
+    }
+  }, [currentLang, selectedBook]);
+  const bookChangedToastText = useMemo(() => {
+    switch (selectedBook) {
+      case "My External Cause":
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+      case "The Judge":
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+      case "Passportal":
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+      case "Love Drunk":
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+      default:
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+    }
+  }, [currentLang, selectedBook, selectedBookText]);
   const MenuItemsList: MenuItem[] = [
     {
       id: "photos",
@@ -70,6 +153,10 @@ export default function Home({ navigation }: any) {
     {
       id: "listen",
       title: listenText,
+    },
+    {
+      id: "watch",
+      title: watchText,
     },
     {
       id: "notes",
@@ -92,6 +179,7 @@ export default function Home({ navigation }: any) {
         // changeBook("My External Cause");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
+        setSelectedBookTranslation(myExternalCauseText);
         break;
       case "The Judge":
         setBookUri(
@@ -100,6 +188,7 @@ export default function Home({ navigation }: any) {
         // changeBook("The Judge");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
+        setSelectedBookTranslation(theJudgeText);
         break;
       case "Passportal":
         setBookUri(
@@ -108,6 +197,8 @@ export default function Home({ navigation }: any) {
         // changeBook("Passportal");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
+        // setSelectedBookTranslation(intl.formatMessage({ id: "passportalTextsList.main_title" }));
+        setSelectedBookTranslation(selectedBook);
         break;
       case "Love Drunk":
         setBookUri(
@@ -116,6 +207,8 @@ export default function Home({ navigation }: any) {
         // changeBook("Love Drunk");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
+        // setSelectedBookTranslation(intl.formatMessage({ id: "loveDrunkTextsList.main_title" }));
+        setSelectedBookTranslation(selectedBook);
         break;
       default:
       // setBookUri(
@@ -160,6 +253,9 @@ export default function Home({ navigation }: any) {
         break;
       case "listen":
         navigation.navigate("Listen");
+        break;
+      case "watch":
+        navigation.navigate("Watch");
         break;
       case "notes":
         navigation.navigate("Notes");
@@ -350,6 +446,28 @@ export default function Home({ navigation }: any) {
                 onPress={() => {
                   setMenuIsVisible(true);
                   changeBook(selectedBook);
+                  const toast = Toast.show(bookChangedToastText, {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER,
+                    shadow: true,
+                    animation: true,
+                    hideOnPress: true,
+                    delay: 50,
+                    containerStyle: {
+                      borderRadius: 12,
+                      borderWidth: 6,
+                      borderColor: color300,
+                      padding: 12,
+                    },
+                    textStyle: {
+                      fontFamily: selectedFont,
+                      color: lightText,
+                      fontSize: 18,
+                    },
+                    backgroundColor: color700,
+                    opacity: 1,
+                    // opacity: 0.96,
+                  });
                 }}
                 style={{
                   alignContent: "center",
@@ -427,7 +545,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: 6,
   },
   menuItemText: {
     fontSize: 32,

@@ -18,6 +18,7 @@ import * as Haptics from "expo-haptics";
 import { PlatformContext } from "../context/PlatformContext";
 import { Image } from "expo-image";
 import BackgroundImage from "../components/BackgroundImage";
+import Toast from "react-native-root-toast";
 
 export default function Settings() {
   const intl = useIntl();
@@ -36,7 +37,8 @@ export default function Settings() {
   const { OS } = useContext(PlatformContext);
 
   const fontRobotoText = intl.formatMessage({ id: "settings.font.roboto" });
-  const fontSerifText = intl.formatMessage({ id: "settings.font.serif" });
+  const fontSerifText =
+    OS === "ios" ? "SF Pro" : intl.formatMessage({ id: "settings.font.serif" });
   const fontNexaText = intl.formatMessage({ id: "settings.font.nexa" });
   const fontAngelinaText = intl.formatMessage({ id: "settings.font.angelina" });
   const fontBauhausLightText = intl.formatMessage({
@@ -92,8 +94,20 @@ export default function Settings() {
         title: fontRobotoText,
       },
       {
+        id: "roboto-bold",
+        title: "Roboto Bold",
+      },
+      {
         id: "serif",
         title: fontSerifText,
+      },
+      {
+        id: "ubuntu",
+        title: "Ubuntu",
+      },
+      {
+        id: "ubuntu-bold",
+        title: "Ubuntu Bold",
       },
     ];
   }, [
@@ -116,6 +130,8 @@ export default function Settings() {
   const ruText = intl.formatMessage({ id: "settings.translations.ru" });
   const ukText = intl.formatMessage({ id: "settings.translations.uk" });
   const viText = intl.formatMessage({ id: "settings.translations.vi" });
+  const cnText = intl.formatMessage({ id: "settings.translations.zh_CN" });
+  const twText = intl.formatMessage({ id: "settings.translations.zh_TW" });
   const translationsList = useMemo(() => {
     return [
       {
@@ -146,8 +162,16 @@ export default function Settings() {
         id: "vi",
         title: viText,
       },
+      {
+        id: "zh_CN",
+        title: cnText,
+      },
+      {
+        id: "zh_TW",
+        title: twText,
+      },
     ];
-  }, [enText, deText, frText, heText, ruText, ukText, viText]);
+  }, [enText, deText, frText, heText, ruText, ukText, viText, cnText, twText]);
 
   const purpleText = intl.formatMessage({ id: "settings.themes.purple" });
   const coralText = intl.formatMessage({ id: "settings.themes.coral" });
@@ -258,7 +282,51 @@ export default function Settings() {
   const handleShowFontInfo = (id: string) => {
     setSelectedFontId(`${id}Info`);
     setSelectedFontTitleId(`${id}InfoTitle`);
-    setFontInfoIsOpen(true);
+    // setFontInfoIsOpen(true);
+    const toast = Toast.show(
+      "_____________________________________\n\n" +
+        intl.formatMessage(
+          { id: `settings.font.${id}InfoTitle` },
+          {
+            u: (chunks) => chunks,
+            // u: (chunks) => (
+            //   <Text
+            //     style={{
+            //       fontFamily: selectedHeavyFont,
+            //       color: lightText,
+            //       textDecorationLine: "underline",
+            //     }}
+            //   >
+            //     {chunks}
+            //   </Text>
+            // ),
+          }
+        ) +
+        "\n\n_____________________________________" +
+        "\n\n" +
+        intl.formatMessage({ id: `settings.font.${id}Info` }),
+      {
+        duration: 5000,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 50,
+        containerStyle: {
+          borderRadius: 12,
+          borderWidth: 6,
+          borderColor: color300,
+          padding: 12,
+        },
+        textStyle: {
+          fontFamily: selectedFont,
+          color: lightText,
+          fontSize: 18,
+        },
+        backgroundColor: color700,
+        opacity: 1,
+      }
+    );
   };
   const handleChangeLanguage = (id: string) => {
     changeLanguage(id);
@@ -298,10 +366,19 @@ export default function Settings() {
         fontFamily = "CRPTN";
         break;
       case "roboto":
-        fontFamily = "Roboto";
+        fontFamily = "RR";
+        break;
+      case "roboto-bold":
+        fontFamily = "RB";
         break;
       case "serif":
-        fontFamily = "serif";
+        fontFamily = "SRF";
+        break;
+      case "ubuntu":
+        fontFamily = "UR";
+        break;
+      case "ubuntu-bold":
+        fontFamily = "UB";
         break;
       default:
         fontFamily = "NSL";
@@ -591,7 +668,42 @@ export default function Settings() {
           backgroundColor="rgba(40,40,40,0.8)"
           style="dark"
         />
-        <Modal
+        {/* <Toast
+          visible={fontInfoIsOpen}
+          duration={5000}
+          position={Toast.positions.CENTER}
+          shadow={true}
+          animation={true}
+          hideOnPress={true}
+          delay={50}
+          containerStyle={{
+            borderRadius: 12,
+            borderWidth: 6,
+            borderColor: color300,
+            padding: 12,
+          }}
+          textStyle={{
+            fontFamily: selectedFont,
+            color: lightText,
+            fontSize: 18,
+          }}
+          backgroundColor={color700}
+          opacity={1}
+        >
+          <Text>
+            <FormattedMessage
+              id={selectedFontTitleId}
+              defaultMessage="Font info title"
+            />
+          </Text>
+          <Text>
+            <FormattedMessage
+              id={selectedFontId}
+              defaultMessage="Font info..."
+            />
+          </Text>
+        </Toast> */}
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={fontInfoIsOpen}
@@ -663,7 +775,7 @@ export default function Settings() {
               </Pressable>
             </View>
           </View>
-        </Modal>
+        </Modal> */}
       </BackgroundImage>
     </View>
   );

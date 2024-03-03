@@ -14,6 +14,7 @@ import Home from "./screens/Home";
 import Photos from "./screens/Photos";
 import Read from "./screens/Read";
 import Listen from "./screens/Listen";
+import Watch from "./screens/Watch";
 import Notes from "./screens/Notes";
 import Settings from "./screens/Settings";
 import { FontContext } from "./context/FontContext";
@@ -27,6 +28,7 @@ export default function Screens() {
   const PhotosTitle = intl.formatMessage({ id: "photos.header.title" });
   const ReadTitle = intl.formatMessage({ id: "read.header.title" });
   const ListenTitle = intl.formatMessage({ id: "listen.header.title" });
+  const WatchTitle = intl.formatMessage({ id: "watch.header.title" });
   const NotesTitle = intl.formatMessage({ id: "notes.header.title" });
   const SettingsTitle = intl.formatMessage({ id: "settings.header.title" });
 
@@ -156,6 +158,47 @@ export default function Screens() {
     }),
     [ListenTitle, color500, lightText, selectedFont, selectedHeavyFont]
   );
+  const WatchOptions = useMemo(
+    () => ({
+      headerShown: true,
+      title: WatchTitle,
+      headerStyle: {
+        backgroundColor: color700,
+      },
+      headerTintColor: lightText,
+      headerTitleStyle:
+        selectedFont === "NSL"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "BHL" || selectedFont === "BHM"
+          ? {
+              fontFamily: "BHH",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "ANAREG"
+          ? {
+              fontFamily: "ANABOLD",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "HMGBRD"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 38,
+            }
+          : {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            },
+    }),
+    [WatchTitle, color700, lightText, selectedFont, selectedHeavyFont]
+  );
   const NotesOptions = useMemo(
     () => ({
       headerShown: true,
@@ -249,6 +292,7 @@ export default function Screens() {
       <Stack.Screen name="Photos" component={Photos} options={PhotosOptions} />
       <Stack.Screen name="Read" component={Read} options={ReadOptions} />
       <Stack.Screen name="Listen" component={Listen} options={ListenOptions} />
+      <Stack.Screen name="Watch" component={Watch} options={WatchOptions} />
       <Stack.Screen name="Notes" component={Notes} options={NotesOptions} />
       <Stack.Screen
         name="Settings"

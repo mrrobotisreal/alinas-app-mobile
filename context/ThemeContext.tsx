@@ -29,6 +29,7 @@ export type ThemeState = {
   photosBgUri: string;
   readBgUri: string;
   listenBgUri: string;
+  watchBgUri: string;
   notesBgUri: string;
   settingsBgUri: string;
   changeTheme: (id: string) => void;
@@ -45,6 +46,7 @@ const initialState: ThemeState = {
   photosBgUri: `${serverURL}/assets/backgrounds/photos_viewer_purple.png`,
   readBgUri: `${serverURL}/assets/backgrounds/hummingbird_reader_purple.png`,
   listenBgUri: `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`,
+  watchBgUri: `${serverURL}/assets/backgrounds/yt_viewer_purple.png`,
   notesBgUri: `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`,
   settingsBgUri: `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`,
   changeTheme: (id: string) => {},
@@ -71,6 +73,9 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
   );
   const [listenBgUri, setListenBgUri] = useState<string>(
     `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
+  );
+  const [watchBgUri, setWatchBgUri] = useState<string>(
+    `${serverURL}/assets/backgrounds/yt_viewer_purple.png`
   );
   const [notesBgUri, setNotesBgUri] = useState<string>(
     `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
@@ -101,6 +106,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_purple.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
         );
@@ -127,6 +133,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_coral.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_coral.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_coral.png`
         );
@@ -153,6 +160,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_mint.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_mint.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_mint.png`
         );
@@ -179,6 +187,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_rose.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_rose.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_rose.png`
         );
@@ -203,6 +212,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_sun.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_sun.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_sun.png`
         );
@@ -229,6 +239,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_ocean.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_ocean.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_ocean.png`
         );
@@ -255,6 +266,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_beach.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_beach.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_beach.png`
         );
@@ -281,6 +293,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setListenBgUri(
           `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_purple.png`
         );
+        setWatchBgUri(`${serverURL}/assets/backgrounds/yt_viewer_purple.png`);
         setNotesBgUri(
           `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`
         );
@@ -354,6 +367,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     photosBgUri,
     readBgUri,
     listenBgUri,
+    watchBgUri,
     notesBgUri,
     settingsBgUri,
     changeTheme,

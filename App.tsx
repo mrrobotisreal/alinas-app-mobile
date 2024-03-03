@@ -53,6 +53,11 @@ export default function App() {
     HMGBRD: require("./assets/fonts/hummingbird.ttf"),
     NSH: require("./assets/fonts/NexaScriptHeavy.otf"),
     NSL: require("./assets/fonts/NexaScriptLight.otf"),
+    SRF: require("./assets/fonts/NotoSerif.ttf"),
+    RB: require("./assets/fonts/Roboto-Bold.ttf"),
+    RR: require("./assets/fonts/Roboto-Regular.ttf"),
+    UB: require("./assets/fonts/Ubuntu-Bold.ttf"),
+    UR: require("./assets/fonts/Ubuntu-Regular.ttf"),
   });
 
   /**
