@@ -39,6 +39,12 @@ export default function useGetPlaylists(): UseGetPlaylistsReturns {
             index: 1,
             videoId: "PCY62WQK_T8",
           },
+          {
+            id: "theJudgeTextsList.chapter_3_title",
+            title: "Chapter 3: Publicity",
+            index: 2,
+            videoId: "RfU1283162Q",
+          },
         ],
       },
       {
