@@ -66,13 +66,53 @@ export function FontContextProvider({ children }: { children: ReactNode }) {
         break;
       case "roboto":
         setCurrentFont("roboto");
-        setSelectedFont("Roboto");
-        setSelectedHeavyFont("Roboto");
+        setSelectedFont("RR");
+        setSelectedHeavyFont("RB");
+        break;
+      case "roboto_bold":
+        setCurrentFont("roboto_bold");
+        setSelectedFont("RB");
+        setSelectedHeavyFont("RB");
         break;
       case "serif":
         setCurrentFont("serif");
-        setSelectedFont("serif");
-        setSelectedHeavyFont("serif");
+        setSelectedFont("SRF");
+        setSelectedHeavyFont("SRF");
+        break;
+      case "ubuntu":
+        setCurrentFont("ubuntu");
+        setSelectedFont("UR");
+        setSelectedHeavyFont("UB");
+        break;
+      case "ubuntu_bold":
+        setCurrentFont("ubuntu_bold");
+        setSelectedFont("UB");
+        setSelectedHeavyFont("UB");
+        break;
+      case "lobster":
+        setCurrentFont("lobster");
+        setSelectedFont("LOBR");
+        setSelectedHeavyFont("LOBR");
+        break;
+      case "lobster_two":
+        setCurrentFont("lobster_two");
+        setSelectedFont("LOB2R");
+        setSelectedHeavyFont("LOB2B");
+        break;
+      case "lobster_two_bold":
+        setCurrentFont("lobster_two_bold");
+        setSelectedFont("LOB2B");
+        setSelectedHeavyFont("LOB2B");
+        break;
+      case "prata":
+        setCurrentFont("prata");
+        setSelectedFont("PRA");
+        setSelectedHeavyFont("PRA");
+        break;
+      case "shadows_into_light":
+        setCurrentFont("shadows_into_light");
+        setSelectedFont("SIL");
+        setSelectedHeavyFont("SIL");
         break;
       default:
         setCurrentFont("nexa");

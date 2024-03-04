@@ -25,7 +25,12 @@ async function preloadImages(
         `${serverURL}/assets/backgrounds/I_Love_You_Alina_listen_background_${theme}.png`,
         `${serverURL}/assets/background/yt_viewer_${theme}.png`,
         `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_${theme}.png`,
-        `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_${theme}.png`
+        `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_${theme}.png`,
+        `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${theme}.png`,
+        `${serverURL}/assets/backgrounds/The_Judge_front_cover_${theme}.png`,
+        `${serverURL}/assets/backgrounds/Passportal_front_cover_${theme}.png`,
+        `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${theme}.png`,
+        `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${theme}.png`
       );
     }
   );

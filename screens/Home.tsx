@@ -27,6 +27,7 @@ import { LocalContext } from "../context/LocalContext";
 const bookList: string[] = [
   "My External Cause",
   "The Judge",
+  "The Dreamy Man",
   "Passportal",
   "Love Drunk",
 ];
@@ -90,6 +91,10 @@ export default function Home({ navigation }: any) {
     () => intl.formatMessage({ id: "home.book.theJudge" }),
     [currentLang]
   );
+  const theDreamyManText = useMemo(
+    () => intl.formatMessage({ id: "home.book.theDreamyMan" }),
+    [currentLang]
+  );
   const passportalText = useMemo(
     () => intl.formatMessage({ id: "home.book.passportal" }),
     [currentLang]
@@ -104,6 +109,8 @@ export default function Home({ navigation }: any) {
         return myExternalCauseText;
       case "The Judge":
         return theJudgeText;
+      case "The Dreamy Man":
+        return theDreamyManText;
       case "Passportal":
         return passportalText;
       case "Love Drunk":
@@ -115,6 +122,11 @@ export default function Home({ navigation }: any) {
   const bookChangedToastText = useMemo(() => {
     switch (selectedBook) {
       case "My External Cause":
+        return intl.formatMessage(
+          { id: "home.toast.bookChanged" },
+          { book: selectedBookText }
+        );
+      case "The Dreamy Man":
         return intl.formatMessage(
           { id: "home.toast.bookChanged" },
           { book: selectedBookText }
@@ -190,7 +202,20 @@ export default function Home({ navigation }: any) {
         setSmallBookCoverColor(color300);
         setSelectedBookTranslation(theJudgeText);
         break;
+      case "The Dreamy Man":
+        console.log("The Dreamy Man selected...");
+        setBookUri(
+          `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
+        );
+        setBookUri(
+          `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
+        );
+        setMenuIconColor(color500);
+        setSmallBookCoverColor(color300);
+        setSelectedBookTranslation(theDreamyManText);
+        break;
       case "Passportal":
+        console.log("Passportal selected...");
         setBookUri(
           `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
         );
@@ -198,7 +223,7 @@ export default function Home({ navigation }: any) {
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         // setSelectedBookTranslation(intl.formatMessage({ id: "passportalTextsList.main_title" }));
-        setSelectedBookTranslation(selectedBook);
+        setSelectedBookTranslation(passportalText);
         break;
       case "Love Drunk":
         setBookUri(
@@ -208,7 +233,7 @@ export default function Home({ navigation }: any) {
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         // setSelectedBookTranslation(intl.formatMessage({ id: "loveDrunkTextsList.main_title" }));
-        setSelectedBookTranslation(selectedBook);
+        setSelectedBookTranslation(loveDrunkText);
         break;
       default:
       // setBookUri(
@@ -222,6 +247,10 @@ export default function Home({ navigation }: any) {
   }, [selectedBook, homeBgUri, color300, color500, color700]);
 
   useEffect(() => {
+    console.log("bookUri:", bookUri);
+  }, [bookUri]);
+
+  useEffect(() => {
     switch (currentBook) {
       case "My External Cause":
         setSelectedBookIndex(0);
@@ -229,11 +258,14 @@ export default function Home({ navigation }: any) {
       case "The Judge":
         setSelectedBookIndex(1);
         break;
-      case "Passportal":
+      case "The Dreamy Man":
         setSelectedBookIndex(2);
         break;
-      case "Love Drunk":
+      case "Passportal":
         setSelectedBookIndex(3);
+        break;
+      case "Love Drunk":
+        setSelectedBookIndex(4);
         break;
     }
     setSelectedBook(currentBook);
@@ -383,7 +415,7 @@ export default function Home({ navigation }: any) {
               borderColor: smallBookCoverColor,
             }}
             source={{ uri: bookUri }}
-            contentFit="cover"
+            contentFit="fill"
             transition={300}
           />
         </Pressable>

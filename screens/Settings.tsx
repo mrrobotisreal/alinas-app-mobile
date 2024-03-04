@@ -37,8 +37,7 @@ export default function Settings() {
   const { OS } = useContext(PlatformContext);
 
   const fontRobotoText = intl.formatMessage({ id: "settings.font.roboto" });
-  const fontSerifText =
-    OS === "ios" ? "SF Pro" : intl.formatMessage({ id: "settings.font.serif" });
+  const fontSerifText = intl.formatMessage({ id: "settings.font.serif" });
   const fontNexaText = intl.formatMessage({ id: "settings.font.nexa" });
   const fontAngelinaText = intl.formatMessage({ id: "settings.font.angelina" });
   const fontBauhausLightText = intl.formatMessage({
@@ -94,7 +93,7 @@ export default function Settings() {
         title: fontRobotoText,
       },
       {
-        id: "roboto-bold",
+        id: "roboto_bold",
         title: "Roboto Bold",
       },
       {
@@ -106,8 +105,28 @@ export default function Settings() {
         title: "Ubuntu",
       },
       {
-        id: "ubuntu-bold",
+        id: "ubuntu_bold",
         title: "Ubuntu Bold",
+      },
+      {
+        id: "lobster",
+        title: "Lobster",
+      },
+      {
+        id: "lobster_two",
+        title: "Lobster Two",
+      },
+      {
+        id: "lobster_two_bold",
+        title: "Lobster Two Bold",
+      },
+      {
+        id: "prata",
+        title: "Prata",
+      },
+      {
+        id: "shadows_into_light",
+        title: "Shadows Into Light",
       },
     ];
   }, [
@@ -368,7 +387,7 @@ export default function Settings() {
       case "roboto":
         fontFamily = "RR";
         break;
-      case "roboto-bold":
+      case "roboto_bold":
         fontFamily = "RB";
         break;
       case "serif":
@@ -377,8 +396,23 @@ export default function Settings() {
       case "ubuntu":
         fontFamily = "UR";
         break;
-      case "ubuntu-bold":
+      case "ubuntu_bold":
         fontFamily = "UB";
+        break;
+      case "lobster":
+        fontFamily = "LOBR";
+        break;
+      case "lobster_two":
+        fontFamily = "LOB2R";
+        break;
+      case "lobster_two_bold":
+        fontFamily = "LOB2B";
+        break;
+      case "prata":
+        fontFamily = "PRA";
+        break;
+      case "shadows_into_light":
+        fontFamily = "SIL";
         break;
       default:
         fontFamily = "NSL";

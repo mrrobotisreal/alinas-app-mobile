@@ -1077,11 +1077,226 @@ export function useGetTexts(): UseGetTextsReturns {
               `${serverURL}/assets/theJudge_images/chapter3_paparazzi.png`,
             ],
           },
-          // {
-          //   id: "theJudgeTextsList.chapter_3_content",
-          //   type: "chapter_content",
-          //   title: "chapter_3_content.p1",
-          // },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p1",
+            type: "chapter_content",
+            title: "chapter_3_content.p1",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p2",
+            type: "chapter_content",
+            title: "chapter_3_content.p2",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p3",
+            type: "chapter_content",
+            title: "chapter_3_content.p3",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p4",
+            type: "chapter_content",
+            title: "chapter_3_content.p4",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p5",
+            type: "chapter_content",
+            title: "chapter_3_content.p5",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p6",
+            type: "chapter_content",
+            title: "chapter_3_content.p6",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p7",
+            type: "chapter_content",
+            title: "chapter_3_content.p7",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p8",
+            type: "chapter_content",
+            title: "chapter_3_content.p8",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p9",
+            type: "chapter_content",
+            title: "chapter_3_content.p9",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p10",
+            type: "chapter_content",
+            title: "chapter_3_content.p10",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p11",
+            type: "chapter_content",
+            title: "chapter_3_content.p11",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p12",
+            type: "chapter_content",
+            title: "chapter_3_content.p12",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p13",
+            type: "chapter_content",
+            title: "chapter_3_content.p13",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p14",
+            type: "chapter_content",
+            title: "chapter_3_content.p14",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p15",
+            type: "chapter_content",
+            title: "chapter_3_content.p15",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p16",
+            type: "chapter_content",
+            title: "chapter_3_content.p16",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p17",
+            type: "chapter_content",
+            title: "chapter_3_content.p17",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p18",
+            type: "chapter_content",
+            title: "chapter_3_content.p18",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p19",
+            type: "chapter_content",
+            title: "chapter_3_content.p19",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p20",
+            type: "chapter_content",
+            title: "chapter_3_content.p20",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p21",
+            type: "chapter_content",
+            title: "chapter_3_content.p21",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p22",
+            type: "chapter_content",
+            title: "chapter_3_content.p22",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p23",
+            type: "chapter_content",
+            title: "chapter_3_content.p23",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p24",
+            type: "chapter_content",
+            title: "chapter_3_content.p24",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p25",
+            type: "chapter_content",
+            title: "chapter_3_content.p25",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p26",
+            type: "chapter_content",
+            title: "chapter_3_content.p26",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p27",
+            type: "chapter_content",
+            title: "chapter_3_content.p27",
+          },
+          {
+            id: "theJudgeTextsList.chapter_3_content.p28",
+            type: "chapter_content",
+            title: "chapter_3_content.p28",
+          },
+        ],
+      },
+      {
+        id: "theJudgeTextsList.chapter_4_title",
+        title: "Chapter 4: Verdicts and second thoughts",
+        index: 4,
+        components: [
+          {
+            id: "theJudgeTextsList.chapter_4_title",
+            type: "chapter_title",
+            title: "chapter_4_title",
+          },
+          {
+            id: "image",
+            title: "image",
+            type: "image",
+            imageUri: [
+              `${serverURL}/assets/theJudge_images/chapter4_verdict.png`,
+            ],
+          },
+        ],
+      },
+    ],
+    [currentTheme]
+  );
+  const theDreamyManTextsList: TextListObject[] = useMemo(
+    () => [
+      {
+        id: "theDreamyManTextsList.main_title",
+        title: "Title page",
+        index: 0,
+        components: [
+          {
+            id: "theDreamyManTextsList.main_title",
+            type: "main_title",
+            title: "main_title",
+          },
+          {
+            id: "theDreamyManTextsList.author",
+            type: "author",
+            title: "author",
+          },
+          {
+            id: "theDreamyManTextsList.created_for",
+            type: "author",
+            title: "created_for",
+          },
+          {
+            id: "theDreamyManTextsList.artist",
+            type: "author",
+            title: "artist",
+          },
+          {
+            id: "title_image",
+            type: "image",
+            title: "title_image",
+            imageUri: [
+              `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`,
+            ],
+          },
+        ],
+      },
+      {
+        id: "theDreamyManTextsList.dream_1_title",
+        title: "Dream 1: The McDonalds Prison",
+        index: 1,
+        components: [
+          {
+            id: "theDreamyManTextsList.dream_1_title",
+            type: "chapter_title",
+            title: "dream_1_title",
+          },
+          {
+            id: "image",
+            title: "image",
+            type: "image",
+            imageUri: [
+              `${serverURL}/assets/theDreamyMan_images/dream_1_mcdonalds_prison.png`,
+            ],
+          },
         ],
       },
     ],
@@ -1098,6 +1313,9 @@ export function useGetTexts(): UseGetTextsReturns {
         break;
       case "The Judge":
         setTextsList(theJudgeTextsList);
+        break;
+      case "The Dreamy Man":
+        setTextsList(theDreamyManTextsList);
         break;
       default:
         setTextsList(myExternalCauseTextsList);

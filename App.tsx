@@ -58,6 +58,11 @@ export default function App() {
     RR: require("./assets/fonts/Roboto-Regular.ttf"),
     UB: require("./assets/fonts/Ubuntu-Bold.ttf"),
     UR: require("./assets/fonts/Ubuntu-Regular.ttf"),
+    LOBR: require("./assets/fonts/Lobster-Regular.ttf"),
+    LOB2R: require("./assets/fonts/LobsterTwo-Regular.ttf"),
+    LOB2B: require("./assets/fonts/LobsterTwo-Bold.ttf"),
+    PRA: require("./assets/fonts/Prata-Regular.ttf"),
+    SIL: require("./assets/fonts/ShadowsIntoLight-Regular.ttf"),
   });
 
   /**

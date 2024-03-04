@@ -94,9 +94,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`
-        );
+        setHomeBg(currentBook, "purple");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
         );
@@ -121,9 +119,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7B3729");
         setLightText("#FFFFFF");
         setDarkText("#7B3729");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_coral.png`
-        );
+        setHomeBg(currentBook, "coral");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_coral.png`
         );
@@ -148,9 +144,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#0A3A2A");
         setLightText("#FFFFFF");
         setDarkText("#0A3A2A");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_mint.png`
-        );
+        setHomeBg(currentBook, "mint");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_mint.png`
         );
@@ -175,9 +169,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7E0315");
         setLightText("#FFFFFF");
         setDarkText("#7E0315");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_rose.png`
-        );
+        setHomeBg(currentBook, "rose");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_rose.png`
         );
@@ -202,9 +194,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#BB6700");
         setLightText("#FFFFFF");
         setDarkText("#BB6700");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_sun.png`
-        );
+        setHomeBg(currentBook, "sun");
         setPhotosBgUri(`${serverURL}/assets/backgrounds/photos_viewer_sun.png`);
         setReadBgUri(
           `${serverURL}/assets/backgrounds/hummingbird_reader_sun.png`
@@ -227,9 +217,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#00457A");
         setLightText("#FFFFFF");
         setDarkText("#00457A");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_ocean.png`
-        );
+        setHomeBg(currentBook, "ocean");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_ocean.png`
         );
@@ -254,9 +242,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#006F8A");
         setLightText("#FFFFFF");
         setDarkText("#006F8A");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_beach.png`
-        );
+        setHomeBg(currentBook, "beach");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_beach.png`
         );
@@ -281,9 +267,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBgUri(
-          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_purple.png`
-        );
+        setHomeBg(currentBook, "purple");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
         );
@@ -326,12 +310,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
       .catch((err) => console.error(err));
   };
 
-  useEffect(() => {
-    getSavedTheme();
-  }, []);
-
-  useEffect(() => {
-    console.log("theme current book:", currentBook);
+  const setHomeBg = (currentBook: string, currentTheme: string) => {
     switch (currentBook) {
       case "My External Cause":
         setHomeBgUri(
@@ -341,6 +320,11 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
       case "The Judge":
         setHomeBgUri(
           `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
+        );
+        break;
+      case "The Dreamy Man":
+        setHomeBgUri(
+          `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
         );
         break;
       case "Passportal":
@@ -354,7 +338,17 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         );
         break;
     }
-  }, [currentBook]);
+  };
+
+  useEffect(() => {
+    getSavedTheme();
+  }, []);
+
+  useEffect(() => {
+    console.log("theme current book:", currentBook);
+    console.log("theme current theme:", currentTheme);
+    setHomeBg(currentBook, currentTheme);
+  }, [currentBook, currentTheme]);
 
   const values = {
     currentTheme,
