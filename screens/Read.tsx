@@ -26,16 +26,28 @@ import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
+import { LocalContext } from "../context/LocalContext";
 import BackgroundImage from "../components/BackgroundImage";
 import Reader from "../components/Reader";
 import Toast from "react-native-root-toast";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 export default function Read() {
   const intl = useIntl();
-  const { color300, color500, color700, lightText, darkText, readBgUri } =
-    useContext(ThemeContext);
-  const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { captureEvent } = useCaptureEvent();
+  const {
+    color300,
+    color500,
+    color700,
+    lightText,
+    darkText,
+    readBgUri,
+    currentTheme,
+  } = useContext(ThemeContext);
+  const { selectedFont, selectedHeavyFont, currentFont } =
+    useContext(FontContext);
   const { OS } = useContext(PlatformContext);
+  const { timeZone, currentLang } = useContext(LocalContext);
   const { currentBook, sectionItems, pageSVRef } = useContext(BookContext);
   const { audioList } = useGetAudioList();
   const { textsList } = useGetTexts();
@@ -86,6 +98,25 @@ export default function Read() {
     setSelectSectionIsVisible(false);
   };
   const handlePressMenuItem = (i: number) => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Read",
+      context: "Select chapter",
+      detail: textsList[i].title,
+      description: `Chapter ${textsList[i].title} selected`,
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     setCurrentPageIndex(i);
     setTableOfContentsIsOpen(false);
     setBookIsOpen(true);
@@ -94,6 +125,32 @@ export default function Read() {
   const handlePressInPreviousPage = () => setPreviousPageIconColor(color300);
   const handlePressOutPreviousPage = () => setPreviousPageIconColor("#FFFFFF");
   const handlePressPreviousPage = () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Read",
+      context: "Previous chapter",
+      detail:
+        currentPageIndex === 0
+          ? textsList[textsList.length - 1].title
+          : textsList[currentPageIndex - 1].title,
+      description: `Changed to previous chapter: ${
+        currentPageIndex === 0
+          ? textsList[textsList.length - 1].title
+          : textsList[currentPageIndex - 1].title
+      }`,
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(
@@ -130,6 +187,27 @@ export default function Read() {
   const handlePressInOpenCloseBook = () => setBookIsOpenColor(color300);
   const handlePressOutOpenCloseBook = () => setBookIsOpenColor("#FFFFFF");
   const handlePressOpenCloseBook = () => {
+    if (!bookIsOpen) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Read",
+        context: "Read book",
+        detail: `Chapter: ${textsList[currentPageIndex].title}`,
+        description: `Book opened to chapter: ${textsList[currentPageIndex].title}`,
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: currentFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setBookIsOpen(!bookIsOpen);
     setTableOfContentsIsOpen(false);
@@ -144,6 +222,32 @@ export default function Read() {
   const handlePressInNextPage = () => setNextPageIconColor(color300);
   const handlePressOutNextPage = () => setNextPageIconColor("#FFFFFF");
   const handlePressNextPage = () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Read",
+      context: "Next chapter",
+      detail:
+        currentPageIndex === textsList.length - 1
+          ? textsList[0].title
+          : textsList[currentPageIndex + 1].title,
+      description: `Changed to next page/chapter: ${
+        currentPageIndex === textsList.length - 1
+          ? textsList[0].title
+          : textsList[currentPageIndex + 1].title
+      }`,
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setTimeout(() => {
       setCurrentPageIndex(

@@ -14,6 +14,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { serverURL } from "../constants/urls";
 import { Image } from "expo-image";
 import Toast from "react-native-root-toast";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 /**
  * Context
@@ -44,12 +45,21 @@ type MenuItemNodeProps = {
 
 export default function Home({ navigation }: any) {
   const intl = useIntl();
-  const { color300, color500, color700, lightText, homeBgUri, currentTheme } =
-    useContext(ThemeContext);
-  const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { captureEvent } = useCaptureEvent();
+  const {
+    color300,
+    color500,
+    color700,
+    lightText,
+    homeBgUri,
+    changeHomeBgUri,
+    currentTheme,
+  } = useContext(ThemeContext);
+  const { currentFont, selectedFont, selectedHeavyFont } =
+    useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { currentBook, changeBook } = useContext(BookContext);
-  const { currentLang } = useContext(LocalContext);
+  const { currentLang, timeZone } = useContext(LocalContext);
   const [menuIsVisible, setMenuIsVisible] = useState<boolean>(false);
   const [menuIconColor, setMenuIconColor] = useState<string>(color500);
   const [selectedBook, setSelectedBook] = useState<string>(currentBook);
@@ -188,6 +198,9 @@ export default function Home({ navigation }: any) {
         setBookUri(
           `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
         );
+        changeHomeBgUri(
+          `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+        );
         // changeBook("My External Cause");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
@@ -195,6 +208,9 @@ export default function Home({ navigation }: any) {
         break;
       case "The Judge":
         setBookUri(
+          `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
+        );
+        changeHomeBgUri(
           `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
         );
         // changeBook("The Judge");
@@ -210,6 +226,9 @@ export default function Home({ navigation }: any) {
         setBookUri(
           `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
         );
+        changeHomeBgUri(
+          `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
+        );
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
         setSelectedBookTranslation(theDreamyManText);
@@ -217,6 +236,9 @@ export default function Home({ navigation }: any) {
       case "Passportal":
         console.log("Passportal selected...");
         setBookUri(
+          `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
+        );
+        changeHomeBgUri(
           `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
         );
         // changeBook("Passportal");
@@ -229,6 +251,9 @@ export default function Home({ navigation }: any) {
         setBookUri(
           `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${currentTheme}.png`
         );
+        changeHomeBgUri(
+          `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${currentTheme}.png`
+        );
         // changeBook("Love Drunk");
         setMenuIconColor(color500);
         setSmallBookCoverColor(color300);
@@ -236,6 +261,33 @@ export default function Home({ navigation }: any) {
         setSelectedBookTranslation(loveDrunkText);
         break;
       default:
+        switch (currentBook) {
+          case "My External Cause":
+            changeHomeBgUri(
+              `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
+            );
+            break;
+          case "The Judge":
+            changeHomeBgUri(
+              `${serverURL}/assets/backgrounds/The_Judge_front_cover_${currentTheme}.png`
+            );
+            break;
+          case "The Dreamy Man":
+            changeHomeBgUri(
+              `${serverURL}/assets/backgrounds/The_Dreamy_Man_front_cover_${currentTheme}.png`
+            );
+            break;
+          case "Passportal":
+            changeHomeBgUri(
+              `${serverURL}/assets/backgrounds/Passportal_front_cover_${currentTheme}.png`
+            );
+            break;
+          case "Love Drunk":
+            changeHomeBgUri(
+              `${serverURL}/assets/backgrounds/Love_Drunk_front_cover_${currentTheme}.png`
+            );
+            break;
+        }
       // setBookUri(
       //   `${serverURL}/assets/backgrounds/my_external_cause_front_cover_${currentTheme}.png`
       // );
@@ -275,44 +327,194 @@ export default function Home({ navigation }: any) {
    * Functions
    */
   const handleNavigation = (item: MenuItem) => {
+    const date = new Date();
+    let newEvent: EventObject | null;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     switch (item.id) {
       case "photos":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open photos screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Photos");
         break;
       case "read":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open read screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Read");
         break;
       case "listen":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open listen screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Listen");
         break;
       case "watch":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open watch screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Watch");
         break;
       case "notes":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open notes screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Notes");
         break;
       case "settings":
+        newEvent = {
+          name: "Press button",
+          location: "Home",
+          context: "Open settings screen",
+          detail: item.id,
+          description: `User pressed the ${item.id} button on the Home screen.`,
+          timestamp: date.getTime(),
+          date: date.toLocaleDateString(),
+          time: date.toLocaleTimeString(),
+          timeZone: timeZone ? timeZone : "UTC",
+          constants: {
+            selectedBook: currentBook,
+            selectedLanguage: currentLang,
+            selectedTheme: currentTheme,
+            selectedFont: currentFont,
+          },
+        };
         navigation.navigate("Settings");
+        break;
+      default:
+        newEvent = null;
+    }
+    if (newEvent) {
+      captureEvent(newEvent);
     }
   };
   const handleClickPreviousBook = () => {
+    // const date = new Date();
+    // const newEvent: EventObject = {
+    //   name: "Press button",
+    //   location: "Home",
+    //   context: "Previous book",
+    //   detail: "",
+    //   date: date.toLocaleDateString(),
+    //   time: date.toLocaleTimeString(),
+    //   timeZone: timeZone ? timeZone : "UTC",
+    // };
+
     if (selectedBookIndex === 0) {
       setSelectedBookIndex(bookList.length - 1);
       setSelectedBook(bookList[bookList.length - 1]);
+      // newEvent.detail = bookList[bookList.length - 1];
+      // newEvent.description = `User pressed the Previous book button on the Home screen, resulting in book ${
+      //   bookList[bookList.length - 1]
+      // }.`;
     } else {
       setSelectedBookIndex(selectedBookIndex - 1);
       setSelectedBook(bookList[selectedBookIndex - 1]);
+      // newEvent.detail = bookList[selectedBookIndex - 1];
+      // newEvent.description = `User pressed the Previous book button on the Home screen, resulting in book ${
+      //   bookList[selectedBookIndex - 1]
+      // }.`;
     }
+
+    // captureEvent(newEvent);
   };
   const handleClickNextBook = () => {
+    // const date = new Date();
+    // const newEvent: EventObject = {
+    //   name: "Press button",
+    //   location: "Home",
+    //   context: "Next book",
+    //   detail: "",
+    //   date: date.toLocaleDateString(),
+    //   time: date.toLocaleTimeString(),
+    //   timeZone: timeZone ? timeZone : "UTC",
+    // };
+
     if (selectedBookIndex === bookList.length - 1) {
       setSelectedBookIndex(0);
       setSelectedBook(bookList[0]);
+      // newEvent.detail = bookList[0];
+      // newEvent.description = `User pressed the Next book button on the Home screen, resulting in book ${bookList[0]}.`;
     } else {
       setSelectedBookIndex(selectedBookIndex + 1);
       setSelectedBook(bookList[selectedBookIndex + 1]);
+      // newEvent.detail = bookList[selectedBookIndex + 1];
+      // newEvent.description = `User pressed the Next book button on the Home screen, resulting in book ${
+      //   bookList[selectedBookIndex + 1]
+      // }.`;
     }
+
+    // captureEvent(newEvent);
   };
 
   /**
@@ -392,6 +594,33 @@ export default function Home({ navigation }: any) {
         <Pressable
           onPress={() => {
             setMenuIsVisible(false);
+          }}
+          onLongPress={() => {
+            const tempText = `🎊💃 Congrats my love! 🕺🎉\nYou found the super secret "Events" page!
+            Now you can see all the events that have been captured in the app! I love you! ❤️🥰`;
+            const toast = Toast.show(tempText, {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.CENTER,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 50,
+              containerStyle: {
+                borderRadius: 12,
+                borderWidth: 6,
+                borderColor: color300,
+                padding: 12,
+              },
+              textStyle: {
+                fontFamily: selectedFont,
+                color: lightText,
+                fontSize: 18,
+              },
+              backgroundColor: color700,
+              opacity: 1,
+              // opacity: 0.96,
+            });
+            navigation.navigate("Events");
           }}
           onPressIn={() => menuIsVisible && setSmallBookCoverColor(color500)}
           onPressOut={() => menuIsVisible && setSmallBookCoverColor(color300)}
@@ -477,7 +706,15 @@ export default function Home({ navigation }: any) {
                 onPressOut={() => setMenuIconColor(color500)}
                 onPress={() => {
                   setMenuIsVisible(true);
-                  changeBook(selectedBook);
+                  console.log("Home currentTheme:", currentTheme);
+                  console.log("Home currentFont:", currentFont);
+                  console.log("Home currentLang:", currentLang);
+                  changeBook(
+                    selectedBook,
+                    currentLang,
+                    currentTheme,
+                    currentFont
+                  );
                   const toast = Toast.show(bookChangedToastText, {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER,

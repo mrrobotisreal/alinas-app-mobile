@@ -8,6 +8,8 @@ import {
 import { BookContext } from "./BookContext";
 import axios from "axios";
 import { serverURL } from "../constants/urls";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
+import { getCalendars } from "expo-localization";
 
 export type ThemeType =
   | "purple"
@@ -32,7 +34,13 @@ export type ThemeState = {
   watchBgUri: string;
   notesBgUri: string;
   settingsBgUri: string;
-  changeTheme: (id: string) => void;
+  changeTheme: (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentFont?: string
+  ) => void;
+  changeHomeBgUri: (uri: string) => void;
 };
 
 const initialState: ThemeState = {
@@ -49,13 +57,21 @@ const initialState: ThemeState = {
   watchBgUri: `${serverURL}/assets/backgrounds/yt_viewer_purple.png`,
   notesBgUri: `${serverURL}/assets/backgrounds/alina_app_notes_wallpaper_purple.png`,
   settingsBgUri: `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`,
-  changeTheme: (id: string) => {},
+  changeTheme: (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentFont?: string
+  ) => {},
+  changeHomeBgUri: (uri: string) => {},
 };
 
 export const ThemeContext = createContext<ThemeState>(initialState);
 
 export function ThemeContextProvider({ children }: { children: ReactNode }) {
-  const { currentBook } = useContext(BookContext);
+  const { captureEvent } = useCaptureEvent();
+  const { timeZone } = getCalendars()[0];
+  const { currentBook: currentBookCtx } = useContext(BookContext);
   const [currentTheme, setCurrentTheme] = useState<ThemeType>("purple");
   const [color300, setColor300] = useState<string>("#CDB7F6");
   const [color500, setColor500] = useState<string>("#6B3BCB");
@@ -84,7 +100,32 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     `${serverURL}/assets/backgrounds/alina_app_settings_wallpaper_purple.png`
   );
 
-  const changeTheme = (id: string) => {
+  const changeTheme = (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentFont?: string
+  ) => {
+    if (currentBook && currentLanguage && currentFont) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "Change theme",
+        detail: `Changed theme to ${id}`,
+        timestamp: date.getTime(),
+        date: date.toDateString(),
+        time: date.toTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLanguage,
+          selectedTheme: id,
+          selectedFont: currentFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     saveThemeSelection(id);
     switch (id) {
       case "purple":
@@ -94,7 +135,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBg(currentBook, "purple");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "purple");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
         );
@@ -119,7 +160,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7B3729");
         setLightText("#FFFFFF");
         setDarkText("#7B3729");
-        setHomeBg(currentBook, "coral");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "coral");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_coral.png`
         );
@@ -144,7 +185,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#0A3A2A");
         setLightText("#FFFFFF");
         setDarkText("#0A3A2A");
-        setHomeBg(currentBook, "mint");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "mint");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_mint.png`
         );
@@ -169,7 +210,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#7E0315");
         setLightText("#FFFFFF");
         setDarkText("#7E0315");
-        setHomeBg(currentBook, "rose");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "rose");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_rose.png`
         );
@@ -194,7 +235,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#BB6700");
         setLightText("#FFFFFF");
         setDarkText("#BB6700");
-        setHomeBg(currentBook, "sun");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "sun");
         setPhotosBgUri(`${serverURL}/assets/backgrounds/photos_viewer_sun.png`);
         setReadBgUri(
           `${serverURL}/assets/backgrounds/hummingbird_reader_sun.png`
@@ -217,7 +258,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#00457A");
         setLightText("#FFFFFF");
         setDarkText("#00457A");
-        setHomeBg(currentBook, "ocean");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "ocean");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_ocean.png`
         );
@@ -242,7 +283,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#006F8A");
         setLightText("#FFFFFF");
         setDarkText("#006F8A");
-        setHomeBg(currentBook, "beach");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "beach");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_beach.png`
         );
@@ -267,7 +308,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
         setColor700("#380C6B");
         setLightText("#FFFFFF");
         setDarkText("#380C6B");
-        setHomeBg(currentBook, "purple");
+        setHomeBg(currentBook ? currentBook : currentBookCtx, "purple");
         setPhotosBgUri(
           `${serverURL}/assets/backgrounds/photos_viewer_purple.png`
         );
@@ -340,15 +381,17 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const changeHomeBgUri = (uri: string) => setHomeBgUri(uri);
+
   useEffect(() => {
     getSavedTheme();
   }, []);
 
   useEffect(() => {
-    console.log("theme current book:", currentBook);
+    console.log("theme current book:", currentBookCtx);
     console.log("theme current theme:", currentTheme);
-    setHomeBg(currentBook, currentTheme);
-  }, [currentBook, currentTheme]);
+    setHomeBg(currentBookCtx, currentTheme);
+  }, [currentBookCtx, currentTheme]);
 
   const values = {
     currentTheme,
@@ -365,6 +408,7 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     notesBgUri,
     settingsBgUri,
     changeTheme,
+    changeHomeBgUri,
   };
 
   return (

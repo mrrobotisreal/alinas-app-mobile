@@ -25,16 +25,30 @@ import { ReactNode, useContext, useRef, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
+import { LocalContext } from "../context/LocalContext";
+import { BookContext } from "../context/BookContext";
 import useGetPlaylists from "../hooks/useGetPlaylists";
 import BackgroundImage from "../components/BackgroundImage";
 import YTViewer from "../components/YTViewer";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 export default function Watch() {
   const intl = useIntl();
-  const { color300, color500, color700, lightText, darkText, watchBgUri } =
-    useContext(ThemeContext);
-  const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { captureEvent } = useCaptureEvent();
+  const {
+    color300,
+    color500,
+    color700,
+    lightText,
+    darkText,
+    watchBgUri,
+    currentTheme,
+  } = useContext(ThemeContext);
+  const { selectedFont, selectedHeavyFont, currentFont } =
+    useContext(FontContext);
   const { OS } = useContext(PlatformContext);
+  const { timeZone, currentLang } = useContext(LocalContext);
+  const { currentBook } = useContext(BookContext);
   const { playlists } = useGetPlaylists();
   const [playlistsListIsOpen, setPlaylistsListIsOpen] =
     useState<boolean>(false);
@@ -74,6 +88,25 @@ export default function Watch() {
     setNotepadIsOpen(false);
   };
   const handlePressMenuItem = (i: number) => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Watch",
+      context: "Select playlist",
+      detail: `${playlists[i].title}`,
+      description: `Playlist "${playlists[i].title}" selected`,
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setCurrentPlaylistIndex(i);
     setCurrentPlaylistTitle(playlists[i].title);
@@ -83,11 +116,54 @@ export default function Watch() {
     setCurrentVideoIndex(0);
     setPlaylistsListIsOpen(false);
     setTvIsOpen(true);
+    newEvent.context = "Watch video";
+    newEvent.detail = `${playlists[i].videos[0].title}`;
+    newEvent.description = `Video "${playlists[i].videos[0].title}" selected`;
+    captureEvent(newEvent);
   };
 
   const handlePressInOpenCloseTv = () => setTvIsOpenColor(color300);
   const handlePressOutOpenCloseTv = () => setTvIsOpenColor("#FFFFFF");
   const handlePressOpenCloseTv = () => {
+    if (!tvIsOpen) {
+      const date = new Date();
+      const newPlaylistEvent: EventObject = {
+        name: "Press button",
+        location: "Watch",
+        context: "Play video",
+        detail: `${playlists[currentPlaylistIndex].title}`,
+        description: `Playlist "${playlists[currentPlaylistIndex].title}" selected`,
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: currentFont,
+        },
+      };
+      const newVideoEvent: EventObject = {
+        name: "Press button",
+        location: "Watch",
+        context: "Watch video",
+        detail: `${playlists[currentPlaylistIndex].videos[currentVideoIndex].title}`,
+        description: `Video "${playlists[currentPlaylistIndex].videos[currentVideoIndex].title}" selected`,
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: currentFont,
+        },
+      };
+      captureEvent(newPlaylistEvent);
+      captureEvent(newVideoEvent);
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setTvIsOpen(!tvIsOpen);
     setPlaylistsListIsOpen(false);
@@ -98,8 +174,36 @@ export default function Watch() {
   const handlePressOutPreviousVideo = () =>
     setPreviousVideoIconColor("#FFFFFF");
   const handlePressPreviousVideo = () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Watch",
+      context: "Previous video",
+      detail: "",
+      description: "",
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
     console.log("currentVideoIndex:", currentVideoIndex);
     if (playlists[currentPlaylistIndex].videos[currentVideoIndex].index === 0) {
+      newEvent.detail = `${
+        playlists[currentPlaylistIndex].videos[
+          playlists[currentPlaylistIndex].videos.length - 1
+        ].title
+      }`;
+      newEvent.description = `Video "${
+        playlists[currentPlaylistIndex].videos[
+          playlists[currentPlaylistIndex].videos.length - 1
+        ].title
+      }" selected`;
       setCurrentVideoTitle(
         playlists[currentPlaylistIndex].videos[
           playlists[currentPlaylistIndex].videos.length - 1
@@ -112,6 +216,12 @@ export default function Watch() {
       );
       setCurrentVideoIndex(playlists[currentPlaylistIndex].videos.length - 1);
     } else {
+      newEvent.detail = `${
+        playlists[currentPlaylistIndex].videos[currentVideoIndex - 1].title
+      }`;
+      newEvent.description = `Video "${
+        playlists[currentPlaylistIndex].videos[currentVideoIndex - 1].title
+      }" selected`;
       setCurrentVideoTitle(
         playlists[currentPlaylistIndex].videos[
           playlists[currentPlaylistIndex].videos[currentVideoIndex].index - 1
@@ -126,20 +236,47 @@ export default function Watch() {
         playlists[currentPlaylistIndex].videos[currentVideoIndex].index - 1
       );
     }
+    captureEvent(newEvent);
   };
 
   const handlePressInNextVideo = () => setNextVideoIconColor(color300);
   const handlePressOutNextVideo = () => setNextVideoIconColor("#FFFFFF");
   const handlePressNextVideo = () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Watch",
+      context: "Next video",
+      detail: "",
+      description: "",
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
     console.log("currentVideoIndex:", currentVideoIndex);
     if (
       playlists[currentPlaylistIndex].videos[currentVideoIndex].index ===
       playlists[currentPlaylistIndex].videos.length - 1
     ) {
+      newEvent.detail = `${playlists[currentPlaylistIndex].videos[0].title}`;
+      newEvent.description = `Video "${playlists[currentPlaylistIndex].videos[0].title}" selected`;
       setCurrentVideoTitle(playlists[currentPlaylistIndex].videos[0].title);
       setCurrentVideoTitleId(playlists[currentPlaylistIndex].videos[0].id);
       setCurrentVideoIndex(0);
     } else {
+      newEvent.detail = `${
+        playlists[currentPlaylistIndex].videos[currentVideoIndex + 1].title
+      }`;
+      newEvent.description = `Video "${
+        playlists[currentPlaylistIndex].videos[currentVideoIndex + 1].title
+      }" selected`;
       setCurrentVideoTitle(
         playlists[currentPlaylistIndex].videos[
           playlists[currentPlaylistIndex].videos[currentVideoIndex].index + 1
@@ -154,6 +291,7 @@ export default function Watch() {
         playlists[currentPlaylistIndex].videos[currentVideoIndex].index + 1
       );
     }
+    captureEvent(newEvent);
   };
 
   const handlePressInNotepad = () => setNotepadIconColor(color300);

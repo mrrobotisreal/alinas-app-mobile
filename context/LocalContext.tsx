@@ -2,6 +2,8 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import { NativeModules, Platform } from "react-native";
 import axios from "axios";
 import { IntlProvider } from "react-intl";
+import { getLocales, Locale, getCalendars } from "expo-localization";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 /**
  * Messages
@@ -60,7 +62,14 @@ const deviceLocale = _deviceLocale.split(/[-_]/)[0];
 
 export type LocaleStateContext = {
   currentLang: string;
-  changeLanguage: (selectedLanguage: string) => void;
+  changeLanguage: (
+    selectedLanguage: string,
+    currentBook?: string,
+    currentTheme?: string,
+    currentFont?: string
+  ) => void;
+  deviceLocales: Locale[];
+  timeZone: string | null;
 };
 export type LocaleContextProps = {
   children?: ReactNode;
@@ -68,15 +77,54 @@ export type LocaleContextProps = {
 
 const initialState: LocaleStateContext = {
   currentLang: deviceLocale || "en",
-  changeLanguage: (selectedLanguage: string) => void 0,
+  changeLanguage: (
+    selectedLanguage: string,
+    currentBook?: string,
+    currentTheme?: string,
+    currentFont?: string
+  ) => void 0,
+  deviceLocales: getLocales(),
+  timeZone: getCalendars()[0].timeZone,
 };
 
 export const LocalContext = createContext(initialState);
 
 export const LocalContextProvider = ({ children }: LocaleContextProps) => {
+  const { captureEvent } = useCaptureEvent();
   const [currentLang, setCurrentLang] = useState<string>(deviceLocale || "en");
+  const [deviceLocales, setDeviceLocales] = useState<Locale[]>(
+    initialState.deviceLocales
+  );
+  const [timeZone, setTimeZone] = useState<string | null>(
+    initialState.timeZone
+  );
 
-  const changeLanguage = (selectedLanguage: string) => {
+  const changeLanguage = (
+    selectedLanguage: string,
+    currentBook?: string,
+    currentTheme?: string,
+    currentFont?: string
+  ) => {
+    if (currentBook && currentTheme && currentFont) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "Change language",
+        detail: `Changed language to ${selectedLanguage}`,
+        timestamp: date.getTime(),
+        date: date.toDateString(),
+        time: date.toTimeString(),
+        timeZone: initialState.timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: selectedLanguage,
+          selectedTheme: currentTheme,
+          selectedFont: currentFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     saveLangSelection(selectedLanguage);
     setCurrentLang(selectedLanguage);
   };
@@ -104,6 +152,8 @@ export const LocalContextProvider = ({ children }: LocaleContextProps) => {
   };
 
   useEffect(() => {
+    setDeviceLocales(getLocales());
+    setTimeZone(getCalendars()[0].timeZone);
     getSavedLang();
   }, []);
 
@@ -114,6 +164,8 @@ export const LocalContextProvider = ({ children }: LocaleContextProps) => {
   const values = {
     currentLang,
     changeLanguage,
+    deviceLocales,
+    timeZone,
   };
 
   return (

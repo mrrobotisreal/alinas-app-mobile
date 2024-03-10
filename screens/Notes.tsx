@@ -29,6 +29,7 @@ import moment from "moment";
 import { LocalContext } from "../context/LocalContext";
 import { Image } from "expo-image";
 import BackgroundImage from "../components/BackgroundImage";
+import useCaptureEvent from "../hooks/useCaptureEvent";
 
 const sectionItems = [
   {

@@ -1,27 +1,68 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { serverURL } from "../constants/urls";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
+import { getCalendars } from "expo-localization";
 
 export type FontState = {
+  currentFont: string;
   selectedFont: string;
   selectedHeavyFont: string;
-  changeFont: (id: string) => void;
+  changeFont: (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentTheme?: string
+  ) => void;
 };
 
 const initialState: FontState = {
+  currentFont: "nexa",
   selectedFont: "NSL",
   selectedHeavyFont: "NSH",
-  changeFont: (id: string) => {},
+  changeFont: (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentTheme?: string
+  ) => {},
 };
 
 export const FontContext = createContext<FontState>(initialState);
 
 export function FontContextProvider({ children }: { children: ReactNode }) {
+  const { captureEvent } = useCaptureEvent();
+  const { timeZone } = getCalendars()[0];
   const [currentFont, setCurrentFont] = useState<string>("nexa");
   const [selectedFont, setSelectedFont] = useState<string>("NSL");
   const [selectedHeavyFont, setSelectedHeavyFont] = useState<string>("NSH");
 
-  const changeFont = (id: string) => {
+  const changeFont = (
+    id: string,
+    currentBook?: string,
+    currentLanguage?: string,
+    currentTheme?: string
+  ) => {
+    if (currentBook && currentLanguage && currentTheme) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "Change font",
+        detail: `Changed font to ${id}`,
+        timestamp: date.getTime(),
+        date: date.toDateString(),
+        time: date.toTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLanguage,
+          selectedTheme: currentTheme,
+          selectedFont: id,
+        },
+      };
+      captureEvent(newEvent);
+    }
     saveFontSelection(id);
     switch (id) {
       case "nexa":
@@ -148,6 +189,7 @@ export function FontContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const values = {
+    currentFont,
     selectedFont,
     selectedHeavyFont,
     changeFont,

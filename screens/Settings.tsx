@@ -13,15 +13,18 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { LocalContext } from "../context/LocalContext";
+import { BookContext } from "../context/BookContext";
 import { StatusBar } from "expo-status-bar";
 import * as Haptics from "expo-haptics";
 import { PlatformContext } from "../context/PlatformContext";
 import { Image } from "expo-image";
 import BackgroundImage from "../components/BackgroundImage";
 import Toast from "react-native-root-toast";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 export default function Settings() {
   const intl = useIntl();
+  const { captureEvent } = useCaptureEvent();
   const {
     currentTheme,
     color300,
@@ -31,9 +34,10 @@ export default function Settings() {
     settingsBgUri,
     changeTheme,
   } = useContext(ThemeContext);
-  const { selectedFont, selectedHeavyFont, changeFont } =
+  const { selectedFont, selectedHeavyFont, changeFont, currentFont } =
     useContext(FontContext);
-  const { currentLang, changeLanguage } = useContext(LocalContext);
+  const { currentLang, changeLanguage, timeZone } = useContext(LocalContext);
+  const { currentBook } = useContext(BookContext);
   const { OS } = useContext(PlatformContext);
 
   const fontRobotoText = intl.formatMessage({ id: "settings.font.roboto" });
@@ -260,6 +264,27 @@ export default function Settings() {
   const handlePressInFont = () => setFontIconColor(color300);
   const handlePressOutFont = () => setFontIconColor("#FFFFFF");
   const handlePressFont = () => {
+    if (!fontIsOpen) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "View fonts",
+        detail: "Open font options list",
+        description: "Opened font options list",
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: selectedFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setFontIsOpen(!fontIsOpen);
     setTranslateIsOpen(false);
@@ -280,6 +305,27 @@ export default function Settings() {
   const handlePressInTranslate = () => setTranslateIconColor(color300);
   const handlePressOutTranslate = () => setTranslateIconColor("#FFFFFF");
   const handlePressTranslate = () => {
+    if (!translateIsOpen) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "View languages",
+        detail: "Open language options list",
+        description: "Opened language options list",
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: selectedFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setTranslateIsOpen(!translateIsOpen);
     setFontIsOpen(false);
@@ -289,6 +335,27 @@ export default function Settings() {
   const handlePressInTheme = () => setThemeIconColor(color300);
   const handlePressOutTheme = () => setThemeIconColor("#FFFFFF");
   const handlePressTheme = () => {
+    if (!themeIsOpen) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Settings",
+        context: "View themes",
+        detail: "Open theme options list",
+        description: "Opened theme options list",
+        timestamp: date.getTime(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: selectedFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     setThemeIsOpen(!themeIsOpen);
     setFontIsOpen(false);
@@ -296,9 +363,28 @@ export default function Settings() {
   };
 
   const handleChangeFont = (id: string) => {
-    changeFont(id);
+    changeFont(id, currentBook, currentLang, currentTheme);
   };
   const handleShowFontInfo = (id: string) => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Long press button",
+      location: "Settings",
+      context: "View font info",
+      detail: `Open font info for ${id}`,
+      description: `Opened font info for ${id}`,
+      timestamp: date.getTime(),
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: selectedFont,
+      },
+    };
+    captureEvent(newEvent);
     setSelectedFontId(`${id}Info`);
     setSelectedFontTitleId(`${id}InfoTitle`);
     // setFontInfoIsOpen(true);
@@ -348,10 +434,10 @@ export default function Settings() {
     );
   };
   const handleChangeLanguage = (id: string) => {
-    changeLanguage(id);
+    changeLanguage(id, currentBook, currentTheme, currentFont);
   };
   const handleChangeTheme = (id: string) => {
-    changeTheme(id);
+    changeTheme(id, currentBook, currentLang, currentFont);
   };
 
   /**

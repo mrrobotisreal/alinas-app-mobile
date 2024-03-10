@@ -26,18 +26,23 @@ import { ThemeContext } from "../context/ThemeContext";
 import { FontContext } from "../context/FontContext";
 import { PlatformContext } from "../context/PlatformContext";
 import { BookContext } from "../context/BookContext";
+import { LocalContext } from "../context/LocalContext";
 import BackgroundImage from "../components/BackgroundImage";
 import Reader from "../components/Reader";
 import * as Haptics from "expo-haptics";
+import useCaptureEvent, { EventObject } from "../hooks/useCaptureEvent";
 
 export default function Listen() {
   /**
    * Hooks, State, Context
    */
   const { audioList } = useGetAudioList();
-  const { color300, color500, color700, lightText, listenBgUri } =
+  const { captureEvent } = useCaptureEvent();
+  const { timeZone, currentLang } = useContext(LocalContext);
+  const { color300, color500, color700, lightText, listenBgUri, currentTheme } =
     useContext(ThemeContext);
-  const { selectedFont, selectedHeavyFont } = useContext(FontContext);
+  const { selectedFont, selectedHeavyFont, currentFont } =
+    useContext(FontContext);
   const { OS } = useContext(PlatformContext);
   const { currentBook, pageSVRef } = useContext(BookContext);
   const [pagePosition, setPagePosition] = useState<Animated.ValueXY>(
@@ -110,6 +115,26 @@ export default function Listen() {
   const handleMenuPressIn = () => setMenuIconColor(color300);
   const handleMenuPressOut = () => setMenuIconColor("#FFFFFF");
   const handleMenuPress = () => {
+    if (!menuIsOpen) {
+      const date = new Date();
+      const newEvent: EventObject = {
+        name: "Press button",
+        location: "Listen",
+        context: "Select playlist",
+        detail: "Opened playlist menu",
+        timestamp: date.getTime(),
+        date: date.toDateString(),
+        time: date.toTimeString(),
+        timeZone: timeZone || "UTC",
+        constants: {
+          selectedBook: currentBook,
+          selectedLanguage: currentLang,
+          selectedTheme: currentTheme,
+          selectedFont: currentFont,
+        },
+      };
+      captureEvent(newEvent);
+    }
     setMenuIsOpen(!menuIsOpen);
     setAudioMenuIsVisible(true);
   };
@@ -228,6 +253,24 @@ export default function Listen() {
     }
   };
   const handleMenuItemPress = async (title: string) => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Listen",
+      context: "Play audiotrack",
+      detail: title,
+      timestamp: date.getTime(),
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     if (currentBook === "My External Cause") {
       switch (title) {
         case "Introduction":
@@ -292,6 +335,27 @@ export default function Listen() {
   const handlePreviousPressIn = () => setPreviousIconColor(color300);
   const handlePreviousPressOut = () => setPreviousIconColor("#FFFFFF");
   const handlePreviousPress = async () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Listen",
+      context: "Previous audiotrack",
+      detail:
+        currentAudioIndex === 0
+          ? audioList[audioList.length - 1].title
+          : audioList[currentAudioIndex - 1].title,
+      timestamp: date.getTime(),
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     const status = await sound?.getStatusAsync();
     if (status?.isLoaded) {
       await sound?.unloadAsync();
@@ -496,6 +560,26 @@ export default function Listen() {
   const handlePlayPausePressIn = () => setPlayPauseIconColor(color300);
   const handlePlayPausePressOut = () => setPlayPauseIconColor("#FFFFFF");
   const handlePlayPausePress = async () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Listen",
+      context: !isPlaying ? "Play audiotrack" : "Pause audiotrack",
+      detail: !isPlaying
+        ? `Play ${audioList[currentAudioIndex].title}`
+        : `Pause ${audioList[currentAudioIndex].title}`,
+      timestamp: date.getTime(),
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     if (!isPlaying) {
       const status = await sound?.getStatusAsync();
       if (status?.isLoaded) {
@@ -554,6 +638,27 @@ export default function Listen() {
   const handleNextPressIn = () => setNextIconColor(color300);
   const handleNextPressOut = () => setNextIconColor("#FFFFFF");
   const handleNextPress = async () => {
+    const date = new Date();
+    const newEvent: EventObject = {
+      name: "Press button",
+      location: "Listen",
+      context: "Next audiotrack",
+      detail:
+        currentAudioIndex === audioList.length - 1
+          ? audioList[0].title
+          : audioList[currentAudioIndex + 1].title,
+      timestamp: date.getTime(),
+      date: date.toDateString(),
+      time: date.toTimeString(),
+      timeZone: timeZone || "UTC",
+      constants: {
+        selectedBook: currentBook,
+        selectedLanguage: currentLang,
+        selectedTheme: currentTheme,
+        selectedFont: currentFont,
+      },
+    };
+    captureEvent(newEvent);
     const status = await sound?.getStatusAsync();
     if (status?.isLoaded) {
       await sound?.unloadAsync();

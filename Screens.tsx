@@ -17,6 +17,7 @@ import Listen from "./screens/Listen";
 import Watch from "./screens/Watch";
 import Notes from "./screens/Notes";
 import Settings from "./screens/Settings";
+import Events from "./screens/Events";
 import { FontContext } from "./context/FontContext";
 
 const Stack = createNativeStackNavigator();
@@ -31,6 +32,7 @@ export default function Screens() {
   const WatchTitle = intl.formatMessage({ id: "watch.header.title" });
   const NotesTitle = intl.formatMessage({ id: "notes.header.title" });
   const SettingsTitle = intl.formatMessage({ id: "settings.header.title" });
+  const tempEventsTitle = "Events";
 
   /**
    * Screen options
@@ -281,6 +283,47 @@ export default function Screens() {
     }),
     [SettingsTitle, color700, lightText, selectedFont, selectedHeavyFont]
   );
+  const EventsOptions = useMemo(
+    () => ({
+      headerShown: true,
+      title: tempEventsTitle,
+      headerStyle: {
+        backgroundColor: color700,
+      },
+      headerTintColor: lightText,
+      headerTitleStyle:
+        selectedFont === "NSL"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "BHL" || selectedFont === "BHM"
+          ? {
+              fontFamily: "BHH",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "ANAREG"
+          ? {
+              fontFamily: "ANABOLD",
+              color: lightText,
+              fontSize: 32,
+            }
+          : selectedFont === "HMGBRD"
+          ? {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 38,
+            }
+          : {
+              fontFamily: selectedHeavyFont,
+              color: lightText,
+              fontSize: 32,
+            },
+    }),
+    [tempEventsTitle, color700, lightText, selectedFont, selectedHeavyFont]
+  );
 
   return (
     <Stack.Navigator>
@@ -299,6 +342,7 @@ export default function Screens() {
         component={Settings}
         options={SettingsOptions}
       />
+      <Stack.Screen name="Events" component={Events} options={EventsOptions} />
     </Stack.Navigator>
   );
 }

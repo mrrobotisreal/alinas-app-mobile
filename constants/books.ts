@@ -72,4 +72,19 @@ export const theJudgeSectionItems: SectionItem[] = [
     title: "3: Publicity",
     id: "publicity",
   },
+  {
+    title: "4: Verdicts and second thoughts",
+    id: "verdicts_and_second_thoughts",
+  },
+];
+
+export const theDreamyManSectionItems: SectionItem[] = [
+  {
+    title: "General",
+    id: "general",
+  },
+  {
+    title: "1: The McDonalds Prison",
+    id: "the_mcdonalds_prison",
+  },
 ];

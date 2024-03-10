@@ -1,4 +1,5 @@
 import { TextStyle, ViewStyle } from "react-native";
+import { EventObject } from "../hooks/useCaptureEvent";
 
 export type DropdownItem = {
   label: string;
@@ -17,3 +18,34 @@ export type BarChartItem = {
   topLabelComponent?: React.FC;
   topLabelContainerStyle?: ViewStyle;
 };
+
+/**
+ * API request/response types and interfaces
+ */
+export type EventsResponse = EventObject[];
+
+export interface SpecificEventsRequest {
+  name?: string;
+  location?: string;
+  context?: string;
+  date?: string;
+  detail?: string;
+}
+
+export interface ContextEventsRequest {
+  context: string;
+}
+
+export interface DateEventsRequest {
+  date: string;
+}
+
+export interface LocationEventsRequest {
+  location: string;
+}
+
+export interface NameEventsRequest {
+  name: string;
+}
+
+export interface StoreNewEventRequest extends EventObject {}
