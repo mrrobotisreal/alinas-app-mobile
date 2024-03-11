@@ -1297,6 +1297,126 @@ export function useGetTexts(): UseGetTextsReturns {
               `${serverURL}/assets/theDreamyMan_images/dream_1_mcdonalds_prison.png`,
             ],
           },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p1",
+            type: "chapter_content",
+            title: "dream_1_content.p1",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p2",
+            type: "chapter_content",
+            title: "dream_1_content.p2",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p3",
+            type: "chapter_content",
+            title: "dream_1_content.p3",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p4",
+            type: "chapter_content",
+            title: "dream_1_content.p4",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p5",
+            type: "chapter_content",
+            title: "dream_1_content.p5",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p6",
+            type: "chapter_content",
+            title: "dream_1_content.p6",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p7",
+            type: "chapter_content",
+            title: "dream_1_content.p7",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p8",
+            type: "chapter_content",
+            title: "dream_1_content.p8",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p9",
+            type: "chapter_content",
+            title: "dream_1_content.p9",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p10",
+            type: "chapter_content",
+            title: "dream_1_content.p10",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p11",
+            type: "chapter_content",
+            title: "dream_1_content.p11",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p12",
+            type: "chapter_content",
+            title: "dream_1_content.p12",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p13",
+            type: "chapter_content",
+            title: "dream_1_content.p13",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p14",
+            type: "chapter_content",
+            title: "dream_1_content.p14",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p15",
+            type: "chapter_content",
+            title: "dream_1_content.p15",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p16",
+            type: "chapter_content",
+            title: "dream_1_content.p16",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p17",
+            type: "chapter_content",
+            title: "dream_1_content.p17",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p18",
+            type: "chapter_content",
+            title: "dream_1_content.p18",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p19",
+            type: "chapter_content",
+            title: "dream_1_content.p19",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p20",
+            type: "chapter_content",
+            title: "dream_1_content.p20",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p21",
+            type: "chapter_content",
+            title: "dream_1_content.p21",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p22",
+            type: "chapter_content",
+            title: "dream_1_content.p22",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p23",
+            type: "chapter_content",
+            title: "dream_1_content.p23",
+          },
+          {
+            id: "theDreamyManTextsList.dream_1_content.p24",
+            type: "chapter_content",
+            title: "dream_1_content.p24",
+          },
         ],
       },
     ],
